@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ApolloProvider } from 'react-apollo';
-import { Router } from 'react-router-dom';
+import {ApolloProvider} from 'react-apollo';
+import {Router} from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
-import { ThemeProvider } from 'styled-components';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import {ThemeProvider} from 'styled-components';
+import {MuiThemeProvider} from '@material-ui/core/styles';
 import client from '../graphql/apollo-client-accounts';
 import scTheme from '../theme/sc';
 import theme from '../theme/mui';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import Routes from '../routes'
 import GlobalDataProvider from '../global-data-provider';
 import CurrentCompany from "../containers/CurrentCompany";
 import HeaderTitle from "../components/header-title";
@@ -29,26 +29,26 @@ import HomePage from "../pages/home-page";
 const history = createBrowserHistory();
 
 const App = () => (
-  <ThemeProvider theme={scTheme}>
-    <Router history={history}>
-      <ApolloProvider client={client}>
-        <MuiThemeProvider theme={theme}>
-            <CssBaseline/>
-            <CurrentCompany>
-            <HeaderTitle/>
-            <HomePage/>
-            </CurrentCompany>
-          {/*<GlobalDataProvider>*/}
-            {/**/}
-          {/*</GlobalDataProvider>*/}
-        </MuiThemeProvider>
-      </ApolloProvider>
-    </Router>
-  </ThemeProvider>
+    <ThemeProvider theme={scTheme}>
+        <Router history={history}>
+            <ApolloProvider client={client}>
+                <MuiThemeProvider theme={theme}>
+                    <CssBaseline/>
+                    <CurrentCompany>
+
+                        <Routes/>
+                    </CurrentCompany>
+                    {/*<GlobalDataProvider>*/}
+                    {/**/}
+                    {/*</GlobalDataProvider>*/}
+                </MuiThemeProvider>
+            </ApolloProvider>
+        </Router>
+    </ThemeProvider>
 );
 
 App.propTypes = {
-  component: PropTypes.func.isRequired,
+    component: PropTypes.func.isRequired,
 };
 
 export default App;

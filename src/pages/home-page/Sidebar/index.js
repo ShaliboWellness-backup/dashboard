@@ -48,7 +48,7 @@ class Sidebar extends Component {
 
                 <List component="nav" aria-label="main mailbox folders">
 
-                    <ListItem className={classes.logo} component={Link} to="/">
+                    <ListItem className={classes.logo} component={Link} to="/home">
                         <ListItemAvatar>
                             <Avatar alt="ShaliboLogo"
                                     src="https://scontent.fhfa1-1.fna.fbcdn.net/v/t1.0-9/1471112_942030945860301_2736404039396499273_n.png?_nc_cat=106&_nc_oc=AQlXrpgkHydn-yxT76PO2KIIgCnda5AcvsWyTOZVYj35Y9ryLTcPe-KU7WqqJhnkMoU&_nc_ht=scontent.fhfa1-1.fna&oh=6f2c1ca63d7078412c9c356518350d1d&oe=5DA6ECE7"/>

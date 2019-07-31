@@ -1,27 +1,30 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { propType } from 'graphql-anywhere';
-import { withUser } from './global-data-provider';
+import {Switch, Route} from 'react-router-dom';
+import {propType} from 'graphql-anywhere';
+import {withUser} from './global-data-provider';
 import userFragment from './graphql/user/fragment/user';
-import { ScrollToTop, LoggedInRoute } from './components/route-wrappers';
+import {ScrollToTop, LoggedInRoute} from './components/route-wrappers';
 import HomePage from './pages/home-page';
 import NotFoundPage from './pages/not-found-page';
+import LoginPage from "./pages/login-page";
 
 const Routes = props => (
-  <ScrollToTop>
-    <Switch>
-      <LoggedInRoute path="/" exact component={HomePage} {...props} />
-      <Route component={NotFoundPage} />
-    </Switch>
-  </ScrollToTop>
+    <ScrollToTop>
+        <Switch>
+            {/*<LoggedInRoute path="/" exact component={HomePage} {...props} />*/}
+            <Route path="/home" component={HomePage}/>
+            <Route exact path="/" component={LoginPage}/>
+            <Route component={NotFoundPage}/>
+        </Switch>
+    </ScrollToTop>
 );
 
 Routes.propTypes = {
-  curUser: propType(userFragment), // eslint-disable-line
+    curUser: propType(userFragment), // eslint-disable-line
 };
 
 Routes.defaultProps = {
-  curUser: null,
+    curUser: null,
 };
 
 export default withUser(Routes);
