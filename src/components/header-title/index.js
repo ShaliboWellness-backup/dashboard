@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,62 +7,61 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import DropdownMenuProfile from "./DropdownMenuProfile"
-import DropdownMenuCompanies from "./DropdownMenuCompanies"
-import { companies } from "../../fakeData"
-import CurrentCompanyContext from "../../containers/CurrentCompany/CurrentCompanyContext";
+import DropdownMenuProfile from './DropdownMenuProfile';
+import DropdownMenuCompanies from './DropdownMenuCompanies';
+import { companies } from '../../fakeData';
+import CurrentCompanyContext from '../../containers/CurrentCompany/CurrentCompanyContext';
 
 
 const styles = theme => ({
-    root: {
-        flexGrow: 1,
-        padding: 10,
+  root: {
+    flexGrow: 1,
+    padding: 10,
 
-    },
-    menuButton: {
-        marginRight: 16,
-    },
-    title: {
-        flexGrow: 1,
-    },
-})
+  },
+  menuButton: {
+    marginRight: 16,
+  },
+  title: {
+    flexGrow: 1,
+  },
+});
 
 
 class HeaderTitle extends Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            currentCompany: ""
-        }
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentCompany: '',
+    };
+  }
 
     handleCompanySelect = () => {
-
-        this.setState({})
+      this.setState({});
     }
 
 
-   render(){
-    const { classes } = this.props
-       const {handleSetCompany, currentCompany} = this.context
+    render() {
+      const { classes } = this.props;
+      const { handleSetCompany, currentCompany } = this.context;
 
-// console.log(currentCompany)
-         return (
+      // console.log(currentCompany)
+      return (
         <div className={classes.root}>
-            {/*<AppBar position="static" color={"secondary"}>*/}
-                <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
+          {/* <AppBar position="static" color={"secondary"}> */}
+          <Toolbar style={{alignItems: "flex-start"}}>
+            <Typography variant="h6" className={classes.title}>
                         Dashboard
-                    </Typography>
-                    <DropdownMenuCompanies companies={companies} className={classes.menuButton} handleSetCompany={handleSetCompany}/>
-                    <DropdownMenuProfile className={classes.menuButton} />
+            </Typography>
+            <DropdownMenuCompanies companies={companies} className={classes.menuButton} handleSetCompany={handleSetCompany} />
+            <DropdownMenuProfile className={classes.menuButton} />
 
-                </Toolbar>
-            {/*</AppBar>*/}
+          </Toolbar>
+          {/* </AppBar> */}
         </div>
-    )}
+      );
+    }
 }
-HeaderTitle.contextType = CurrentCompanyContext
+HeaderTitle.contextType = CurrentCompanyContext;
 
-export default withStyles(styles)(HeaderTitle)
+export default withStyles(styles)(HeaderTitle);

@@ -1,7 +1,8 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import {Grid} from "@material-ui/core"
 import PromotionCard from "./PromotionCard"
+import CreateDialog from "../../../components/common/CreateDialog";
 
 const styles = theme => ({
     root: {
@@ -19,9 +20,13 @@ const Promotions = ({classes, company}) => {
     return (
         <div className={classes.grid}>
             <Grid container spacing={2}>
-                {company.promotions.map((promotion , index) => (
+                <Grid item xs={12} sm={6} md={4} lg={4}>
+                    <CreateDialog type="promotion" action={"create"}/>
+                </Grid>
+                {company.promotions.map((promotion, index) => (
                     <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
                         <PromotionCard
+                            promotion={promotion}
                             title={promotion.title}
                             subtitle={promotion.subtitle}
                             price={promotion.price}

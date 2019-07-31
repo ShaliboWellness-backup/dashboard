@@ -6,8 +6,8 @@ import CardActions from "@material-ui/core/CardActions"
 import CardContent from "@material-ui/core/CardContent"
 import CardMedia from "@material-ui/core/CardMedia"
 import Typography from "@material-ui/core/Typography"
-import { withStyles } from "@material-ui/core/styles"
-import { IconButton, CardHeader, Divider } from "@material-ui/core"
+import {withStyles} from "@material-ui/core/styles"
+import {IconButton, CardHeader, Divider} from "@material-ui/core"
 import Edit from "@material-ui/icons/Edit"
 import Tooltip from "@material-ui/core/Tooltip"
 import Zoom from "@material-ui/core/Zoom"
@@ -55,55 +55,53 @@ const styles = theme => ({
     },
 })
 
-function EventCard(props) {
-    const { title, subtitle, price,tag, image, thumbnail, id } = props
-    const productDetails = { title, subtitle, price,tag, image, thumbnail, id }
-    const { classes } = props
+function PromotionCard(props) {
+    const {promotion, title, subtitle, price, tag, image, thumbnail, id} = props
+    const {classes} = props
 
     return (
-                    <Card className={classes.card}>
+        <Card className={classes.card}>
 
-                            <CardMedia
-                                className={classes.cardMedia}
-                                image={image}
-                                title={title}
-                                src="">
-                                <div className={classes.tag}>
-                                    <Typography>
-                                    {tag}
-                                    </Typography>
-                                </div>
-                            </CardMedia>
-
-
-                        <CardHeader
-                            action={
-                                    <Tooltip TransitionComponent={Zoom} title="עריכה">
-                                        <CreateDialog type={"promotion"}/>
-                                    </Tooltip>
-                            }
-                            title={title}
-                            subheader={"$"+price+" Shalibo Coins"}
-                        />
+            <CardMedia
+                className={classes.cardMedia}
+                image={image}
+                title={title}
+                src="">
+                <div className={classes.tag}>
+                    <Typography>
+                        {tag}
+                    </Typography>
+                </div>
+            </CardMedia>
 
 
+            <CardHeader
+                action={
+                    <Tooltip TransitionComponent={Zoom} title="עריכה">
+                        <CreateDialog type={"promotion"} data={promotion}/>
+                    </Tooltip>
+                }
+                title={title}
+                subheader={"$" + price + " Shalibo Coins"}
+            />
 
-                        <CardContent className={classes.cardContent}>
-                            <Typography> {subtitle}</Typography>
-                        </CardContent>
 
-                    </Card>
-                )
+            <CardContent className={classes.cardContent}>
+                <Typography> {subtitle}</Typography>
+            </CardContent>
+
+        </Card>
+    )
 
 
 }
 
-EventCard.defaultProps = {
+PromotionCard.defaultProps = {
     saved: false,
 }
 
-EventCard.propTypes = {
+PromotionCard.propTypes = {
     classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(EventCard)
+export default withStyles(styles)(PromotionCard)

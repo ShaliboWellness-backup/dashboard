@@ -1,15 +1,11 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import {withStyles} from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
-import {IconButton} from "@material-ui/core";
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
+import {Avatar, ButtonBase, ListItemAvatar} from "@material-ui/core";
 
 
 const StyledMenu = withStyles({
@@ -33,12 +29,10 @@ const StyledMenu = withStyles({
 ));
 
 const StyledMenuItem = withStyles(theme => ({
-    root: {
-
-    },
+    root: {},
 }))(MenuItem);
 
- const DropdownMenuProfile = (props) => {
+const DropdownMenuProfile = (props) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     function handleClick(event) {
@@ -51,15 +45,18 @@ const StyledMenuItem = withStyles(theme => ({
 
     return (
         <div>
-            <IconButton
+            <ButtonBase
                 aria-controls="customized-menu"
                 aria-haspopup="true"
                 variant="contained"
                 color="primary"
                 onClick={handleClick}
             >
-<AccountCircle/>
-            </IconButton>
+                <ListItemAvatar>
+                    <Avatar alt={"ShaliboLogo"}
+                            src={"https://scontent.fhfa1-1.fna.fbcdn.net/v/t1.0-9/1471112_942030945860301_2736404039396499273_n.png?_nc_cat=106&_nc_oc=AQlXrpgkHydn-yxT76PO2KIIgCnda5AcvsWyTOZVYj35Y9ryLTcPe-KU7WqqJhnkMoU&_nc_ht=scontent.fhfa1-1.fna&oh=6f2c1ca63d7078412c9c356518350d1d&oe=5DA6ECE7"}/>
+                </ListItemAvatar>
+            </ButtonBase>
             <StyledMenu
                 id="customized-menu"
                 anchorEl={anchorEl}
@@ -69,21 +66,9 @@ const StyledMenuItem = withStyles(theme => ({
             >
                 <StyledMenuItem>
                     <ListItemIcon>
-                        <SendIcon />
+                        <PowerSettingsNew/>
                     </ListItemIcon>
-                    <ListItemText primary="My Profile" />
-                </StyledMenuItem>
-                <StyledMenuItem>
-                    <ListItemIcon>
-                        <DraftsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Settings" />
-                </StyledMenuItem>
-                <StyledMenuItem>
-                    <ListItemIcon>
-                        <InboxIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Log Out" />
+                    <ListItemText primary="Log Out"/>
                 </StyledMenuItem>
             </StyledMenu>
         </div>
