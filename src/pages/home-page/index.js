@@ -11,12 +11,15 @@ import CurrentCompanyContext from '../../containers/CurrentCompany/CurrentCompan
 import WelcomePage from './WelcomePage';
 import HeaderTitle from "../../components/header-title";
 import CurrentCompany from "../../containers/CurrentCompany";
+import {Query} from "react-apollo";
+import gql from "graphql-tag";
+import getEventsQuery from "../../graphql/event/query/event";
+
 
 class HomePage extends Component {
     render() {
         const {currentCompany} = this.context;
 
-        console.log(currentCompany);
         return (
             <React.Fragment>
                 <HeaderTitle/>
@@ -27,13 +30,31 @@ class HomePage extends Component {
                         <Switch>
                             <Route exact path="/home"
                                    render={props => <WelcomePage {...props} company={currentCompany}/>}/>
-                            <Route path="/members" render={props => <Members {...props} company={currentCompany}/>}/>
+                            <Route exact path="/home/members"
+                                   render={props => <Members {...props} company={currentCompany}/>}/>
                             <Route
-                                path="/promotions"
+                                path="/home/promotions"
                                 render={props => <Promotions {...props} company={currentCompany}/>}
                             />
-                            <Route path="/events"
-                                   render={props => <Events {...props} events={currentCompany.events}/>}/>
+                            <Route path="/home/events"
+                                   render={props => <Query query={getEventsQuery}>
+                                       {({loading, error, data}) => {
+                                           if (loading) {
+
+                                               return null
+                                           } else {
+                                               const {getEvents} = data
+
+                                               return (
+                                                   <Events  {...props} events={getEvents}/>
+                                               )
+                                           }
+
+
+                                       }
+                                       }
+                                   </Query>}
+                            />
                             {/* <Route path="/statistics" component={Statistics}/> */}
                         </Switch>
                     </div>

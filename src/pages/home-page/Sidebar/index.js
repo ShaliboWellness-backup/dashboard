@@ -61,7 +61,7 @@ class Sidebar extends Component {
                     <Divider style={{opacity: 0.75, marginBottom: 5,}} variant="middle"/>
                     <ListItem
                         component={Link}
-                        to="/members"
+                        to="/home/members"
                         button
                         selected={selectedIndex === 0}
                         onClick={event => this.handleListItemClick(event, 0)}
@@ -79,7 +79,7 @@ class Sidebar extends Component {
                         selected={selectedIndex === 1}
                         onClick={event => this.handleListItemClick(event, 1)}
                         component={Link}
-                        to="/events"
+                        to="/home/events"
                     >
                         <ListItemIcon>
                             <CalendarToday style={{color: '#fff'}}/>
@@ -94,7 +94,7 @@ class Sidebar extends Component {
                         selected={selectedIndex === 2}
                         onClick={event => this.handleListItemClick(event, 2)}
                         component={Link}
-                        to="/promotions"
+                        to="/home/promotions"
                     >
                         <ListItemIcon>
                             <ShoppingBasket style={{color: '#fff'}}/>

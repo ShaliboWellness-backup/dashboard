@@ -50,10 +50,10 @@ const styles = theme => ({
 
 function EventCard(props) {
     const {
-        event, title, instructor, date, location, totalSpots, takenSpots, description, image, thumbnail, id,
+        event, title, instructor, date, location, totalSpots, takenSpots, description, image, id
     } = props;
     const productDetails = {
-        title, instructor, date, time, location, totalSpots, takenSpots, description, image, thumbnail, id,
+        title, instructor, date, location, totalSpots, takenSpots, description, image,
     };
     const {classes} = props;
     const time = moment(date).format('llll');
@@ -75,14 +75,15 @@ function EventCard(props) {
                     </Tooltip>
                 )}
                 title={title}
-                subheader={moment(date).fromNow()}
+                subheader={moment(date).format(" MMMM Do, HH:mm")}
             />
 
 
             <CardContent className={classes.cardContent}>
                 <div className={classes.timeCaption}>
-                    <Typography gutterBottom variant="caption" color="textSecondary">{time}</Typography>
-                    <Typography variant="caption" color="textSecondary">
+                    <Typography gutterBottom variant="body1"
+                                color="textSecondary">{moment(date).fromNow()}</Typography>
+                    <Typography variant="body1" color="textSecondary">
                         {`${takenSpots}/${totalSpots} spots `}
                     </Typography>
 
@@ -93,7 +94,7 @@ function EventCard(props) {
             <CardActions>
                 <div style={{textAlign: "center", width: "100%"}}>
                     <Typography color={'primary'} variant={'caption'}>
-                        {`${location.building}, ${location.room}`}
+                        {location}
                     </Typography>
                 </div>
             </CardActions>
