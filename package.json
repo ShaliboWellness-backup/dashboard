@@ -9,7 +9,6 @@
     "test": "react-scripts test",
     "test-cov": "react-scripts test --coverage",
     "eject": "react-scripts eject",
-    "lint": "eslint .",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
     "get-graphql-schema": "get-graphql-schema http://localhost:3001/graphql > schema.json --json && mv schema.json ./src/graphql/schema.json"
