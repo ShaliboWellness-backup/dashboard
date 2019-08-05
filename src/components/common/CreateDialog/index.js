@@ -13,6 +13,8 @@ import MomentUtils from '@date-io/moment';
 import PromotionDialog from './PromotionDialog';
 import EventDialog from './EventDialog';
 import Add from '@material-ui/icons/Add';
+import Tooltip from "@material-ui/core/Tooltip";
+import Zoom from "@material-ui/core/Zoom";
 
 
 export default function CreateDialog(props) {
@@ -40,9 +42,11 @@ export default function CreateDialog(props) {
                     </div>
                 </Paper>
             ) : (
-                <IconButton color="primary" onClick={handleClickOpen}>
-                    <Edit/>
-                </IconButton>
+                <Tooltip TransitionComponent={Zoom} title="Edit">
+                    <IconButton color="primary" onClick={handleClickOpen}>
+                        <Edit/>
+                    </IconButton>
+                </Tooltip>
             )}
 
             <MuiPickersUtilsProvider utils={MomentUtils}>

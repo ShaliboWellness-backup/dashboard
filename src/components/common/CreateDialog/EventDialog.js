@@ -73,13 +73,6 @@ const EventDialog = (props) => {
     return props.action === 'create' ? (
         <Mutation
             mutation={createEventMutation}
-            update={(cache, {data: {createEvent}}) => {
-                const {getEvents} = cache.readQuery({query: getEventsQuery});
-                cache.writeQuery({
-                    query: getEventsQuery,
-                    data: {getEvents: getEvents.concat([createEvent])},
-                });
-            }}
         >
             {createEvent => (
                 <div>
@@ -184,13 +177,6 @@ const EventDialog = (props) => {
     ) : (
         <Mutation
             mutation={updateEventMutation}
-            update={(cache, {data: {updateEvent}}) => {
-                const {getEvents} = cache.readQuery({query: getEventsQuery});
-                cache.writeQuery({
-                    query: getEventsQuery,
-                    data: {getEvents: getEvents.concat([updateEvent])},
-                });
-            }}
         >
             {updateEvent => (
                 <div>

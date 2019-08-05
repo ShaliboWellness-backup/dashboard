@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+import Delete from "@material-ui/icons/Delete"
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -14,6 +14,8 @@ import Zoom from '@material-ui/core/Zoom';
 import {Link} from 'react-router-dom';
 import moment from 'moment';
 import CreateDialog from '../../../components/common/CreateDialog';
+import {Mutation} from "react-apollo";
+import deleteEventMutation from "../../../graphql/event/mutation/delete-event";
 
 
 const styles = theme => ({
@@ -70,9 +72,23 @@ function EventCard(props) {
             </Link>
             <CardHeader
                 action={(
-                    <Tooltip TransitionComponent={Zoom} title="עריכה">
+                    <div>
                         <CreateDialog type="event" data={event}/>
-                    </Tooltip>
+
+                        <Mutation mutation={deleteEventMutation}>
+                            {(deleteEvent, {data}) => (
+                                <Tooltip TransitionComponent={Zoom} title="delete">
+                                    <IconButton onClick={() => {
+                                        deleteEvent({variables: {id: id}});
+                                    }}>
+                                        <Delete color={"primary"}/>
+                                    </IconButton>
+                                </Tooltip>
+                            )}
+                        </Mutation>
+
+                    </div>
+
                 )}
                 title={title}
                 subheader={moment(date).format(" MMMM Do, HH:mm")}
