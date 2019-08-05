@@ -166,6 +166,7 @@ const EventDialog = (props) => {
                                 }
                             })
                             props.handleClose()
+                            window.location.reload();
                         }} color="primary">
                             OK
                         </Button>

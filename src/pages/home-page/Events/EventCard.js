@@ -80,6 +80,7 @@ function EventCard(props) {
                                 <Tooltip TransitionComponent={Zoom} title="delete">
                                     <IconButton onClick={() => {
                                         deleteEvent({variables: {id: id}});
+                                        window.location.reload();
                                     }}>
                                         <Delete color={"primary"}/>
                                     </IconButton>

@@ -26,12 +26,16 @@ export default function CreateDialog(props) {
 
     function handleClose() {
         setOpen(false);
+        window.location.reload();
     }
 
     return (
         <Fragment>
             {props.action === 'create' ? (
-                <Paper style={{height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <Paper style={{
+                    height: "100%",
+                    minHeight: 425, display: "flex", justifyContent: "center", alignItems: "center"
+                }}>
                     <div style={{textAlign: "center"}}>
                         <IconButton style={{width: 100, height: 100,}} color="primary" onClick={handleClickOpen}>
                             <Add style={{width: 50, height: 50,}}/>
