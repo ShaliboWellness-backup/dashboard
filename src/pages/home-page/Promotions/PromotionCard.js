@@ -1,20 +1,17 @@
 import React from "react"
 import PropTypes from "prop-types"
-import Button from "@material-ui/core/Button"
 import Card from "@material-ui/core/Card"
-import CardActions from "@material-ui/core/CardActions"
 import CardContent from "@material-ui/core/CardContent"
 import CardMedia from "@material-ui/core/CardMedia"
 import Typography from "@material-ui/core/Typography"
 import {withStyles} from "@material-ui/core/styles"
-import {IconButton, CardHeader, Divider} from "@material-ui/core"
-import Edit from "@material-ui/icons/Edit"
+import {CardHeader, IconButton} from "@material-ui/core"
 import Tooltip from "@material-ui/core/Tooltip"
 import Zoom from "@material-ui/core/Zoom"
-import {Link} from "react-router-dom"
-import moment from "moment"
 import CreateDialog from "../../../components/common/CreateDialog";
-
+import {Mutation} from "react-apollo"
+import Delete from "@material-ui/icons/Delete"
+import deletePromotionMutation from "../../../graphql/promotion/mutation/delete-promotion";
 
 const styles = theme => ({
     layout: {
@@ -77,9 +74,21 @@ function PromotionCard(props) {
 
             <CardHeader
                 action={
-                    <Tooltip TransitionComponent={Zoom} title="עריכה">
+                    <div>
                         <CreateDialog type={"promotion"} data={promotion}/>
-                    </Tooltip>
+                        <Mutation mutation={deletePromotionMutation}>
+                            {(deletePromotion, {data}) => (
+                                <Tooltip TransitionComponent={Zoom} title="Delete">
+                                    <IconButton onClick={() => {
+                                        deletePromotion({variables: {id: promotion.id}});
+                                        window.location.reload();
+                                    }}>
+                                        <Delete color={"primary"}/>
+                                    </IconButton>
+                                </Tooltip>
+                            )}
+                        </Mutation>
+                    </div>
                 }
                 title={title}
                 subheader={"$" + price + " Shalibo Coins"}

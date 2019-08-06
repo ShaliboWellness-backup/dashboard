@@ -7,7 +7,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {withStyles} from '@material-ui/styles';
-import {DateTimePicker} from '@material-ui/pickers';
+import createPromotionMutation from "../../../graphql/promotion/mutation/create-promotion";
+import updatePromotionMutation from "../../../graphql/promotion/mutation/update-promotion";
+import {Mutation} from "react-apollo"
 
 
 const styles = () => ({
@@ -30,13 +32,14 @@ const PromotionDialog = (props) => {
         price: promotion.price || '',
         tag: promotion.tag || '',
         image: promotion.image || '',
-      
+
 
     });
 
 
     const handleChange = name => (event) => {
         setValues({...values, [name]: event.target.value});
+        console.log(variables)
     };
 
     const handleSubmit = () => {
@@ -53,6 +56,10 @@ const PromotionDialog = (props) => {
     const formData = {
         title, subtitle, price, tag, image, id,
     };
+
+    const variables = props.action === 'create' ? {...formData} : {...formData, id: promotion.id}
+    const mutation = props.action === 'create' ? createPromotionMutation : updatePromotionMutation
+
 
     return (
         <div>
@@ -110,9 +117,19 @@ const PromotionDialog = (props) => {
                 <Button onClick={props.handleClose} color="primary">
                     Cancel
                 </Button>
-                <Button onClick={handleSubmit} color="primary">
-                    OK
-                </Button>
+                <Mutation mutation={mutation}>
+                    {mutationFunction => (
+                        <Button onClick={async () => {
+                            console.log(variables)
+                            await mutationFunction({variables: variables})
+                            props.handleClose()
+                            window.location.reload()
+                        }} color="primary">
+                            OK
+                        </Button>
+                    )}
+
+                </Mutation>
             </DialogActions>
         </div>
     );
