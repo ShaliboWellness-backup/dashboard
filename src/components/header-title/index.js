@@ -16,14 +16,22 @@ import CurrentCompanyContext from '../../containers/CurrentCompany/CurrentCompan
 const styles = theme => ({
     root: {
         flexGrow: 1,
-        padding: 10,
+        padding: "10px 15px 10px 10px",
+        alignItems: "center"
 
     },
     menuButton: {
         marginRight: 16,
     },
+    toolbar: {
+        alignItems: "flex-start",
+        paddingTop: 15
+    },
     title: {
         flexGrow: 1,
+        textTransform: "uppercase",
+        fontWeight: 300,
+        fontSize: "1rem"
     },
 });
 
@@ -44,12 +52,12 @@ class HeaderTitle extends Component {
     render() {
         const {classes} = this.props;
         const {handleSetCompany, currentCompany} = this.context;
-      
+
         // console.log(currentCompany)
         return (
             <div className={classes.root}>
                 {/* <AppBar position="static" color={"secondary"}> */}
-                <Toolbar style={{alignItems: "flex-start"}}>
+                <Toolbar className={classes.toolbar}>
                     <Typography variant="h6" className={classes.title}>
                         Dashboard
                     </Typography>

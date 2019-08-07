@@ -22,7 +22,7 @@ const StyledMenu = withStyles({
         }}
         transformOrigin={{
             vertical: 'top',
-            horizontal: 'center',
+            horizontal: 'right',
         }}
         {...props}
     />
@@ -53,7 +53,7 @@ const DropdownMenuProfile = (props) => {
                 onClick={handleClick}
             >
                 <ListItemAvatar>
-                    <Avatar alt={"ShaliboLogo"}
+                    <Avatar style={{width: 30, height: 30, marginBottom: 5}} alt={"ShaliboLogo"}
                             src={"https://scontent.fhfa1-1.fna.fbcdn.net/v/t1.0-9/1471112_942030945860301_2736404039396499273_n.png?_nc_cat=106&_nc_oc=AQlXrpgkHydn-yxT76PO2KIIgCnda5AcvsWyTOZVYj35Y9ryLTcPe-KU7WqqJhnkMoU&_nc_ht=scontent.fhfa1-1.fna&oh=6f2c1ca63d7078412c9c356518350d1d&oe=5DA6ECE7"}/>
                 </ListItemAvatar>
             </ButtonBase>
@@ -65,10 +65,11 @@ const DropdownMenuProfile = (props) => {
                 onClose={handleClose}
             >
                 <StyledMenuItem>
-                    <ListItemIcon>
-                        <PowerSettingsNew/>
-                    </ListItemIcon>
-                    <ListItemText primary="Log Out"/>
+                    {/*<ListItemIcon>*/}
+                    {/*    <PowerSettingsNew scale={"sm"}/>*/}
+                    {/*</ListItemIcon>*/}
+                    <ListItemText primaryTypographyProps={{variant: "body1", color: "textSecondary"}}
+                                  primary="Log Out"/>
                 </StyledMenuItem>
             </StyledMenu>
         </div>

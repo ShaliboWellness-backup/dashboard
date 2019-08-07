@@ -1,17 +1,12 @@
 import React from "react"
-import PropTypes from "prop-types"
 import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
 import CardMedia from "@material-ui/core/CardMedia"
 import Typography from "@material-ui/core/Typography"
-import {withStyles} from "@material-ui/core/styles"
-import {CardHeader, IconButton} from "@material-ui/core"
-import Tooltip from "@material-ui/core/Tooltip"
-import Zoom from "@material-ui/core/Zoom"
-import CreateDialog from "../../../components/common/CreateDialog";
-import {Mutation} from "react-apollo"
-import Delete from "@material-ui/icons/Delete"
-import deletePromotionMutation from "../../../graphql/promotion/mutation/delete-promotion";
+import {CardHeader} from "@material-ui/core"
+import ActionMenu from "../../../components/common/ActionMenu";
+import {withStyles} from "@material-ui/styles"
+
 
 const styles = theme => ({
     layout: {
@@ -28,17 +23,22 @@ const styles = theme => ({
         padding: `${theme.spacing.unit * 8}px 0`,
     },
     card: {
-        height: "100%",
+        height: "auto",
         display: "flex",
         flexDirection: "column",
 
     },
+    cardHeader: {
+        alignItems: "flex-start"
+    },
     cardMedia: {
         paddingTop: "56.25%", // 16:9
-        position: "relative"
+        position: "relative",
+
     },
     cardContent: {
         flexGrow: 1,
+        paddingTop: 0
     },
     tag: {
         backgroundColor: "#85d7a9",
@@ -52,10 +52,10 @@ const styles = theme => ({
     },
 })
 
-function PromotionCard(props) {
+
+const PromotionCard = (props) => {
     const {promotion, title, subtitle, price, tag, image, thumbnail, id} = props
     const {classes} = props
-
     return (
         <Card className={classes.card}>
 
@@ -73,23 +73,8 @@ function PromotionCard(props) {
 
 
             <CardHeader
-                action={
-                    <div>
-                        <CreateDialog type={"promotion"} data={promotion}/>
-                        <Mutation mutation={deletePromotionMutation}>
-                            {(deletePromotion, {data}) => (
-                                <Tooltip TransitionComponent={Zoom} title="Delete">
-                                    <IconButton onClick={() => {
-                                        deletePromotion({variables: {id: promotion.id}});
-                                        window.location.reload();
-                                    }}>
-                                        <Delete color={"primary"}/>
-                                    </IconButton>
-                                </Tooltip>
-                            )}
-                        </Mutation>
-                    </div>
-                }
+                className={classes.cardHeader}
+                action={<ActionMenu card={promotion} promotion/>}
                 title={title}
                 subheader={"$" + price + " Shalibo Coins"}
             />
@@ -102,15 +87,7 @@ function PromotionCard(props) {
         </Card>
     )
 
-
 }
 
-PromotionCard.defaultProps = {
-    saved: false,
-}
-
-PromotionCard.propTypes = {
-    classes: PropTypes.object.isRequired,
-}
 
 export default withStyles(styles)(PromotionCard)

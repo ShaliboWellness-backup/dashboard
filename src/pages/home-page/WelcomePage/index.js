@@ -16,7 +16,10 @@ import getEventsQuery from "../../../graphql/event/query/event";
 const styles = theme => ({
     welcome: {
         textAlign: 'center',
-        marginBottom: 30,
+        marginBottom: 15,
+        padding: 15,
+        position: "relative",
+        overflow: "hidden"
     },
     statContainer: {
         height: '100%',
@@ -105,14 +108,46 @@ const styles = theme => ({
 
 const WelcomePage = ({classes, company}) => (
     <React.Fragment>
-        <div className={classes.welcome}>
-            <Typography variant="h3">
+        <Paper className={classes.welcome}>
+            <div style={{
+                background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
+                position: "absolute", width: 250, height: 100, marginTop: -40, marginLeft: -100,
+                transform: "rotate(30deg)",
+            }}/>
+            <div style={{
+                background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
+                position: "absolute", width: 250, height: 100, marginTop: -90, marginLeft: -50,
+                transform: "rotate(150deg)",
+            }}/>
+            <div style={{
+                background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
+                position: "absolute", width: 250, height: 100, marginTop: -70, marginLeft: 0,
+                transform: "rotate(160deg)",
+            }}/>
+            <div style={{
+                background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
+                position: "absolute", width: 250, height: 100, marginTop: -70, marginLeft: 0,
+                right: -140, bottom: -30,
+                transform: "rotate(160deg)",
+            }}/>
+            <div style={{
+                background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
+                position: "absolute", width: 250, height: 100, marginTop: -25, marginLeft: 0,
+                right: -55, bottom: -45,
+                transform: "rotate(200deg)",
+            }}/>
+            <div style={{
+                background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
+                position: "absolute", width: 250, height: 100, marginTop: -40, marginLeft: -100,
+                transform: "rotate(150deg)", right: -70, top: 40
+            }}/>
+            <Typography variant="h4">
                 Hey Daniel,
             </Typography>
             <Typography gutterBottom color="textSecondary" variant="h5">
-                Here are your upcoming events:
+                Here Are Your Upcoming Events
             </Typography>
-        </div>
+        </Paper>
         <Query query={getEventsQuery}>
             {({loading, error, data}) => {
                 if (loading) {
@@ -121,7 +156,7 @@ const WelcomePage = ({classes, company}) => (
                     return null
                 } else {
                     const {getEvents} = data
-            
+
                     return (
                         <Events disableCreateEvent events={getEvents}/>
                     )

@@ -77,6 +77,7 @@ const PromotionDialog = (props) => {
                         value={values.title}
                         onChange={handleChange('title')}
                         margin="normal"
+                        variant={"outlined"}
                     />
                     <TextField
                         id="subtitle"
@@ -85,6 +86,7 @@ const PromotionDialog = (props) => {
                         value={values.subtitle}
                         onChange={handleChange('subtitle')}
                         margin="normal"
+                        variant={"outlined"}
                     />
                     <TextField
                         id="price"
@@ -93,6 +95,7 @@ const PromotionDialog = (props) => {
                         value={values.price}
                         onChange={handleChange('price')}
                         margin="normal"
+                        variant={"outlined"}
                     />
                     <TextField
                         id="tag"
@@ -101,6 +104,7 @@ const PromotionDialog = (props) => {
                         value={values.tag}
                         onChange={handleChange('tag')}
                         margin="normal"
+                        variant={"outlined"}
                     />
                     <TextField
                         id="image"
@@ -109,6 +113,7 @@ const PromotionDialog = (props) => {
                         value={values.image}
                         onChange={handleChange('image')}
                         margin="normal"
+                        variant={"outlined"}
                     />
 
                 </form>

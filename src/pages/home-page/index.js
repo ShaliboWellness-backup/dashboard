@@ -15,6 +15,7 @@ import {Query} from "react-apollo";
 import gql from "graphql-tag";
 import getEventsQuery from "../../graphql/event/query/event";
 import getPromotionsQuery from "../../graphql/promotion/query/promotion";
+import Trainers from "./Trainers";
 
 
 class HomePage extends Component {
@@ -24,13 +25,15 @@ class HomePage extends Component {
         return (
             <React.Fragment>
                 <HeaderTitle/>
-                <div style={{margin: '16px 16px'}}>
+                <div style={{marginBottom: 30}}>
 
                     <Sidebar/>
                     <div style={{marginLeft: 280, marginRight: 30}}>
                         <Switch>
                             <Route exact path="/home"
                                    render={props => <WelcomePage {...props} company={currentCompany}/>}/>
+                            <Route exact path="/home/trainers"
+                                   render={props => <Trainers {...props} company={currentCompany}/>}/>
                             <Route exact path="/home/members"
                                    render={props => <Members {...props} company={currentCompany}/>}/>
                             <Route path="/home/promotions"
@@ -69,13 +72,13 @@ class HomePage extends Component {
                             />
                             {/* <Route path="/statistics" component={Statistics}/> */}
                         </Switch>
-                        < /div>
-
                     </div>
-            </React.Fragment>
-    );
-    }
-    }
 
-    HomePage.contextType = CurrentCompanyContext;
-    export default HomePage;
+                </div>
+            </React.Fragment>
+        );
+    }
+}
+
+HomePage.contextType = CurrentCompanyContext;
+export default HomePage;

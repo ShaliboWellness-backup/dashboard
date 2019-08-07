@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -44,9 +44,9 @@ const StyledMenuItem = withStyles(theme => ({
     },
 }))(MenuItem);
 
- const DropdownMenuCompanies = ( props ) => {
+const DropdownMenuCompanies = (props) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
-     const [company, setCompany] = React.useState(props.companies[0]);
+    const [company, setCompany] = React.useState(props.companies[0]);
 
     function handleClick(event) {
         setAnchorEl(event.currentTarget);
@@ -57,15 +57,15 @@ const StyledMenuItem = withStyles(theme => ({
         setAnchorEl(null);
     }
 
-     function handleChangeCompany(company) {
-         setCompany(company)
-         props.handleSetCompany(company)
-         handleClose()
-     }
+    function handleChangeCompany(company) {
+        setCompany(company)
+        props.handleSetCompany(company)
+        handleClose()
+    }
 
-     const { companies } = props
+    const {companies} = props
     return (
-        <div style={{marginRight:16}}>
+        <div style={{marginRight: 16}}>
             <ButtonBase
                 aria-controls="customized-menu"
                 aria-haspopup="true"
@@ -74,11 +74,11 @@ const StyledMenuItem = withStyles(theme => ({
                 onClick={handleClick}
             >
                 <KeyboardArrowDown/>
-                <div style={{textAlign:"center"}}>
-                <Avatar alt={company.name} src={company.image} />
-                <Typography variant="caption" color="textSecondary">
-                    {company.name}
-                </Typography>
+                <div style={{textAlign: "center"}}>
+                    <Avatar style={{width: 30, height: 30}} alt={company.name} src={company.image}/>
+                    <Typography variant="caption" color="textSecondary">
+                        {company.name}
+                    </Typography>
                 </div>
 
             </ButtonBase>
@@ -95,11 +95,12 @@ const StyledMenuItem = withStyles(theme => ({
                                 <ListItemAvatar>
                                     <Avatar alt={company.name} src={company.image}/>
                                 </ListItemAvatar>
-                                <ListItemText primary={company.name}/>
+                                <ListItemText primaryTypographyProps={{variant: "body1", color: "textSecondary"}}
+                                              primary={company.name}/>
                             </StyledMenuItem>
                         )
                     }
-                    )
+                )
                 }
 
 

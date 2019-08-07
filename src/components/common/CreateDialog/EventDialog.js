@@ -7,10 +7,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {withStyles} from '@material-ui/styles';
 import {DateTimePicker} from '@material-ui/pickers';
-import gql from "graphql-tag";
 import {Mutation} from "react-apollo";
 import createEventMutation from "../../../graphql/event/mutation/create-event";
-import getEventsQuery from "../../../graphql/event/query/event";
 import updateEventMutation from "../../../graphql/event/mutation/update-event";
 
 
@@ -18,6 +16,8 @@ const styles = () => ({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
+
+
     },
     textField: {
         marginLeft: 8,
@@ -66,222 +66,119 @@ const EventDialog = (props) => {
         title, instructor, location, totalSpots, description, image, date,
     };
 
-    const id = props.action === 'create' ? null : event.id
-    const takenSpots = props.action === 'create' ? null : event.takenSpots
+    const takenSpots = props.action === 'create' ? "0" : event.takenSpots
 
+    const variables = props.action === 'create' ? {...formData, takenSpots} : {...formData, id: event.id}
+    const mutation = props.action === 'create' ? createEventMutation : updateEventMutation
 
-    return props.action === 'create' ? (
-        <Mutation
-            mutation={createEventMutation}
-        >
-            {createEvent => (
-                <div>
-                    <DialogTitle
-                        id="form-dialog-title"> {props.action === 'create' ? 'Create ' : 'Edit '}
-                        Event </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Here you can change the details of a specific event.
-                            Please note that changes will be visible to all relevant users once submitted.
-                        </DialogContentText>
-                        <form className={classes.container} noValidate autoComplete="off">
-                            <TextField
-                                id="title"
-                                label="Title"
-                                className={classes.textField}
-                                value={values.title}
-                                onChange={handleChange('title')}
-                                margin="normal"
-                            />
-                            <TextField
-                                id="instructor"
-                                label="Instructor"
-                                className={classes.textField}
-                                value={values.instructor}
-                                onChange={handleChange('instructor')}
-                                margin="normal"
-                            />
-                            <TextField
-                                id="location"
-                                label="Location"
-                                className={classes.textField}
-                                value={values.location}
-                                onChange={handleChange('location')}
-                                margin="normal"
-                            />
+    console.log(event)
+    console.log(variables)
+    return (
+        <div>
+            <DialogTitle
+                id="form-dialog-title"> {props.action === 'create' ? 'Create ' : 'Edit '}
+                Event </DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    Here you can change the details of a specific event.
+                    Please note that changes will be visible to all relevant users once submitted.
+                </DialogContentText>
+                <form className={classes.container} noValidate autoComplete="off">
+                    <TextField
+                        id="title"
+                        label="Title"
+                        className={classes.textField}
+                        value={values.title}
+                        onChange={handleChange('title')}
+                        margin="normal"
+                        variant={"outlined"}
+                    />
+                    <TextField
+                        id="instructor"
+                        label="Instructor"
+                        className={classes.textField}
+                        value={values.instructor}
+                        onChange={handleChange('instructor')}
+                        margin="normal"
+                        variant={"outlined"}
+                    />
+                    <TextField
+                        id="location"
+                        label="Location"
+                        className={classes.textField}
+                        value={values.location}
+                        onChange={handleChange('location')}
+                        margin="normal"
+                        variant={"outlined"}
+                    />
 
-                            <TextField
-                                id="totalSpots"
-                                label="Total Spots"
-                                className={classes.textField}
-                                value={values.totalSpots}
-                                onChange={handleChange('totalSpots')}
-                                margin="normal"
-                            />
-                            <DateTimePicker
-                                autoOk
-                                ampm={false}
-                                value={values.date}
-                                onChange={date => handleSetDate(date)}
-                                label="Date & Time"
-                                className={classes.textField}
-                                style={{marginTop: 16}}
-                            />
-                            <TextField
-                                id="description"
-                                label="Description"
-                                multiline
-                                className={classes.textField}
-                                value={values.description}
-                                onChange={handleChange('description')}
-                                margin="normal"
-                            />
-                            <TextField
-                                id="image"
-                                label="Image"
-                                className={classes.textField}
-                                value={values.image}
-                                onChange={handleChange('image')}
-                                margin="normal"
-                            />
-                        </form>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button
-                            onClick={props.handleClose}
-                            color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={() => {
-                            createEvent({
-                                variables: {
-                                    title,
-                                    instructor,
-                                    location,
-                                    date,
-                                    image,
-                                    takenSpots: 0,
-                                    totalSpots: parseInt(totalSpots),
-                                    description
-                                }
-                            })
+                    <TextField
+                        id="totalSpots"
+                        label="Total Spots"
+                        className={classes.textField}
+                        value={values.totalSpots}
+                        onChange={handleChange('totalSpots')}
+                        margin="normal"
+                        variant={"outlined"}
+                    />
+                    <DateTimePicker
+                        autoOk
+                        ampm={false}
+                        value={values.date}
+                        onChange={date => handleSetDate(date)}
+                        label="Date & Time"
+                        className={classes.textField}
+                        style={{marginTop: 16}}
+                        inputVariant={"outlined"}
+
+                    />
+                    <TextField
+                        id="image"
+                        label="Image"
+                        className={classes.textField}
+                        value={values.image}
+                        onChange={handleChange('image')}
+                        margin="normal"
+                        variant={"outlined"}
+                    />
+                    <TextField
+                        id="description"
+                        label="Description"
+                        multiline
+                        fullWidth
+                        className={classes.textField}
+                        value={values.description}
+                        onChange={handleChange('description')}
+                        margin="normal"
+                        variant={"outlined"}
+                    />
+
+                </form>
+            </DialogContent>
+            <DialogActions>
+                <Button
+                    onClick={props.handleClose}
+                    color="primary">
+                    Cancel
+                </Button>
+                <Mutation mutation={mutation}>
+                    {mutationFunction => (
+                        <Button onClick={async () => {
+                            await mutationFunction({variables: variables})
                             props.handleClose()
-                            window.location.reload();
+                            window.location.reload()
                         }} color="primary">
                             OK
                         </Button>
-                    </DialogActions>
-                </div>
-            )}
-        </Mutation>
+                    )}
 
-    ) : (
-        <Mutation
-            mutation={updateEventMutation}
-        >
-            {updateEvent => (
-                <div>
-                    <DialogTitle
-                        id="form-dialog-title"> {props.action === 'create' ? 'Create ' : 'Edit '}
-                        Event </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Here you can change the details of a specific event.
-                            Please note that changes will be visible to all relevant users once submitted.
-                        </DialogContentText>
-                        <form className={classes.container} noValidate autoComplete="off">
-                            <TextField
-                                id="title"
-                                label="Title"
-                                className={classes.textField}
-                                value={values.title}
-                                onChange={handleChange('title')}
-                                margin="normal"
-                            />
-                            <TextField
-                                id="instructor"
-                                label="Instructor"
-                                className={classes.textField}
-                                value={values.instructor}
-                                onChange={handleChange('instructor')}
-                                margin="normal"
-                            />
-                            <TextField
-                                id="location"
-                                label="Location"
-                                className={classes.textField}
-                                value={values.location}
-                                onChange={handleChange('location')}
-                                margin="normal"
-                            />
+                </Mutation>
+            </DialogActions>
+        </div>
 
-                            <TextField
-                                id="totalSpots"
-                                label="Total Spots"
-                                className={classes.textField}
-                                value={values.totalSpots}
-                                onChange={handleChange('totalSpots')}
-                                margin="normal"
-                            />
-                            <DateTimePicker
-                                autoOk
-                                ampm={false}
-                                value={values.date}
-                                onChange={date => handleSetDate(date)}
-                                label="Date & Time"
-                                className={classes.textField}
-                                style={{marginTop: 16}}
-                            />
-                            <TextField
-                                id="description"
-                                label="Description"
-                                multiline
-                                className={classes.textField}
-                                value={values.description}
-                                onChange={handleChange('description')}
-                                margin="normal"
-                            />
-                            <TextField
-                                id="image"
-                                label="Image"
-                                className={classes.textField}
-                                value={values.image}
-                                onChange={handleChange('image')}
-                                margin="normal"
-                            />
-                        </form>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button
-                            onClick={props.handleClose}
-                            color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={() => {
-                            console.log('trying to update')
-                            console.log(event.id)
-                            updateEvent({
-                                variables: {
-                                    id: event.id,
-                                    title,
-                                    instructor,
-                                    location,
-                                    date,
-                                    image,
-                                    takenSpots: 0,
-                                    totalSpots: parseInt(totalSpots),
-                                    description
-                                }
-                            })
-                            props.handleClose()
-                        }} color="primary">
-                            OK
-                        </Button>
-                    </DialogActions>
-                </div>
-            )}
-        </Mutation>
-    );
+    )
+
+
 };
 
 export default withStyles(styles)(EventDialog);

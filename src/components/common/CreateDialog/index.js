@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {IconButton, Typography, Paper} from '@material-ui/core';
-import Edit from '@material-ui/icons/Edit';
+import Create from '@material-ui/icons/Create';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import PromotionDialog from './PromotionDialog';
@@ -15,6 +15,7 @@ import EventDialog from './EventDialog';
 import Add from '@material-ui/icons/Add';
 import Tooltip from "@material-ui/core/Tooltip";
 import Zoom from "@material-ui/core/Zoom";
+import MenuItem from '@material-ui/core/MenuItem';
 
 
 export default function CreateDialog(props) {
@@ -33,28 +34,29 @@ export default function CreateDialog(props) {
             {props.action === 'create' ? (
                 <Paper style={{
                     height: "100%",
-                    minHeight: 425, display: "flex", justifyContent: "center", alignItems: "center"
+                    minHeight: 300, display: "flex", justifyContent: "center", alignItems: "center"
                 }}>
                     <div style={{textAlign: "center"}}>
                         <IconButton style={{width: 100, height: 100,}} color="primary" onClick={handleClickOpen}>
                             <Add style={{width: 50, height: 50,}}/>
                         </IconButton>
                         <Typography variant={"h5"}>
-                            Create {props.type === 'promotion.js' ? 'Event' : 'Promotion'}
+                            Create {props.type === 'event' ? 'Event' : 'Promotion'}
                         </Typography>
                     </div>
                 </Paper>
             ) : (
-                <Tooltip TransitionComponent={Zoom} title="Edit">
-                    <IconButton color="primary" onClick={handleClickOpen}>
-                        <Edit/>
-                    </IconButton>
-                </Tooltip>
+                <MenuItem onClick={handleClickOpen}>
+                    <Typography variant={"body1"} color={"textSecondary"}>
+                        Edit
+                    </Typography>
+                </MenuItem>
             )}
 
             <MuiPickersUtilsProvider utils={MomentUtils}>
-                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                    {props.type === 'promotion.js' ?
+                <Dialog maxWidth={"sm"} scroll={"body"} open={open} onClose={handleClose}
+                        aria-labelledby="form-dialog-title">
+                    {props.type === 'event' ?
                         <EventDialog action={props.action} handleClose={handleClose} event={props.data}/> :
                         <PromotionDialog action={props.action} handleClose={handleClose} promotion={props.data}/>}
                 </Dialog>

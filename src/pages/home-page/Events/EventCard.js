@@ -16,6 +16,7 @@ import moment from 'moment';
 import CreateDialog from '../../../components/common/CreateDialog';
 import {Mutation} from "react-apollo";
 import deleteEventMutation from "../../../graphql/event/mutation/delete-event";
+import ActionMenu from "../../../components/common/ActionMenu";
 
 
 const styles = theme => ({
@@ -43,6 +44,8 @@ const styles = theme => ({
     },
     cardContent: {
         flexGrow: 1,
+        alignItems: "flex-start",
+        paddingTop: 0,
     },
     timeCaption: {
         display: 'flex',
@@ -71,28 +74,10 @@ function EventCard(props) {
 
             </Link>
             <CardHeader
-                action={(
-                    <div>
-                        <CreateDialog type="event" data={event}/>
-
-                        <Mutation mutation={deleteEventMutation}>
-                            {(deleteEvent, {data}) => (
-                                <Tooltip TransitionComponent={Zoom} title="delete">
-                                    <IconButton onClick={() => {
-                                        deleteEvent({variables: {id: id}});
-                                        window.location.reload()
-                                    }}>
-                                        <Delete color={"primary"}/>
-                                    </IconButton>
-                                </Tooltip>
-                            )}
-                        </Mutation>
-
-                    </div>
-
-                )}
+                action={<ActionMenu card={event}/>}
                 title={title}
                 subheader={moment(date).format(" MMMM Do, HH:mm")}
+
             />
 
 
@@ -111,7 +96,7 @@ function EventCard(props) {
             <CardActions>
                 <div style={{textAlign: "center", width: "100%"}}>
                     <Typography color={'primary'} variant={'caption'}>
-                        {location}
+                        {location} | {instructor}
                     </Typography>
                 </div>
             </CardActions>
