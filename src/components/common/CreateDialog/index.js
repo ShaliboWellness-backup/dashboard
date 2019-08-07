@@ -31,13 +31,16 @@ export default function CreateDialog(props) {
     return (
         <Fragment>
             {props.action === 'create' ? (
-                <Paper style={{height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <Paper style={{
+                    height: "100%",
+                    minHeight: 425, display: "flex", justifyContent: "center", alignItems: "center"
+                }}>
                     <div style={{textAlign: "center"}}>
                         <IconButton style={{width: 100, height: 100,}} color="primary" onClick={handleClickOpen}>
                             <Add style={{width: 50, height: 50,}}/>
                         </IconButton>
                         <Typography variant={"h5"}>
-                            Create {props.type === 'event' ? 'Event' : 'Promotion'}
+                            Create {props.type === 'promotion.js' ? 'Event' : 'Promotion'}
                         </Typography>
                     </div>
                 </Paper>
@@ -51,7 +54,7 @@ export default function CreateDialog(props) {
 
             <MuiPickersUtilsProvider utils={MomentUtils}>
                 <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                    {props.type === 'event' ?
+                    {props.type === 'promotion.js' ?
                         <EventDialog action={props.action} handleClose={handleClose} event={props.data}/> :
                         <PromotionDialog action={props.action} handleClose={handleClose} promotion={props.data}/>}
                 </Dialog>

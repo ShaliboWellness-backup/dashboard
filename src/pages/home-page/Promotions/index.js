@@ -14,7 +14,7 @@ const styles = theme => ({
     },
 })
 
-const Promotions = ({classes, company}) => {
+const Promotions = ({classes, promotions}) => {
 
 
     return (
@@ -23,7 +23,7 @@ const Promotions = ({classes, company}) => {
                 <Grid item xs={12} sm={6} md={4} lg={4}>
                     <CreateDialog type="promotion" action={"create"}/>
                 </Grid>
-                {company.promotions.map((promotion, index) => (
+                {promotions.map((promotion, index) => (
                     <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
                         <PromotionCard
                             promotion={promotion}
