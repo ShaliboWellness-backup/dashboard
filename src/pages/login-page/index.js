@@ -14,6 +14,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import background from '../../fakeData/Images/loginBg.jpg'
 import {Paper} from '@material-ui/core'
+import {isSignedIn, handleLogin} from "../../utils/auth-api";
 
 function MadeWithLove() {
     return (<div/>
@@ -62,8 +63,30 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function LoginPage() {
+
+export default function LoginPage(props) {
     const classes = useStyles();
+    const {history} = props
+
+    const [values, setValues] = React.useState({
+        email: "",
+        password: ""
+    });
+
+    React.useEffect(() => {
+        isSignedIn(history)
+    })
+
+    const handleChange = name => (event) => {
+        setValues({...values, [name]: event.target.value});
+        console.log(values)
+    };
+
+    const handleSubmit = () => {
+        const {email, password} = values
+        handleLogin(email, password, history)
+    }
+
 
     return (
         <div style={{
@@ -95,6 +118,7 @@ export default function LoginPage() {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            onChange={handleChange('email')}
                         />
                         <TextField
                             variant="outlined"
@@ -106,37 +130,37 @@ export default function LoginPage() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={handleChange('password')}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary"/>}
                             label="Remember me"
                         />
-                        <Button
-                            type="submit"
-                            component={Link}
-                            to={'/home'}
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-
-                                <Typography color={'primary'} component={Link} to={'#'} variant={"body2"}>
-                                    Forgot password?
-                                </Typography>
-
-                            </Grid>
-                            <Grid item>
-                                <Typography color={'primary'} component={Link} to={'#'} variant={"body2"}>
-                                    {"Don't have an account? Sign Up"}
-                                </Typography>
-                            </Grid>
-                        </Grid>
                     </form>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={handleSubmit}
+                    >
+                        Sign In
+                    </Button>
+                    <Grid container>
+                        <Grid item xs>
+
+                            <Typography color={'primary'} component={Link} to={'#'} variant={"body2"}>
+                                Forgot password?
+                            </Typography>
+
+                        </Grid>
+                        <Grid item>
+                            <Typography color={'primary'} component={Link} to={'/signup'} variant={"body2"}>
+                                {"Don't have an account? Sign Up"}
+                            </Typography>
+                        </Grid>
+                    </Grid>
                 </Paper>
                 <Box mt={5}>
                     <MadeWithLove/>

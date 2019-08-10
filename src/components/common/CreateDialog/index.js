@@ -1,20 +1,11 @@
 import React, {Fragment} from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import {IconButton, Typography, Paper} from '@material-ui/core';
-import Create from '@material-ui/icons/Create';
+import {IconButton, Paper, Typography} from '@material-ui/core';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import PromotionDialog from './PromotionDialog';
 import EventDialog from './EventDialog';
 import Add from '@material-ui/icons/Add';
-import Tooltip from "@material-ui/core/Tooltip";
-import Zoom from "@material-ui/core/Zoom";
 import MenuItem from '@material-ui/core/MenuItem';
 
 

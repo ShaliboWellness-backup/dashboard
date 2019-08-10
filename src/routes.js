@@ -7,13 +7,14 @@ import {ScrollToTop, LoggedInRoute} from './components/route-wrappers';
 import HomePage from './pages/home-page';
 import NotFoundPage from './pages/not-found-page';
 import LoginPage from "./pages/login-page";
+import SignupPage from "./pages/signup-page";
 
 const Routes = props => (
     <ScrollToTop>
         <Switch>
-            {/*<LoggedInRoute path="/" exact component={HomePage} {...props} />*/}
-            <Route path="/home" component={HomePage}/>
+            <LoggedInRoute path="/home" exact component={HomePage} {...props} />
             <Route exact path="/" component={LoginPage}/>
+            <Route exact path="/signup" component={SignupPage}/>
             <Route component={NotFoundPage}/>
         </Switch>
     </ScrollToTop>

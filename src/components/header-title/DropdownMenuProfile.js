@@ -6,6 +6,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import {Avatar, ButtonBase, ListItemAvatar} from "@material-ui/core";
+import {handleLogout} from "../../utils/auth-api";
 
 
 const StyledMenu = withStyles({
@@ -69,7 +70,9 @@ const DropdownMenuProfile = (props) => {
                     {/*    <PowerSettingsNew scale={"sm"}/>*/}
                     {/*</ListItemIcon>*/}
                     <ListItemText primaryTypographyProps={{variant: "body1", color: "textSecondary"}}
-                                  primary="Log Out"/>
+                                  primary="Log Out"
+                                  onClick={() => handleLogout()}
+                    />
                 </StyledMenuItem>
             </StyledMenu>
         </div>
