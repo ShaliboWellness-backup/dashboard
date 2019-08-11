@@ -11,8 +11,7 @@ const address = isNotProduction ? 'http://localhost:3001' : REACT_API;
 // Check if user is logged in
 
 export const isSignedIn = async (history) => {
-
-
+    console.log(`${address}/user`);
     await axios.get(`${address}/user`, {
         withCredentials: true
 
