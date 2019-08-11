@@ -19,7 +19,8 @@ const styles = theme => ({
         marginBottom: 15,
         padding: 15,
         position: "relative",
-        overflow: "hidden"
+        overflow: "hidden",
+        boxShadow: "0 1px 15px 0 hsla(0,0%,48.2%,.2)"
     },
     statContainer: {
         height: '100%',
@@ -108,7 +109,7 @@ const styles = theme => ({
 
 const WelcomePage = ({classes, company}) => (
     <React.Fragment>
-        <Paper className={classes.welcome}>
+        <Paper elevation={1} className={classes.welcome}>
             <div style={{
                 background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
                 position: "absolute", width: 250, height: 100, marginTop: -40, marginLeft: -100,
