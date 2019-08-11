@@ -1,6 +1,11 @@
 import axios from "axios";
 
-const address = 'http://localhost:3001'
+const { NODE_ENV, REACT_API } = process.env;
+
+const isNotProduction = NODE_ENV !== 'production';
+const address = isNotProduction ? 'http://localhost:3001' : REACT_API;
+
+// const address = 'http://localhost:3001'
 // const address = 'https://shalibo.herokuapp.com'
 
 // Check if user is logged in

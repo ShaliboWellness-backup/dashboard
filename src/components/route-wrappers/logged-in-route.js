@@ -34,13 +34,13 @@ const LoggedInRoute = (props) => {
 
     });
 
-    const { NODE_ENV, REACT_APP_GRAPHQL_URI } = process.env;
+    const { NODE_ENV, REACT_API } = process.env;
 
     const isNotProduction = NODE_ENV !== 'production';
-    const uri = isNotProduction ? 'http://localhost:3001/graphql' : REACT_APP_GRAPHQL_URI;
+    const address = isNotProduction ? 'http://localhost:3001' : REACT_API;
 
     async function isSignedIn() {
-        await axios.get(uri, {
+        await axios.get(address + '/user', {
             withCredentials: true
         })
             .then(function (response) {
