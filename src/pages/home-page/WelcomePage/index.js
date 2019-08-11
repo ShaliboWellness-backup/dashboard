@@ -152,7 +152,7 @@ const WelcomePage = ({classes, company}) => (
             {({loading, error, data}) => {
                 const {events} = data
                 if (loading) {
-                    return null
+                    return <p>loading...</p>
                 }
                 if (error) {
                     return console.log(error)

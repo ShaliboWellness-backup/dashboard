@@ -8,9 +8,6 @@ const getEventsQuery = gql`
     instructor{
       name
     }
-    attendees{
-      name
-    }
     location
     date
     totalSpots
@@ -18,6 +15,6 @@ const getEventsQuery = gql`
     image
   }
 }
-            `
+`
 
 export default getEventsQuery
