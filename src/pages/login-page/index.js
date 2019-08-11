@@ -143,7 +143,9 @@ export default function LoginPage(props) {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={handleSubmit}
+                        component={Link}
+                        to={"/home"}
+                        //onClick={handleSubmit}
                     >
                         Sign In
                     </Button>

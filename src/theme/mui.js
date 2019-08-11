@@ -3,6 +3,9 @@ import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
 
 const theme = createMuiTheme({
+    shadows: ["none", "0 1px 15px 0 hsla(0,0%,48.2%,.1)"]
+       
+    ,
     palette: {
         type: 'light',
         primary: {

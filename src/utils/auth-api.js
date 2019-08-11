@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const { NODE_ENV, REACT_API } = process.env;
+const {NODE_ENV, REACT_API} = process.env;
 
 const isNotProduction = NODE_ENV !== 'production';
 const address = isNotProduction ? 'http://localhost:3001' : REACT_API;
@@ -83,7 +83,7 @@ export const handleLogout = async () => {
     await axios.get(`${address}/logout`)
         .then(function (response) {
             console.log(response);
-            window.location.reload()
+            // window.location.reload()
         })
         .catch(function (error) {
             console.log(error);

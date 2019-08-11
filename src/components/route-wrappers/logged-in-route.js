@@ -34,23 +34,25 @@ const LoggedInRoute = (props) => {
 
     });
 
-    const { NODE_ENV, REACT_API } = process.env;
+    const {NODE_ENV, REACT_APP_GRAPHQL_URI} = process.env;
 
     const isNotProduction = NODE_ENV !== 'production';
-    const address = isNotProduction ? 'http://localhost:3001' : REACT_API;
+    const uri = isNotProduction ? 'http://localhost:3001' : REACT_APP_GRAPHQL_URI;
 
     async function isSignedIn() {
-        await axios.get(address + '/user', {
+        await axios.get(`${uri}/user`, {
             withCredentials: true
         })
             .then(function (response) {
                 let signedIn = !!response.data.name
                 console.log(response);
                 setState({signedIn, loading: false})
+                console.log(state)
                 return null
             })
             .catch(function (error) {
                 console.log(error);
+                return <Redirect to={'/'}/>
             });
     };
 
@@ -59,17 +61,17 @@ const LoggedInRoute = (props) => {
         <Route
             path={props.path}
             render={(ownProps) => {
-                // Otherwise, render the requested component
-                if (state.loading) {
-                    return <CircularProgress/>
-                } else {
-                    if (!state.signedIn) {
-                        console.log(state.signedIn)
-                        return <Redirect to={'/'}/>
-                    }
-                    console.log(state.signedIn)
-                    return <HomePage/>;
-                }
+                // // Otherwise, render the requested component
+                // if (state.loading) {
+                //     return <CircularProgress/>
+                // } else {
+                //     if (!state.signedIn) {
+                //         console.log(state.signedIn)
+                //         return <Redirect to={'/'}/>
+                //     }
+                //     console.log(state.signedIn)
+                return <HomePage/>;
+                // }
             }
             }
         />
