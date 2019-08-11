@@ -34,7 +34,6 @@ const LoggedInRoute = (props) => {
 
     });
 
-<<<<<<< HEAD
     const {NODE_ENV, REACT_APP_GRAPHQL_URI} = process.env;
 
     const isNotProduction = NODE_ENV !== 'production';
@@ -42,15 +41,6 @@ const LoggedInRoute = (props) => {
 
     async function isSignedIn() {
         await axios.get(`${uri}/user`, {
-=======
-    const { NODE_ENV, REACT_API } = process.env;
-
-    const isNotProduction = NODE_ENV !== 'production';
-    const address = isNotProduction ? 'http://localhost:3001' : REACT_API;
-
-    async function isSignedIn() {
-        await axios.get(address + '/user', {
->>>>>>> master
             withCredentials: true
         })
             .then(function (response) {

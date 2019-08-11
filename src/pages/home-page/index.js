@@ -40,8 +40,7 @@ class HomePage extends Component {
                                    render={props => (
                                        <Query query={getPromotionsQuery}>
                                            {({loading, data}) => {
-                                               const {getPromotions} = data
-
+                                               const {promotions} = data
                                                return loading ?
                                                    <div style={{width: "100%", textAlign: "center"}}><CircularProgress/>
                                                    </div> : <Promotions {...props} promotions={getPromotions}/>

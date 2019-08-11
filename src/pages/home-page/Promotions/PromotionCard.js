@@ -26,6 +26,7 @@ const styles = theme => ({
         height: "auto",
         display: "flex",
         flexDirection: "column",
+        
 
     },
     cardHeader: {

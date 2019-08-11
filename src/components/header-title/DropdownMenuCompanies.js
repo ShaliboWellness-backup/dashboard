@@ -2,16 +2,11 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Menu from '@material-ui/core/Menu';
+import Grid from '@material-ui/core/Grid'
 import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
 import {Avatar, ListItemAvatar, Typography} from "@material-ui/core";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
-import {Query} from "react-apollo";
-import getCompaniesQuery from "../../graphql/companies/query/companies";
 
 const StyledMenu = withStyles({
     paper: {
@@ -75,13 +70,19 @@ const DropdownMenuCompanies = (props) => {
                 color="primary"
                 onClick={handleClick}
             >
-                <KeyboardArrowDown/>
-                <div style={{textAlign: "center"}}>
-                    <Avatar style={{width: 30, height: 30}} alt={company.name} src={company.image}/>
-                    <Typography variant="caption" color="textSecondary">
-                        {company.name}
-                    </Typography>
-                </div>
+
+                <Grid container spacing={1}>
+                    <Grid item xs={12}
+                          style={{display: "flex", justifyContent: "center", alignItems: "center",}}>
+                        <KeyboardArrowDown/>
+                        <Avatar style={{width: 30, height: 30}} alt={company.name} src={company.image}/>
+                    </Grid>
+                    {/*<Grid item xs={12}>*/}
+                    {/*    <Typography variant="caption" color="textSecondary">*/}
+                    {/*        {company.name}*/}
+                    {/*    </Typography>*/}
+                    {/*</Grid>*/}
+                </Grid>
 
             </ButtonBase>
 
@@ -109,7 +110,7 @@ const DropdownMenuCompanies = (props) => {
 
 
             </StyledMenu>
-                   
+
         </div>
     );
 }

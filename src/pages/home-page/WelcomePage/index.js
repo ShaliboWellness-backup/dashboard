@@ -12,6 +12,7 @@ import wellness from '../../../fakeData/Images/wellness.jpg';
 import wellness_tn from '../../../fakeData/Images/wellness_tn.jpg';
 import {Query} from "react-apollo";
 import getEventsQuery from "../../../graphql/event/query/event";
+import CustomPaper from "../../../components/common/CustomPaper";
 
 const styles = theme => ({
     welcome: {
@@ -20,7 +21,6 @@ const styles = theme => ({
         padding: 15,
         position: "relative",
         overflow: "hidden",
-        boxShadow: "0 1px 15px 0 hsla(0,0%,48.2%,.2)"
     },
     statContainer: {
         height: '100%',
@@ -109,36 +109,36 @@ const styles = theme => ({
 
 const WelcomePage = ({classes, company}) => (
     <React.Fragment>
-        <Paper elevation={1} className={classes.welcome}>
+        <Paper className={classes.welcome}>
             <div style={{
-                background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
+                background: "linear-gradient(90deg,rgba(0,242,195,.6) 0,rgba(0,242,195,0))",
                 position: "absolute", width: 250, height: 100, marginTop: -40, marginLeft: -100,
                 transform: "rotate(30deg)",
             }}/>
             <div style={{
-                background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
+                background: "linear-gradient(90deg,rgba(0,242,195,.6) 0,rgba(0,242,195,0))",
                 position: "absolute", width: 250, height: 100, marginTop: -90, marginLeft: -50,
                 transform: "rotate(150deg)",
             }}/>
             <div style={{
-                background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
+                background: "linear-gradient(90deg,rgba(0,242,195,.6) 0,rgba(0,242,195,0))",
                 position: "absolute", width: 250, height: 100, marginTop: -70, marginLeft: 0,
                 transform: "rotate(160deg)",
             }}/>
             <div style={{
-                background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
+                background: "linear-gradient(90deg,rgba(0,242,195,.6) 0,rgba(0,242,195,0))",
                 position: "absolute", width: 250, height: 100, marginTop: -70, marginLeft: 0,
                 right: -140, bottom: -30,
                 transform: "rotate(160deg)",
             }}/>
             <div style={{
-                background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
+                background: "linear-gradient(90deg,rgba(0,242,195,.6) 0,rgba(0,242,195,0))",
                 position: "absolute", width: 250, height: 100, marginTop: -25, marginLeft: 0,
                 right: -55, bottom: -45,
                 transform: "rotate(200deg)",
             }}/>
             <div style={{
-                background: "linear-gradient(90deg,rgba(225,78,202,.6) 0,rgba(225,78,202,0))",
+                background: "linear-gradient(90deg,rgba(0,242,195,.6) 0,rgba(0,242,195,0))",
                 position: "absolute", width: 250, height: 100, marginTop: -40, marginLeft: -100,
                 transform: "rotate(150deg)", right: -70, top: 40
             }}/>
@@ -151,22 +151,23 @@ const WelcomePage = ({classes, company}) => (
         </Paper>
         <Query query={getEventsQuery}>
             {({loading, error, data}) => {
-                const {events} = data
                 if (loading) {
-                    return <p>loading...</p>
+                    console.log("loading")
+                    return null
                 }
                 if (error) {
-                    return console.log(error)
-                } else {
-                    console.log(data)
-                    return (
-                        <Events disableCreateEvent events={events}/>
-                    )
+                    console.log(`error: ${error}`)
+                    return null
                 }
-
-
+                console.log(data)
+                const {events} = data
+                if (!loading) {
+                    return <Events disableCreateEvent events={events}/>
+                }
             }
             }
+
+
         </Query>
 
 
