@@ -96,7 +96,7 @@ function EventCard(props) {
             <CardActions>
                 <div style={{textAlign: "center", width: "100%"}}>
                     <Typography color={'primary'} variant={'caption'}>
-                        {location} | {instructor}
+                        {location} | {instructor.name}
                     </Typography>
                 </div>
             </CardActions>

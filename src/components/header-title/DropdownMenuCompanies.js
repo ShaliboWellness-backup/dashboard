@@ -10,6 +10,8 @@ import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 import {Avatar, ListItemAvatar, Typography} from "@material-ui/core";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
+import {Query} from "react-apollo";
+import getCompaniesQuery from "../../graphql/companies/query/companies";
 
 const StyledMenu = withStyles({
     paper: {
@@ -82,6 +84,7 @@ const DropdownMenuCompanies = (props) => {
                 </div>
 
             </ButtonBase>
+
             <StyledMenu
                 id="customized-menu"
                 anchorEl={anchorEl}
@@ -93,10 +96,11 @@ const DropdownMenuCompanies = (props) => {
                         return (
                             <StyledMenuItem onClick={() => handleChangeCompany(company)}>
                                 <ListItemAvatar>
-                                    <Avatar alt={company.name} src={company.image}/>
+                                    <Avatar alt={company.name} src={""}/>
                                 </ListItemAvatar>
-                                <ListItemText primaryTypographyProps={{variant: "body1", color: "textSecondary"}}
-                                              primary={company.name}/>
+                                <ListItemText
+                                    primaryTypographyProps={{variant: "body1", color: "textSecondary"}}
+                                    primary={company.name}/>
                             </StyledMenuItem>
                         )
                     }
@@ -105,6 +109,7 @@ const DropdownMenuCompanies = (props) => {
 
 
             </StyledMenu>
+                   
         </div>
     );
 }

@@ -7,7 +7,7 @@ const getPromotionsQuery = gql`{
                 price
                 tag
                 image
-                id
+                _id
                 }
                 }
             `

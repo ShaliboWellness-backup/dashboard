@@ -58,10 +58,10 @@ class HomePage extends Component {
 
                                                return null
                                            } else {
-                                               const {getEvents} = data
+                                               const {events} = data
 
                                                return (
-                                                   <Events  {...props} events={getEvents}/>
+                                                   <Events  {...props} events={events}/>
                                                )
                                            }
 

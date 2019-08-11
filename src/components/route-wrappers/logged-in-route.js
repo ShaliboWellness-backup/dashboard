@@ -6,6 +6,7 @@ import userFragment from '../../graphql/user/fragment/user';
 import AuthPage from '../../pages/auth-page';
 import axios from "axios";
 import {CircularProgress} from "@material-ui/core";
+import HomePage from "../../pages/home-page";
 // import {isSignedIn} from "../../utils/auth-api";
 
 //------------------------------------------------------------------------------
@@ -18,7 +19,7 @@ import {CircularProgress} from "@material-ui/core";
  */
 
 
-const LoggedInRoute = ({component: Component, ...rest}) => {
+const LoggedInRoute = (props) => {
 
     const [state, setState] = React.useState({
         signedIn: false,
@@ -34,7 +35,7 @@ const LoggedInRoute = ({component: Component, ...rest}) => {
     })
 
     async function isSignedIn() {
-        await axios.get('https://shalibo.herokuapp.com/user', {
+        await axios.get('http://localhost:3001/user', {
             withCredentials: true
         })
             .then(function (response) {
@@ -51,9 +52,8 @@ const LoggedInRoute = ({component: Component, ...rest}) => {
 
     return (
         <Route
-            {...rest}
+            path={props.path}
             render={(ownProps) => {
-                const childProps = {...rest, ...ownProps};
                 // Otherwise, render the requested component
                 if (state.loading) {
                     return <CircularProgress/>
@@ -63,7 +63,7 @@ const LoggedInRoute = ({component: Component, ...rest}) => {
                         return <Redirect to={'/'}/>
                     }
                     console.log(state.signedIn)
-                    return <Component {...childProps} />;
+                    return <HomePage/>;
                 }
             }
             }

@@ -32,7 +32,7 @@ export default function CreateDialog(props) {
                             <Add style={{width: 50, height: 50,}}/>
                         </IconButton>
                         <Typography variant={"h5"}>
-                            Create {props.type === 'event' ? 'Event' : 'Promotion'}
+                            Create {props.type === 'companies.js' ? 'Event' : 'Promotion'}
                         </Typography>
                     </div>
                 </Paper>
@@ -47,7 +47,7 @@ export default function CreateDialog(props) {
             <MuiPickersUtilsProvider utils={MomentUtils}>
                 <Dialog maxWidth={"sm"} scroll={"body"} open={open} onClose={handleClose}
                         aria-labelledby="form-dialog-title">
-                    {props.type === 'event' ?
+                    {props.type === 'companies.js' ?
                         <EventDialog action={props.action} handleClose={handleClose} event={props.data}/> :
                         <PromotionDialog action={props.action} handleClose={handleClose} promotion={props.data}/>}
                 </Dialog>

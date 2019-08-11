@@ -11,6 +11,8 @@ import DropdownMenuProfile from './DropdownMenuProfile';
 import DropdownMenuCompanies from './DropdownMenuCompanies';
 import {companies} from '../../fakeData';
 import CurrentCompanyContext from '../../containers/CurrentCompany/CurrentCompanyContext';
+import {Query} from "react-apollo";
+import getCompaniesQuery from "../../graphql/companies/query/companies";
 
 
 const styles = theme => ({
@@ -61,9 +63,32 @@ class HeaderTitle extends Component {
                     <Typography variant="h6" className={classes.title}>
                         Dashboard
                     </Typography>
-                    <DropdownMenuCompanies companies={companies} className={classes.menuButton}
-                                           handleSetCompany={handleSetCompany}/>
-                    <DropdownMenuProfile className={classes.menuButton}/>
+                    <Query query={getCompaniesQuery}>
+                        {({loading, error, data}) => {
+                            console.log(data)
+
+                            if (loading) {
+                                return <p>loading...</p>
+                            }
+                            if (error) {
+                                console.log(`Error! ${error.message}`)
+                            }
+                            if (!loading) {
+                                console.log(data)
+                                const {companies} = data
+
+
+                                return (
+                                    <DropdownMenuCompanies companies={companies} className={classes.menuButton}
+                                                           handleSetCompany={handleSetCompany}/>
+                                )
+                            }
+
+                        }}
+                    </Query>
+                    < DropdownMenuProfile
+                        className={classes.menuButton}
+                    />
 
                 </Toolbar>
                 {/* </AppBar> */}

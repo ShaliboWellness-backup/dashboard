@@ -12,7 +12,7 @@ import SignupPage from "./pages/signup-page";
 const Routes = props => (
     <ScrollToTop>
         <Switch>
-            <LoggedInRoute path="/home" exact component={HomePage} {...props} />
+            <LoggedInRoute path="/home" component={HomePage} {...props} />
             <Route exact path="/" component={LoginPage}/>
             <Route exact path="/signup" component={SignupPage}/>
             <Route component={NotFoundPage}/>

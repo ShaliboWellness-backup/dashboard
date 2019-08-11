@@ -38,7 +38,7 @@ const ActionMenu = ({card, promotion}) => {
                 transformOrigin={{horizontal: "right", vertical: "top"}}
             >
 
-                <CreateDialog type={promotion ? 'promotion' : 'event'} data={card}/>
+                <CreateDialog type={promotion ? 'promotion' : 'companies.js'} data={card}/>
 
                 <Mutation mutation={mutation}>
                     {(deleteMutation, {data}) => (

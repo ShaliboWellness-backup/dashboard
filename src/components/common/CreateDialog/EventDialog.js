@@ -35,7 +35,7 @@ const EventDialog = (props) => {
         title: event.title || '',
         instructor: event.instructor || '',
         location: event.location || '',
-        totalSpots: event.totalSpots || '',
+        totalSpotsString: event.totalSpots || '',
         description: event.description || '',
         image: event.image || '',
         date: event.date || new Date(),
@@ -58,15 +58,16 @@ const EventDialog = (props) => {
 
     const {classes} = props;
 
-    const {
-        title, instructor, location, totalSpots, description, image, date,
+    let {
+        title, instructor, location, totalSpotsString, description, image, date,
     } = values;
 
+    let totalSpots = parseInt(totalSpotsString)
     const formData = {
         title, instructor, location, totalSpots, description, image, date,
     };
 
-    const takenSpots = props.action === 'create' ? "0" : event.takenSpots
+    const takenSpots = props.action === 'create' ? 0 : event.takenSpots
 
     const variables = props.action === 'create' ? {...formData, takenSpots} : {...formData, id: event.id}
     const mutation = props.action === 'create' ? createEventMutation : updateEventMutation
@@ -117,9 +118,10 @@ const EventDialog = (props) => {
                         label="Total Spots"
                         className={classes.textField}
                         value={values.totalSpots}
-                        onChange={handleChange('totalSpots')}
+                        onChange={handleChange('totalSpotsString')}
                         margin="normal"
                         variant={"outlined"}
+                        type={"number"}
                     />
                     <DateTimePicker
                         autoOk
@@ -189,7 +191,7 @@ EventDialog.defaultProps = {
         title: '',
         instructor: '',
         location: '',
-        totalSpots: '',
+        totalSpots: 10,
         description: '',
         image: '',
         date: new Date(),

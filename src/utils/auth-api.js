@@ -1,12 +1,14 @@
 import axios from "axios";
 
+const address = 'http://localhost:3001'
+// const address = 'https://shalibo.herokuapp.com'
 
 // Check if user is logged in
 
 export const isSignedIn = async (history) => {
 
 
-    await axios.get('https://shalibo.herokuapp.com/user', {
+    await axios.get(`${address}/user`, {
         withCredentials: true
 
     })
@@ -24,8 +26,9 @@ export const isSignedIn = async (history) => {
 
 //Sign up function
 
-export const handleSignup = async (name, email, password, confirmPassword, history) => {
-    await axios.post('https://shalibo.herokuapp.com/register', {
+export const handleSignup = async (history, name, email, password, confirmPassword) => {
+    console.log(history, name, email, password, confirmPassword)
+    await axios.post(`${address}/register`, {
         name: name,
         email: email,
         username: email,
@@ -49,28 +52,31 @@ export const handleSignup = async (name, email, password, confirmPassword, histo
 // Log in function
 
 export const handleLogin = async (email, password, history) => {
-    await axios.post('https://shalibo.herokuapp.com/login', {
-            username: email,
-            password: password,
-        },
-        {
-            headers: {
-                'Content-Type': 'application/json'
+        await axios.post(`${address}/login`
+            , {
+                username: email,
+                password: password
             },
-            withCredentials: true
-        }).then(function (response) {
-        console.log(response)
-        return response.status === 200 ? history.push('/home') : alert('Oops, It seems that either the email or password are incorrect. Please try again.')
-    })
-        .catch(function (error) {
-            console.log(error);
-            alert('Oops, It seems something went wrong. Please try again.')
-
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                withCredentials: true
+            }
+        ).then(function (response) {
+            console.log(response)
+            return response.status === 200 ? history.push('/home') : alert('Oops, It seems that either the email or password are incorrect. Please try again.')
         })
-};
+            .catch(function (error) {
+                console.log(error);
+                alert('Oops, It seems something went wrong. Please try again.')
+
+            })
+    }
+;
 
 export const handleLogout = async () => {
-    await axios.get('https://shalibo.herokuapp.com/logout')
+    await axios.get(`${address}/logout`)
         .then(function (response) {
             console.log(response);
             window.location.reload()

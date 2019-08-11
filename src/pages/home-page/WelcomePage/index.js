@@ -150,15 +150,16 @@ const WelcomePage = ({classes, company}) => (
         </Paper>
         <Query query={getEventsQuery}>
             {({loading, error, data}) => {
+                const {events} = data
                 if (loading) {
-
-
                     return null
+                }
+                if (error) {
+                    return console.log(error)
                 } else {
-                    const {getEvents} = data
-
+                    console.log(data)
                     return (
-                        <Events disableCreateEvent events={getEvents}/>
+                        <Events disableCreateEvent events={events}/>
                     )
                 }
 
