@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, {Component} from "react"
 import CurrentCompanyContext from "./CurrentCompanyContext"
 import {companies} from "../../fakeData"
 
@@ -6,7 +6,7 @@ class CurrentCompany extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            currentCompany: companies[0],
+            currentCompany: null,
             handleSetCompany: this.handleSetCompany
         }
     }

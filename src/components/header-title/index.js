@@ -46,6 +46,7 @@ class HeaderTitle extends Component {
         };
     }
 
+
     handleCompanySelect = () => {
         this.setState({});
     }
@@ -76,6 +77,9 @@ class HeaderTitle extends Component {
                             if (!loading) {
                                 console.log(data)
                                 const {companies} = data
+                                if (currentCompany === null) {
+                                    handleSetCompany(companies[0])
+                                }
 
 
                                 return (

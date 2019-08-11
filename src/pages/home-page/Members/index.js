@@ -8,6 +8,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {Avatar} from "@material-ui/core";
 import PushNotification from "../../../components/common/PushNotification";
+import {Query} from "react-apollo";
+import gql from 'graphql-tag';
+
 
 const styles = theme => ({
     root: {
@@ -36,36 +39,65 @@ const styles = theme => ({
 const Members = ({classes, company}) => {
 
     return (
-        <Paper className={classes.root}>
-            <Table className={classes.table}>
-                <TableHead>
-                    <TableRow>
-                        <TableCell className={classes.tableHead}>
-                            <PushNotification icon/>
-                        </TableCell>
-                        <TableCell className={classes.tableHead}>First Name</TableCell>
-                        <TableCell className={classes.tableHead}>Last Name</TableCell>
-                        <TableCell className={classes.tableHead}>Email</TableCell>
-                        <TableCell className={classes.tableHead}>Gender</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {company.users.map(user => (
-                        <TableRow key={user.id}>
-                            <TableCell component="th" scope="row">
-                                <Avatar alt={user.first_name} src={user.image}/>
-                            </TableCell>
-                            <TableCell className={classes.tableBody}>{user.first_name}</TableCell>
-                            <TableCell className={classes.tableBody}>{user.last_name}</TableCell>
-                            <TableCell className={classes.tableBody}>{user.email}</TableCell>
-                            <TableCell className={classes.tableBody}>{user.gender}</TableCell>
-                        </TableRow>
-                    ))
-                    }
-                </TableBody>
-            </Table>
-        </Paper>
-    );
+        <Query query={gql`
+                    {
+              company(_id: "${company._id}"){
+                users{
+                  name
+                  _id
+                  email
+                  username
+                  roles
+                }
+              }
+            }
+        `}>
+            {({loading, error, data}) => {
+                if (loading) {
+
+                    return null
+                } else {
+                    const {company} = data
+
+                    return (
+                        <Paper className={classes.root}>
+                            <Table className={classes.table}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell className={classes.tableHead}>
+                                            <PushNotification icon/>
+                                        </TableCell>
+                                        <TableCell className={classes.tableHead}>First Name</TableCell>
+                                        <TableCell className={classes.tableHead}>Last Name</TableCell>
+                                        <TableCell className={classes.tableHead}>Email</TableCell>
+                                        <TableCell className={classes.tableHead}>Gender</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {company.users.map(user => (
+                                        <TableRow key={user.id}>
+                                            <TableCell component="th" scope="row">
+                                                <Avatar alt={user.first_name} src={user.image}/>
+                                            </TableCell>
+                                            <TableCell className={classes.tableBody}>{user.first_name}</TableCell>
+                                            <TableCell className={classes.tableBody}>{user.last_name}</TableCell>
+                                            <TableCell className={classes.tableBody}>{user.email}</TableCell>
+                                            <TableCell className={classes.tableBody}>{user.gender}</TableCell>
+                                        </TableRow>
+                                    ))
+                                    }
+                                </TableBody>
+                            </Table>
+                        </Paper>
+                    )
+                }
+
+
+            }
+            }
+        </Query>
+    )
+
 }
 
 export default withStyles(styles)(Members)
