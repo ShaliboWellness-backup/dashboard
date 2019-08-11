@@ -61,17 +61,17 @@ const LoggedInRoute = (props) => {
         <Route
             path={props.path}
             render={(ownProps) => {
-                // Otherwise, render the requested component
-                if (state.loading) {
-                    return <CircularProgress/>
-                } else {
-                    if (!state.signedIn) {
-                        console.log(state.signedIn)
-                        return <Redirect to={'/'}/>
-                    }
-                    console.log(state.signedIn)
-                    return <HomePage/>;
-                }
+                // // Otherwise, render the requested component
+                // if (state.loading) {
+                //     return <CircularProgress/>
+                // } else {
+                //     if (!state.signedIn) {
+                //         console.log(state.signedIn)
+                //         return <Redirect to={'/'}/>
+                //     }
+                //     console.log(state.signedIn)
+                return <HomePage/>;
+                // }
             }
             }
         />

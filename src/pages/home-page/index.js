@@ -43,7 +43,7 @@ class HomePage extends Component {
                                                const {promotions} = data
                                                return loading ?
                                                    <div style={{width: "100%", textAlign: "center"}}><CircularProgress/>
-                                                   </div> : <Promotions {...props} promotions={getPromotions}/>
+                                                   </div> : <Promotions {...props} promotions={promotions}/>
                                            }
 
                                            }
