@@ -6,13 +6,10 @@ import Sidebar from './Sidebar';
 import Members from './Members';
 import Promotions from './Promotions';
 import Events from './Events';
-import Statistics from './Statistics';
 import CurrentCompanyContext from '../../containers/CurrentCompany/CurrentCompanyContext';
 import WelcomePage from './WelcomePage';
 import HeaderTitle from "../../components/header-title";
-import CurrentCompany from "../../containers/CurrentCompany";
 import {Query} from "react-apollo";
-import gql from "graphql-tag";
 import getEventsQuery from "../../graphql/event/query/event";
 import getPromotionsQuery from "../../graphql/promotion/query/promotion";
 import Trainers from "./Trainers";
@@ -21,6 +18,7 @@ import Trainers from "./Trainers";
 class HomePage extends Component {
     render() {
         const {currentCompany} = this.context;
+        console.log(currentCompany)
 
         return (
             <React.Fragment>
@@ -39,13 +37,28 @@ class HomePage extends Component {
                             <Route path="/home/promotions"
                                    render={props => (
                                        <Query query={getPromotionsQuery}>
-                                           {({loading, data}) => {
-                                               const {promotions} = data
-                                               return loading ?
-                                                   <div style={{width: "100%", textAlign: "center"}}><CircularProgress/>
-                                                   </div> : <Promotions {...props} promotions={promotions}/>
-                                           }
+                                           {({loading, error, data}) => {
+                                               if (loading) {
+                                                   return <div style={{width: "100%", textAlign: "center"}}>
+                                                       <CircularProgress/>
+                                                   </div>
+                                               }
+                                               if (error) {
+                                                   console.log(error)
+                                                   return null
+                                               }
+                                               if (!loading) {
+                                                   let promotions
+                                                   if (data) {
+                                                       let {promotions} = data
+                                                       return promotions
+                                                   } else {
+                                                       return promotions = []
+                                                   }
+                                                   return <Promotions {...props} promotions={promotions}/>
+                                               }
 
+                                           }
                                            }
                                        </Query>
                                    )
@@ -57,8 +70,7 @@ class HomePage extends Component {
 
                                                return null
                                            } else {
-                                               const {events} = data
-
+                                               let {events} = data
                                                return (
                                                    <Events  {...props} events={events}/>
                                                )

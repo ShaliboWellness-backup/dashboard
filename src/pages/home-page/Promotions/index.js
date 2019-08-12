@@ -16,7 +16,11 @@ const styles = theme => ({
 
 const Promotions = ({classes, promotions}) => {
 
-
+    if (promotions) {
+        return null
+    } else {
+        let promotions = []
+    }
     return (
         <div className={classes.grid}>
             <Grid container spacing={2}>

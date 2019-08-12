@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 const getPromotionsQuery = gql`{
-             getPromotions{
+             promotions{
                 title
                 subtitle
                 price
