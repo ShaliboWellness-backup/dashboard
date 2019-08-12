@@ -10,6 +10,7 @@ import {Avatar, CircularProgress} from "@material-ui/core";
 import PushNotification from "../../../components/common/PushNotification";
 import {Query} from "react-apollo";
 import gql from 'graphql-tag';
+import {company1} from '../../../fakeData/company1'
 
 
 const styles = theme => ({
@@ -39,70 +40,71 @@ const styles = theme => ({
 const Members = ({classes, company}) => {
     console.log(company)
 
-    return <Query query={gql`
-                    {
-              company(_id: "${company._id}"){
-                users{
-                  name
-                  _id
-                  email
-                  username
-                }
-              }
-            }
-        `}>
+    const hardCodedUsers = company1.users
+    // return <Query query={gql`
+    //                 {
+    //           company(_id: "5d50fc3a71fcee002aac69bf"){
+    //             users{
+    //               name
+    //               _id
+    //               email
+    //               username
+    //             }
+    //           }
+    //         }
+    //     `}>
+    //
+    //     {({loading, error, data}) => {
+    //         if (loading) {
+    //             return <div style={{width: "100%", textAlign: "center"}}>
+    //                 <CircularProgress/>
+    //             </div>
+    //         }
+    //         if (error) {
+    //             console.log(error)
+    //             return null
+    //         }
+    //         if (!loading) {
+    //             const {company} = data
 
-        {({loading, error, data}) => {
-            if (loading) {
-                return <div style={{width: "100%", textAlign: "center"}}>
-                    <CircularProgress/>
-                </div>
-            }
-            if (error) {
-                console.log(error)
-                return null
-            }
-            if (!loading) {
-                const {company} = data
-
-                return (
-                    <Paper className={classes.root}>
-                        <Table className={classes.table}>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell className={classes.tableHead}>
-                                        <PushNotification icon/>
-                                    </TableCell>
-                                    <TableCell className={classes.tableHead}>First Name</TableCell>
-                                    <TableCell className={classes.tableHead}>Last Name</TableCell>
-                                    <TableCell className={classes.tableHead}>Email</TableCell>
-                                    <TableCell className={classes.tableHead}>Gender</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {company.users.map(user => (
-                                    <TableRow key={user.id}>
-                                        <TableCell component="th" scope="row">
-                                            <Avatar alt={user.first_name} src={user.image}/>
-                                        </TableCell>
-                                        <TableCell
-                                            className={classes.tableBody}>{user.first_name}</TableCell>
-                                        <TableCell
-                                            className={classes.tableBody}>{user.last_name}</TableCell>
-                                        <TableCell className={classes.tableBody}>{user.email}</TableCell>
-                                        <TableCell className={classes.tableBody}>{user.gender}</TableCell>
-                                    </TableRow>
-                                ))
-                                }
-                            </TableBody>
-                        </Table>
-                    </Paper>
-                )
-            }
-        }
-        }
-
-    </Query>
+    return (
+        <Paper className={classes.root}>
+            <Table className={classes.table}>
+                <TableHead>
+                    <TableRow>
+                        <TableCell className={classes.tableHead}>
+                            <PushNotification icon/>
+                        </TableCell>
+                        <TableCell className={classes.tableHead}>First Name</TableCell>
+                        <TableCell className={classes.tableHead}>Last Name</TableCell>
+                        <TableCell className={classes.tableHead}>Email</TableCell>
+                        <TableCell className={classes.tableHead}>Gender</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {company1.users.map(user => (
+                        <TableRow key={user.id}>
+                            <TableCell component="th" scope="row">
+                                <Avatar alt={user.first_name} src={user.image}/>
+                            </TableCell>
+                            <TableCell
+                                className={classes.tableBody}>{user.first_name}</TableCell>
+                            <TableCell
+                                className={classes.tableBody}>{user.last_name}</TableCell>
+                            <TableCell className={classes.tableBody}>{user.email}</TableCell>
+                            <TableCell className={classes.tableBody}>{user.gender}</TableCell>
+                        </TableRow>
+                    ))
+                    }
+                </TableBody>
+            </Table>
+        </Paper>
+    )
+    //         }
+    //     }
+    //     }
+    //
+    // </Query>
 
 }
 

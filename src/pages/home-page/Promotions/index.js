@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import {Grid} from "@material-ui/core"
 import PromotionCard from "./PromotionCard"
 import CreateDialog from "../../../components/common/CreateDialog";
+import {company1} from '../../../fakeData/company1'
 
 const styles = theme => ({
     root: {
@@ -16,11 +17,12 @@ const styles = theme => ({
 
 const Promotions = ({classes, promotions}) => {
 
-    if (promotions) {
-        return null
-    } else {
-        let promotions = []
-    }
+    // if (promotions) {
+    //     return null
+    // } else {
+    //     let promotions = []
+    // }
+    let hardCodedPromotions = company1.promotions
     return (
         <div className={classes.grid}>
             <Grid container spacing={2}>

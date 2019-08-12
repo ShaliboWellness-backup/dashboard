@@ -38,6 +38,7 @@ class HomePage extends Component {
                                    render={props => (
                                        <Query query={getPromotionsQuery}>
                                            {({loading, error, data}) => {
+                                               let promotions = []
                                                if (loading) {
                                                    return <div style={{width: "100%", textAlign: "center"}}>
                                                        <CircularProgress/>
@@ -47,17 +48,14 @@ class HomePage extends Component {
                                                    console.log(error)
                                                    return null
                                                }
-                                               if (!loading) {
-                                                   let promotions
+                                               if (!loading && data.promotions) {
+                                                   let {promotions} = data
                                                    if (data) {
-                                                       let {promotions} = data
-                                                       return promotions
-                                                   } else {
-                                                       return promotions = []
+                                                       console.log(promotions)
+                                                       return <Promotions {...props} promotions={promotions}/>
                                                    }
-                                                   return <Promotions {...props} promotions={promotions}/>
-                                               }
 
+                                               }
                                            }
                                            }
                                        </Query>
