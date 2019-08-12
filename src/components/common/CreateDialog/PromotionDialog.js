@@ -10,6 +10,8 @@ import {withStyles} from '@material-ui/styles';
 import createPromotionMutation from "../../../graphql/promotion/mutation/create-promotion";
 import updatePromotionMutation from "../../../graphql/promotion/mutation/update-promotion";
 import {Mutation} from "react-apollo"
+import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
+import updateCompanyMutation from "../../../graphql/companies/mutation/update-company";
 
 
 const styles = () => ({
@@ -50,16 +52,15 @@ const PromotionDialog = (props) => {
     const {classes} = props;
 
     const {
-        title, subtitle, price, tag, image, id,
+        title, subtitle, price, tag, image,
     } = values;
 
     const formData = {
-        title, subtitle, price, tag, image, id,
+        title, subtitle, price, tag, image,
     };
 
-    const variables = props.action === 'create' ? {...formData} : {...formData, id: promotion.id}
+    const variables = props.action === 'create' ? {...formData} : {...formData, _id: promotion._id}
     const mutation = props.action === 'create' ? createPromotionMutation : updatePromotionMutation
-
 
     return (
         <div>
@@ -132,7 +133,8 @@ const PromotionDialog = (props) => {
                         }} color="primary">
                             OK
                         </Button>
-                    )}
+                    )
+                    }
 
                 </Mutation>
             </DialogActions>
@@ -141,6 +143,7 @@ const PromotionDialog = (props) => {
 };
 
 export default withStyles(styles)(PromotionDialog);
+
 
 PromotionDialog.defaultProps = {
     action: 'edit',
