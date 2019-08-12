@@ -23,8 +23,6 @@ const Events = ({disableCreateEvent, classes, events}) => (
                 </Grid>
             )
             }
-
-
             {events.map((event, index) => (
                 <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
                     <EventCard
@@ -34,7 +32,7 @@ const Events = ({disableCreateEvent, classes, events}) => (
                         location={event.location}
                         date={event.date}
                         totalSpots={event.totalSpots}
-                        takenSpots={event.takenSpots}
+                        takenSpots={event.users.length}
                         description={event.description}
                         image={event.image}
                         id={event.id}

@@ -6,7 +6,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import {Avatar, ButtonBase, ListItemAvatar} from "@material-ui/core";
-import {handleLogout} from "../../utils/auth-api";
+import {withApollo} from "react-apollo";
 
 
 const StyledMenu = withStyles({
@@ -44,6 +44,12 @@ const DropdownMenuProfile = (props) => {
         setAnchorEl(null);
     }
 
+    const handleLogout = () => {
+        localStorage.removeItem('x-auth-token');
+        props.client.resetStore()
+    }
+
+
     return (
         <div>
             <ButtonBase
@@ -79,4 +85,4 @@ const DropdownMenuProfile = (props) => {
     );
 }
 
-export default DropdownMenuProfile
+export default withApollo(DropdownMenuProfile)

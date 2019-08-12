@@ -1,13 +1,16 @@
 import gql from 'graphql-tag';
-import userFragment from '../fragment/user';
+
 
 const userQuery = gql`
   query {
     user {
-      ...userFragment
+    _id
+      name
+      email
+      username
+      roles
     }
   }
-  ${userFragment}
 `;
 
 export default userQuery;

@@ -9,8 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import {Avatar, CircularProgress} from "@material-ui/core";
 import PushNotification from "../../../components/common/PushNotification";
 import {Query} from "react-apollo";
-import gql from 'graphql-tag';
-import {company1} from '../../../fakeData/company1'
+import getCompanyUsersQuery from "../../../graphql/companies/query/get-users";
 
 
 const styles = theme => ({
@@ -40,71 +39,59 @@ const styles = theme => ({
 const Members = ({classes, company}) => {
     console.log(company)
 
-    const hardCodedUsers = company1.users
-    // return <Query query={gql`
-    //                 {
-    //           company(_id: "5d50fc3a71fcee002aac69bf"){
-    //             users{
-    //               name
-    //               _id
-    //               email
-    //               username
-    //             }
-    //           }
-    //         }
-    //     `}>
-    //
-    //     {({loading, error, data}) => {
-    //         if (loading) {
-    //             return <div style={{width: "100%", textAlign: "center"}}>
-    //                 <CircularProgress/>
-    //             </div>
-    //         }
-    //         if (error) {
-    //             console.log(error)
-    //             return null
-    //         }
-    //         if (!loading) {
-    //             const {company} = data
+    return <Query query={getCompanyUsersQuery}
+                  variables={company ? {_id: company._id} : {_id: "null"}}
+    >
+        {({loading, error, data}) => {
+            if (loading) {
+                return <div style={{width: "100%", textAlign: "center"}}>
+                    <CircularProgress/>
+                </div>
+            }
+            if (error) {
+                console.log(error)
+                return null
+            }
+            if (!loading && !!data) {
+                const {users} = data.company
 
-    return (
-        <Paper className={classes.root}>
-            <Table className={classes.table}>
-                <TableHead>
-                    <TableRow>
-                        <TableCell className={classes.tableHead}>
-                            <PushNotification icon/>
-                        </TableCell>
-                        <TableCell className={classes.tableHead}>First Name</TableCell>
-                        <TableCell className={classes.tableHead}>Last Name</TableCell>
-                        <TableCell className={classes.tableHead}>Email</TableCell>
-                        <TableCell className={classes.tableHead}>Gender</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {company1.users.map(user => (
-                        <TableRow key={user.id}>
-                            <TableCell component="th" scope="row">
-                                <Avatar alt={user.first_name} src={user.image}/>
-                            </TableCell>
-                            <TableCell
-                                className={classes.tableBody}>{user.first_name}</TableCell>
-                            <TableCell
-                                className={classes.tableBody}>{user.last_name}</TableCell>
-                            <TableCell className={classes.tableBody}>{user.email}</TableCell>
-                            <TableCell className={classes.tableBody}>{user.gender}</TableCell>
-                        </TableRow>
-                    ))
-                    }
-                </TableBody>
-            </Table>
-        </Paper>
-    )
-    //         }
-    //     }
-    //     }
-    //
-    // </Query>
+                return (
+                    <Paper className={classes.root}>
+                        <Table className={classes.table}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell className={classes.tableHead}>
+                                        <PushNotification icon/>
+                                    </TableCell>
+                                    <TableCell className={classes.tableHead}>Name</TableCell>
+                                    <TableCell className={classes.tableHead}>Email</TableCell>
+                                    {/*<TableCell className={classes.tableHead}>Company</TableCell>*/}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {users.map(user => (
+                                    <TableRow key={user._id}>
+                                        <TableCell component="th" scope="row">
+                                            <Avatar color={"primary"}>
+                                                {user.name[0]}
+                                            </Avatar>
+                                        </TableCell>
+                                        <TableCell
+                                            className={classes.tableBody}>{user.name}</TableCell>
+                                        <TableCell className={classes.tableBody}>{user.email}</TableCell>
+                                        {/*<TableCell className={classes.tableBody}>{user.company.name}</TableCell>*/}
+                                    </TableRow>
+                                ))
+                                }
+                            </TableBody>
+                        </Table>
+                    </Paper>
+                )
+            }
+        }
+        }
+
+    </Query>
 
 }
 

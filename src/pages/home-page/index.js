@@ -13,6 +13,8 @@ import {Query} from "react-apollo";
 import getEventsQuery from "../../graphql/event/query/event";
 import getPromotionsQuery from "../../graphql/promotion/query/promotion";
 import Trainers from "./Trainers";
+import getCompanyEventsQuery from "../../graphql/companies/query/get-events";
+import getCompanyPromotionsQuery from "../../graphql/companies/query/get-promotions";
 
 
 class HomePage extends Component {
@@ -29,14 +31,16 @@ class HomePage extends Component {
                     <div style={{marginLeft: 280, marginRight: 30}}>
                         <Switch>
                             <Route exact path="/home"
-                                   render={props => <WelcomePage {...props} company={currentCompany}/>}/>
+                                   render={props => <WelcomePage {...props} user={this.props.user}
+                                                                 company={currentCompany}/>}/>
                             <Route exact path="/home/trainers"
                                    render={props => <Trainers {...props} company={currentCompany}/>}/>
                             <Route exact path="/home/members"
                                    render={props => <Members {...props} company={currentCompany}/>}/>
                             <Route path="/home/promotions"
                                    render={props => (
-                                       <Query query={getPromotionsQuery}>
+                                       <Query query={getCompanyPromotionsQuery}
+                                              variables={currentCompany ? {_id: currentCompany._id} : {_id: "null"}}>
                                            {({loading, error, data}) => {
                                                let promotions = []
                                                if (loading) {
@@ -48,8 +52,8 @@ class HomePage extends Component {
                                                    console.log(error)
                                                    return null
                                                }
-                                               if (!loading && data.promotions) {
-                                                   let {promotions} = data
+                                               if (!loading && data.company.promotions) {
+                                                   let {promotions} = data.company
                                                    if (data) {
                                                        console.log(promotions)
                                                        return <Promotions {...props} promotions={promotions}/>
@@ -59,25 +63,34 @@ class HomePage extends Component {
                                            }
                                            }
                                        </Query>
-                                   )
-                                   }/>
+                                   )}
+                            />
                             <Route path="/home/events"
-                                   render={props => <Query query={getEventsQuery}>
-                                       {({loading, error, data}) => {
-                                           if (loading) {
+                                   render={props =>
+                                       <Query query={getCompanyEventsQuery}
+                                              variables={currentCompany ? {_id: currentCompany._id} : {_id: "null"}}>
+                                           {({loading, error, data}) => {
+                                               let events = []
+                                               if (loading) {
+                                                   return <div style={{width: "100%", textAlign: "center"}}>
+                                                       <CircularProgress/>
+                                                   </div>
+                                               }
+                                               if (error) {
+                                                   console.log(error)
+                                                   return null
+                                               }
+                                               if (!loading && data.company.events) {
+                                                   let {events} = data.company
+                                                   if (data) {
+                                                       console.log(events)
+                                                       return <Events {...props} events={events}/>
+                                                   }
 
-                                               return null
-                                           } else {
-                                               let {events} = data
-                                               return (
-                                                   <Events  {...props} events={events}/>
-                                               )
+                                               }
                                            }
-
-
-                                       }
-                                       }
-                                   </Query>}
+                                           }
+                                       </Query>}
                             />
                             {/* <Route path="/statistics" component={Statistics}/> */}
                         </Switch>

@@ -74,13 +74,14 @@ const DropdownMenuCompanies = (props) => {
                 <Grid container spacing={1}>
                     <Grid item xs={12}
                           style={{display: "flex", justifyContent: "center", alignItems: "center",}}>
-                        <KeyboardArrowDown/>
-                        <Avatar style={{width: 30, height: 30}} alt={company.name} src={company.image}/>
+                        <KeyboardArrowDown style={{fontSize: "1rem"}}/>
+                        <Typography variant="caption" color="textSecondary">
+                            {company.name}
+                        </Typography>
+                        {/*<Avatar style={{width: 30, height: 30}} alt={company.name} src={company.image}/>*/}
                     </Grid>
                     {/*<Grid item xs={12}>*/}
-                    {/*    <Typography variant="caption" color="textSecondary">*/}
-                    {/*        {company.name}*/}
-                    {/*    </Typography>*/}
+
                     {/*</Grid>*/}
                 </Grid>
 

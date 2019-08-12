@@ -1,7 +1,6 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -14,7 +13,9 @@ import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import background from '../../fakeData/Images/loginBg.jpg'
 import {Paper} from '@material-ui/core'
-import {isSignedIn, handleLogin} from "../../utils/auth-api";
+import {handleLogin, isSignedIn} from "../../utils/auth-api";
+import {Mutation, withApollo} from "react-apollo";
+import loginMutation from "../../graphql/login";
 
 function MadeWithLove() {
     return (<div/>
@@ -64,7 +65,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function LoginPage(props) {
+const LoginPage = (props) => {
     const classes = useStyles();
     const {history} = props
 
@@ -87,7 +88,7 @@ export default function LoginPage(props) {
         handleLogin(email, password, history)
     }
 
-
+    console.log(props)
     return (
         <div style={{
             minHeight: "100vh",
@@ -137,18 +138,40 @@ export default function LoginPage(props) {
                             label="Remember me"
                         />
                     </form>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        component={Link}
-                        to={"/home"}
-                        //onClick={handleSubmit}
-                    >
-                        Sign In
-                    </Button>
+                    <Mutation mutation={loginMutation}>
+                        {loginMutation => {
+
+                            return (
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.submit}
+                                    //  component={Link}
+                                    //   to={"/home"}
+                                    onClick={async () => {
+                                        await loginMutation({variables: values})
+                                            .then(async ({data}) => {
+                                                console.log(data)
+                                                if (!!data) {
+                                                    const {token} = data.login
+                                                    console.log(token)
+                                                    localStorage.setItem('x-auth-token', token);
+                                                    await props.client.resetStore()
+                                                    props.history.push('/home')
+                                                }
+
+                                            })
+                                    }}
+                                >
+                                    Sign In
+                                </Button>
+                            )
+
+                        }}
+
+                    </Mutation>
                     <Grid container>
                         <Grid item xs>
 
@@ -171,6 +194,8 @@ export default function LoginPage(props) {
         </div>
     );
 }
+
+export default withApollo(LoginPage)
 
 // import React from 'react';
 // import PropTypes from 'prop-types';

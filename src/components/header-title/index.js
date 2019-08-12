@@ -26,8 +26,8 @@ const styles = theme => ({
         marginRight: 16,
     },
     toolbar: {
-        alignItems: "flex-start",
-        paddingTop: 15
+        alignItems: "center",
+        paddingTop: 0
     },
     title: {
         flexGrow: 1,

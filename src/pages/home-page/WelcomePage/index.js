@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Typography, Paper} from '@material-ui/core';
+import {Grid, Typography, Paper, CircularProgress} from '@material-ui/core';
 import {withStyles} from '@material-ui/styles';
 import Events from '../Events';
 import yoga from '../../../fakeData/Images/yoga.jpg';
@@ -107,7 +107,7 @@ const styles = theme => ({
 //         id: '4',
 //     }];
 
-const WelcomePage = ({classes, company}) => (
+const WelcomePage = ({classes, company, user}) => (
     <React.Fragment>
         <Paper className={classes.welcome}>
             <div style={{
@@ -143,7 +143,7 @@ const WelcomePage = ({classes, company}) => (
                 transform: "rotate(150deg)", right: -70, top: 40
             }}/>
             <Typography variant="h4">
-                Hey Daniel,
+                Hey {user ? user.name : ""},
             </Typography>
             <Typography gutterBottom color="textSecondary" variant="h5">
                 Here Are Your Upcoming Events
@@ -153,15 +153,18 @@ const WelcomePage = ({classes, company}) => (
             {({loading, error, data}) => {
                 if (loading) {
                     console.log("loading")
-                    return null
+                    return <div style={{width: "100%", textAlign: "center"}}>
+                        <CircularProgress/>
+                    </div>
                 }
                 if (error) {
                     console.log(`error: ${error}`)
                     return null
                 }
                 console.log(data)
-                const {events} = data
-                if (!loading) {
+                let events = []
+                if (!loading && !!data) {
+                    const {events} = data
                     return <Events disableCreateEvent events={events}/>
                 }
             }

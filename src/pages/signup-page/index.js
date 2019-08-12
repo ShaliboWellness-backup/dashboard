@@ -15,6 +15,10 @@ import Container from '@material-ui/core/Container';
 import background from '../../fakeData/Images/loginBg.jpg'
 import {Paper} from '@material-ui/core'
 import {handleSignup} from "../../utils/auth-api";
+import loginMutation from "../../graphql/login";
+import signupMutation from "../../graphql/signup";
+import {Mutation} from "react-apollo";
+import {withApollo} from "react-apollo";
 
 function MadeWithLove() {
     return (<div/>
@@ -64,7 +68,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function SignupPage(props) {
+const SignupPage = (props) => {
     const classes = useStyles();
 
     const [values, setValues] = React.useState({
@@ -80,10 +84,9 @@ export default function SignupPage(props) {
         console.log(values)
     };
 
-    const onSubmit = () => {
+    const handleValidate = () => {
         const {name, email, password, confirmPassword} = values
-        const {history} = props
-        name && email && password === confirmPassword ? handleSignup(history, name, email, password, confirmPassword)
+        return name && email && password === confirmPassword ? true
             :
             password !== confirmPassword ?
                 alert('Please make sure your passwords match.')
@@ -171,16 +174,41 @@ export default function SignupPage(props) {
                             </Grid>
                         </Grid>
                     </form>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        onClick={() => onSubmit()}
-                    >
-                        Sign Up
-                    </Button>
+                    <Mutation mutation={signupMutation}>
+                        {signupMutation => {
+                            return (
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.submit}
+                                    onClick={async () => {
+                                        const {name, email, password} = values
+                                        let variables = {name, email, password, username: email}
+                                        if (handleValidate()) {
+                                            await signupMutation({variables: variables})
+                                                .then(async ({data}) => {
+                                                    console.log(data)
+                                                    if (!!data) {
+                                                        const {token} = data.signup
+                                                        console.log(token)
+                                                        localStorage.setItem('x-auth-token', token);
+                                                        await props.client.resetStore()
+                                                        props.history.push('/home')
+                                                    }
+
+                                                })
+                                        }
+                                    }}
+                                >
+                                    Sign Up
+                                </Button>
+                            )
+
+                        }}
+
+                    </Mutation>
                     <Grid container justify="flex-end">
                         <Grid item>
                             <Typography color={'primary'} component={Link} to={'/'} variant={"body2"}>
@@ -196,6 +224,8 @@ export default function SignupPage(props) {
         </div>
     );
 }
+
+export default withApollo(SignupPage)
 
 
 // import React from 'react';

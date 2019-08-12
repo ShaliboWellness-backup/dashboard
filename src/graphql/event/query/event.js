@@ -8,6 +8,9 @@ const getEventsQuery = gql`
     instructor{
       name
     }
+    users{
+      name
+    }
     location
     date
     totalSpots
