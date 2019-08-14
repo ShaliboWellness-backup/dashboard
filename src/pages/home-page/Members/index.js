@@ -6,7 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import {Avatar, CircularProgress} from "@material-ui/core";
+import {Avatar, CircularProgress, Typography} from "@material-ui/core";
 import PushNotification from "../../../components/common/PushNotification";
 import {Query} from "react-apollo";
 import getCompanyUsersQuery from "../../../graphql/companies/query/get-users";
@@ -16,7 +16,7 @@ const styles = theme => ({
     root: {
         width: '100%',
         overflowX: 'auto',
-        padding: 15
+        padding: 15,
     },
     table: {
         minWidth: 650,
@@ -30,8 +30,15 @@ const styles = theme => ({
     tableBody: {
         fontWeight: 400,
         color: "#222a42b3",
-        fontSize: "0.875rem"
+        fontSize: "0.875rem",
+
     },
+    message: {
+        height: 300,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    }
 
 })
 
@@ -69,7 +76,9 @@ const Members = ({classes, company}) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {users.map(user => (
+                                {users.length > 0 &&
+
+                                users.map(user => (
                                     <TableRow key={user._id}>
                                         <TableCell component="th" scope="row">
                                             <Avatar color={"primary"}>
@@ -81,10 +90,14 @@ const Members = ({classes, company}) => {
                                         <TableCell className={classes.tableBody}>{user.email}</TableCell>
                                         {/*<TableCell className={classes.tableBody}>{user.company.name}</TableCell>*/}
                                     </TableRow>
-                                ))
-                                }
+                                ))}
                             </TableBody>
                         </Table>
+                        {users.length === 0 && <div className={classes.message}>
+                            <Typography variant={'h5'}>
+                                There are no active users for this company.
+                            </Typography>
+                        </div>}
                     </Paper>
                 )
             }

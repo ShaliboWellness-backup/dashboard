@@ -1,18 +1,17 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import DropdownMenuProfile from './DropdownMenuProfile';
 import DropdownMenuCompanies from './DropdownMenuCompanies';
-import {companies} from '../../fakeData';
 import CurrentCompanyContext from '../../containers/CurrentCompany/CurrentCompanyContext';
+import ButtonBase from '@material-ui/core/ButtonBase'
+import Button from '@material-ui/core/Button'
 import {Query} from "react-apollo";
 import getCompaniesQuery from "../../graphql/companies/query/companies";
+import Grid from "@material-ui/core/Grid";
+import {CircularProgress} from "@material-ui/core";
+import {Link} from 'react-router-dom'
 
 
 const styles = theme => ({
@@ -35,6 +34,11 @@ const styles = theme => ({
         fontWeight: 300,
         fontSize: "1rem"
     },
+    usersButton: {
+        marginRight: 10,
+        textTransform: "none",
+        padding: "5px 10px"
+    }
 });
 
 
@@ -64,12 +68,24 @@ class HeaderTitle extends Component {
                     <Typography variant="h6" className={classes.title}>
                         Dashboard
                     </Typography>
+                    <Button classes={{root: classes.usersButton}} component={Link} to={"/home/all-users"}>
+                        <Typography variant="caption" color="textSecondary">
+                            All Users
+                        </Typography>
+                    </Button>
+                    <Button classes={{root: classes.usersButton}} component={Link} to={"/home/trainers"}>
+                        <Typography variant="caption" color="textSecondary">
+                            Trainers
+                        </Typography>
+                    </Button>
                     <Query query={getCompaniesQuery}>
                         {({loading, error, data}) => {
                             console.log(data)
 
                             if (loading) {
-                                return <p>loading...</p>
+                                return <Typography style={{marginRight: 20}} variant="caption" color="textSecondary">
+                                    Loading...
+                                </Typography>
                             }
                             if (error) {
                                 console.log(`Error! ${error.message}`)

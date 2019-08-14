@@ -5,8 +5,15 @@ import Menu from '@material-ui/core/Menu';
 import Grid from '@material-ui/core/Grid'
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import {Avatar, ListItemAvatar, Typography} from "@material-ui/core";
+import {Avatar, Button, ListItemAvatar, Typography} from "@material-ui/core";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
+import NewCompany from "../common/NewCompany";
+
+const styles = () => ({
+    button: {
+        textTransform: "none"
+    }
+})
 
 const StyledMenu = withStyles({
     paper: {
@@ -60,14 +67,14 @@ const DropdownMenuCompanies = (props) => {
         handleClose()
     }
 
-    const {companies} = props
+    const {companies, classes} = props
     return (
-        <div style={{marginRight: 16}}>
-            <ButtonBase
+        <div style={{marginRight: 20}}>
+            <Button
+                classes={{root: classes.button}}
+                variant={"text"}
                 aria-controls="customized-menu"
                 aria-haspopup="true"
-                variant="outlined"
-                color="primary"
                 onClick={handleClick}
             >
 
@@ -85,7 +92,7 @@ const DropdownMenuCompanies = (props) => {
                     {/*</Grid>*/}
                 </Grid>
 
-            </ButtonBase>
+            </Button>
 
             <StyledMenu
                 id="customized-menu"
@@ -94,6 +101,7 @@ const DropdownMenuCompanies = (props) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
+                <NewCompany closeMenu={handleClose}/>
                 {companies.map((company) => {
                         return (
                             <StyledMenuItem onClick={() => handleChangeCompany(company)}>
@@ -116,4 +124,4 @@ const DropdownMenuCompanies = (props) => {
     );
 }
 
-export default DropdownMenuCompanies
+export default withStyles(styles)(DropdownMenuCompanies)

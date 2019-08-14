@@ -63,19 +63,6 @@ class Sidebar extends Component {
                     </ListItem>
                     <Divider style={{opacity: 0.75, marginBottom: 15, background: "hsla(0,0%,100%,.5)"}}
                              variant="middle"/>
-                    <ListItem
-                        component={Link}
-                        to="/home/trainers"
-                        button
-                        selected={selectedIndex === 0}
-                        onClick={event => this.handleListItemClick(event, 0)}
-                    >
-                        <ListItemIcon>
-                            <DirectionsRun fontSize={"small"} style={{color: '#fff'}}/>
-                        </ListItemIcon>
-                        <ListItemText classes={{primary: classes.text}} primary="Trainers"
-                                      primaryTypographyProps={{variant: 'body2'}}/>
-                    </ListItem>
 
                     <ListItem
                         component={Link}

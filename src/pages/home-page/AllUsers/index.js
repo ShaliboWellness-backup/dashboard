@@ -6,7 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import {Avatar, Typography} from "@material-ui/core";
+import {Avatar, Typography, Switch} from "@material-ui/core";
 import PushNotification from "../../../components/common/PushNotification";
 
 const styles = theme => ({
@@ -32,49 +32,18 @@ const styles = theme => ({
 
 })
 
-const trainers = [
-    {
-        "id": 1,
-        "first_name": "Daniel",
-        "last_name": "Shalibo",
-        "email": "tyarn0@ed.gov",
-        "role": "Trainer",
-        "image": "https://robohash.org/doloremquequassit.png?size=50x50&set=set1"
-    },
-    {
-        "id": 2,
-        "first_name": "Yarden",
-        "last_name": "Harari",
-        "email": "lsego1@theatlantic.com",
-        "role": "Trainer",
-        "image": "https://robohash.org/sedquibusdamdistinctio.png?size=50x50&set=set1"
-    },
-    {
-        "id": 3,
-        "first_name": "Johnny",
-        "last_name": "Marr",
-        "email": "dganiford2@bizjournals.com",
-        "role": "Trainer",
-        "image": "https://robohash.org/rerumnonest.png?size=50x50&set=set1"
-    },
-    {
-        "id": 4,
-        "first_name": "Noam",
-        "last_name": "MacCallion",
-        "email": "fmaccallion3@fastcompany.com",
-        "role": "Trainer",
-        "image": "https://robohash.org/etsednihil.png?size=50x50&set=set1"
-    },
+const AllUsers = ({classes, users}) => {
 
-]
+    const [state, setState] = React.useState({});
 
-
-const Trainers = ({classes}) => {
+    const handleChange = name => event => {
+        setState({...state, [name]: event.target.checked});
+    };
 
     return (
         <Paper className={classes.root}>
             <Typography variant={"h5"} style={{fontWeight: 100}}>
-                Trainers
+                All Users
             </Typography>
             <Table className={classes.table}>
                 <TableHead>
@@ -82,29 +51,40 @@ const Trainers = ({classes}) => {
                         <TableCell className={classes.tableHead}>
                             <PushNotification icon/>
                         </TableCell>
-                        <TableCell className={classes.tableHead}>First Name</TableCell>
-                        <TableCell className={classes.tableHead}>Last Name</TableCell>
+                        <TableCell className={classes.tableHead}>Name</TableCell>
                         <TableCell className={classes.tableHead}>Email</TableCell>
-                        <TableCell className={classes.tableHead}>Role</TableCell>
+                        <TableCell className={classes.tableHead}>Company</TableCell>
+                        <TableCell className={classes.tableHead}>Trainer</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {trainers.map(user => (
-                        <TableRow key={user.id}>
+                    {users.length > 0 && users.map(user => (
+                        <TableRow key={user._id}>
                             <TableCell component="th" scope="row">
                                 <Avatar alt={user.first_name} src={user.image}/>
                             </TableCell>
-                            <TableCell className={classes.tableBody}>{user.first_name}</TableCell>
-                            <TableCell className={classes.tableBody}>{user.last_name}</TableCell>
+                            <TableCell className={classes.tableBody}>{user.name}</TableCell>
                             <TableCell className={classes.tableBody}>{user.email}</TableCell>
-                            <TableCell className={classes.tableBody}>{user.role}</TableCell>
+                            <TableCell className={classes.tableBody}>{user.company}</TableCell>
+                            <TableCell className={classes.tableBody}>
+                                <Switch
+                                    checked={user.roles.includes('trainer')}
+                                    onChange={handleChange(user._id)}
+                                    color="primary"
+                                    inputProps={{'aria-label': 'primary checkbox'}}
+                                /></TableCell>
                         </TableRow>
                     ))
                     }
                 </TableBody>
             </Table>
+            {users.length === 0 && <div className={classes.message}>
+                <Typography variant={'h5'}>
+                    There are no active users for this company.
+                </Typography>
+            </div>}
         </Paper>
     );
 }
 
-export default withStyles(styles)(Trainers)
+export default withStyles(styles)(AllUsers)

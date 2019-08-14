@@ -15,6 +15,8 @@ import getPromotionsQuery from "../../graphql/promotion/query/promotion";
 import Trainers from "./Trainers";
 import getCompanyEventsQuery from "../../graphql/companies/query/get-events";
 import getCompanyPromotionsQuery from "../../graphql/companies/query/get-promotions";
+import AllUsers from "./AllUsers";
+import usersQuery from "../../graphql/user/query/users";
 
 
 class HomePage extends Component {
@@ -35,6 +37,26 @@ class HomePage extends Component {
                                                                  company={currentCompany}/>}/>
                             <Route exact path="/home/trainers"
                                    render={props => <Trainers {...props} company={currentCompany}/>}/>
+                            <Route exact path="/home/all-users"
+                                   render={props => <Query query={usersQuery}>
+                                       {({loading, error, data}) => {
+                                           let users = []
+                                           if (loading) {
+                                               return <div style={{width: "100%", textAlign: "center"}}>
+                                                   <CircularProgress/>
+                                               </div>
+                                           }
+                                           if (error) {
+                                               console.log(error)
+                                               return null
+                                           }
+                                           if (!loading && data.users) {
+                                               let {users} = data
+                                               return <AllUsers {...props} users={users}/>
+                                           }
+                                       }
+                                       }
+                                   </Query>}/>
                             <Route exact path="/home/members"
                                    render={props => <Members {...props} company={currentCompany}/>}/>
                             <Route path="/home/promotions"
