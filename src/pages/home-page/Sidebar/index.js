@@ -18,7 +18,7 @@ const styles = theme => ({
         left: 16,
         top: 83,
         height: 'calc(100vh - 100px)',
-        boxShadow: "0px 0px 30px 3px #B2B2B2",
+        boxShadow: "0px 2px 20px 0px #C2C2C2",
         width: 230,
         background: 'linear-gradient(0deg, #0098f0 0%, #00f2c3 100%)',
         borderRadius: 10,
