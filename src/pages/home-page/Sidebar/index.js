@@ -21,7 +21,7 @@ const styles = theme => ({
         boxShadow: "0px 2px 20px 0px #C2C2C2",
         width: 230,
         background: 'linear-gradient(0deg, #0098f0 0%, #00f2c3 100%)',
-        borderRadius: 10,
+        borderRadius: 5,
     },
     text: {
         color: 'white',
