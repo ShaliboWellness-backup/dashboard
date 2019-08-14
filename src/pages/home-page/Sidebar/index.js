@@ -17,7 +17,7 @@ const styles = theme => ({
         position: 'fixed',
         left: 16,
         top: 83,
-        height: 500,
+        height: 'calc(100vh - 100px)',
         width: 230,
         background: 'linear-gradient(0deg, #0098f0 0%, #00f2c3 100%)',
         borderRadius: 10,
