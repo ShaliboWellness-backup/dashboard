@@ -13,10 +13,11 @@ import UnverifiedPage from "./pages/unverified-page";
 const Routes = props => (
     <ScrollToTop>
         <Switch>
-            <LoggedInRoute path="/home" component={HomePage} {...props} />
-            <Route exact path="/" component={LoginPage}/>
+            <Route exact path="/login" component={LoginPage}/>
             <Route exact path="/signup" component={SignupPage}/>
             <Route exact path="/unverified" component={UnverifiedPage}/>
+            <LoggedInRoute path="/" component={HomePage} {...props} />
+            <LoggedInRoute path="" component={HomePage} {...props} />
             <Route component={NotFoundPage}/>
         </Switch>
     </ScrollToTop>

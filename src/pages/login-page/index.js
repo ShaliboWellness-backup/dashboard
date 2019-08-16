@@ -163,7 +163,7 @@ const LoginPage = (props) => {
 
                             client.query({query: userQuery})
                                 .then(({data, error}) => {
-                                props.history.push('/home')
+                                props.history.push('/')
                             })
                                 .catch((error) => {
                                 const code = R.path(['graphQLErrors', 0, "extensions", "exception", "code"])(error);

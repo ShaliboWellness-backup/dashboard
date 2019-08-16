@@ -195,7 +195,7 @@ const SignupPage = (props) => {
                                                         console.log(token)
                                                         localStorage.setItem('x-auth-token', token);
                                                         await props.client.resetStore()
-                                                        props.history.push('/home')
+                                                        props.history.push('/')
                                                     }
 
                                                 })

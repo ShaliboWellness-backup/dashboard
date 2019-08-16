@@ -34,13 +34,13 @@ const LoggedInRoute = (props) => {
                         }
                         if (error) {
                             console.log(error)
-                            return <Redirect to={"/"}/>
+                            return <Redirect to={"/login"}/>
                         }
                         if (!loading && !!data.user) {
                             console.log(data)
                             return <HomePage user={data.user}/>
                         } else {
-                            return <Redirect to={"/"}/>
+                            return <Redirect to={"/login"}/>
                         }
                     }
                     }

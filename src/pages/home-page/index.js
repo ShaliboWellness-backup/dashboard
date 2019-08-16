@@ -32,10 +32,10 @@ class HomePage extends Component {
                     <Sidebar/>
                     <div style={{marginLeft: 280, marginRight: 30}}>
                         <Switch>
-                            <Route exact path="/home"
+                            <Route exact path="/"
                                    render={props => <WelcomePage {...props} user={this.props.user}
                                                                  company={currentCompany}/>}/>
-                            <Route exact path="/home/trainers"
+                            <Route exact path="/trainers"
                                    render={props => <Query query={usersQuery}>
                                        {({loading, error, data}) => {
                                            let users = []
@@ -55,7 +55,7 @@ class HomePage extends Component {
                                        }
                                        }
                                    </Query>}/>
-                            <Route exact path="/home/all-users"
+                            <Route exact path="/all-users"
                                    render={props => <Query query={usersQuery}>
                                        {({loading, error, data}) => {
                                            let users = []
@@ -75,9 +75,9 @@ class HomePage extends Component {
                                        }
                                        }
                                    </Query>}/>
-                            <Route exact path="/home/members"
+                            <Route exact path="/members"
                                    render={props => <Members {...props} company={currentCompany}/>}/>
-                            <Route path="/home/promotions"
+                            <Route path="/promotions"
                                    render={props => (
                                        <Query query={getCompanyPromotionsQuery}
                                               variables={currentCompany ? {_id: currentCompany._id} : {_id: "null"}}>
@@ -105,7 +105,7 @@ class HomePage extends Component {
                                        </Query>
                                    )}
                             />
-                            <Route path="/home/events"
+                            <Route path="/events"
                                    render={props =>
                                        <Query query={getCompanyEventsQuery}
                                               variables={currentCompany ? {_id: currentCompany._id} : {_id: "null"}}>
