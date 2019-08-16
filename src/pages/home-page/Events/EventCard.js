@@ -17,6 +17,7 @@ import CreateDialog from '../../../components/common/CreateDialog';
 import {Mutation} from "react-apollo";
 import deleteEventMutation from "../../../graphql/event/mutation/delete-event";
 import ActionMenu from "../../../components/common/ActionMenu";
+const R = require("ramda")
 
 
 const styles = theme => ({
@@ -97,7 +98,7 @@ function EventCard(props) {
             <CardActions>
                 <div style={{textAlign: "center", width: "100%"}}>
                     <Typography color={'primary'} variant={'caption'}>
-                        {location} | {instructor.name}
+                        {location} | {R.pathOr("Unknown", ["name"])(instructor)}
                     </Typography>
                 </div>
             </CardActions>

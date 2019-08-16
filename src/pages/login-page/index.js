@@ -17,6 +17,10 @@ import {handleLogin, isSignedIn} from "../../utils/auth-api";
 import {Mutation, withApollo} from "react-apollo";
 import loginMutation from "../../graphql/login";
 
+import userQuery from '../../graphql/user/query/user'
+import { useApolloClient } from '@apollo/react-hooks'
+const R = require("ramda");
+
 function MadeWithLove() {
     return (<div/>
         //   <Typography variant="body2" color="textSecondary" align="center">
@@ -68,6 +72,8 @@ const useStyles = makeStyles(theme => ({
 const LoginPage = (props) => {
     const classes = useStyles();
     const {history} = props
+
+    const client = useApolloClient()
 
     const [values, setValues] = React.useState({
         email: "",
@@ -138,40 +144,41 @@ const LoginPage = (props) => {
                             label="Remember me"
                         />
                     </form>
-                    <Mutation mutation={loginMutation}>
-                        {loginMutation => {
 
-                            return (
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.submit}
-                                    //  component={Link}
-                                    //   to={"/home"}
-                                    onClick={async () => {
-                                        await loginMutation({variables: values})
-                                            .then(async ({data}) => {
-                                                console.log(data)
-                                                if (!!data) {
-                                                    const {token} = data.login
-                                                    console.log(token)
-                                                    localStorage.setItem('x-auth-token', token);
-                                                    await props.client.resetStore()
-                                                    props.history.push('/home')
-                                                }
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={() => {
+                        client.mutate({
+                            mutation: loginMutation,
+                            variables: values
+                        })
+                            .then(async ({data, error}) => {
+                            const token = data.login.token;
+                            localStorage.setItem('x-auth-token', token);
+                            await props.client.resetStore();
 
-                                            })
-                                    }}
-                                >
-                                    Sign In
-                                </Button>
-                            )
+                            client.query({query: userQuery})
+                                .then(({data, error}) => {
+                                props.history.push('/home')
+                            })
+                                .catch((error) => {
+                                const code = R.path(['graphQLErrors', 0, "extensions", "exception", "code"])(error);
 
-                        }}
-
-                    </Mutation>
+                                if (code === 2) props.history.push('/unverified');
+                                if (code === 1) props.history.push('/login');
+                            });
+                        })
+                            .catch((error) => {
+                                const apolloCode = R.path(['graphQLErrors', 0, "extensions", "code"])(error);
+                                if (apolloCode === "BAD_USER_INPUT") alert("Wrong email or password")
+                            })
+                    }}>
+                        Sign In
+                    </Button>
                     <Grid container>
                         <Grid item xs>
 
