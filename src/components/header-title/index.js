@@ -68,12 +68,12 @@ class HeaderTitle extends Component {
                     <Typography variant="h6" className={classes.title}>
                         Dashboard
                     </Typography>
-                    <Button classes={{root: classes.usersButton}} component={Link} to={"/home/all-users"}>
+                    <Button classes={{root: classes.usersButton}} component={Link} to={"/all-users"}>
                         <Typography variant="caption" color="textSecondary">
                             All Users
                         </Typography>
                     </Button>
-                    <Button classes={{root: classes.usersButton}} component={Link} to={"/home/trainers"}>
+                    <Button classes={{root: classes.usersButton}} component={Link} to={"/trainers"}>
                         <Typography variant="caption" color="textSecondary">
                             Trainers
                         </Typography>
