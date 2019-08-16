@@ -17,6 +17,7 @@ import {handleLogin, isSignedIn} from "../../utils/auth-api";
 import {Mutation, withApollo} from "react-apollo";
 import loginMutation from "../../graphql/login";
 
+
 function MadeWithLove() {
     return (<div/>
         //   <Typography variant="body2" color="textSecondary" align="center">
@@ -140,7 +141,6 @@ const LoginPage = (props) => {
                     </form>
                     <Mutation mutation={loginMutation}>
                         {loginMutation => {
-
                             return (
                                 <Button
                                     type="submit"
