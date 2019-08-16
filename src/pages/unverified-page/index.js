@@ -114,7 +114,7 @@ const UnverifiedPage = (props) => {
                     <Grid container justify="flex-end">
                         <Grid item>
                             <Typography color={'primary'} component={Link} to={'/'} variant={"body2"}>
-                                Already have an account? Sign in!
+                                {/*Already have an account? Sign in!*/}
                             </Typography>
                         </Grid>
                     </Grid>

@@ -17,7 +17,7 @@ import CreateDialog from '../../../components/common/CreateDialog';
 import {Mutation} from "react-apollo";
 import deleteEventMutation from "../../../graphql/event/mutation/delete-event";
 import ActionMenu from "../../../components/common/ActionMenu";
-const R = require("ramda")
+const R = require("ramda");
 
 
 const styles = theme => ({
