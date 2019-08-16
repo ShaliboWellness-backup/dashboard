@@ -8,17 +8,24 @@ import EventDialog from './EventDialog';
 import Add from '@material-ui/icons/Add';
 import MenuItem from '@material-ui/core/MenuItem';
 
+const R = require("ramda");
+
 
 export default function CreateDialog(props) {
     const [open, setOpen] = React.useState(false);
 
+    const handleCloseMenu = R.pathOr(() => {
+    }, ['handleClose'])(props)
+
     function handleClickOpen() {
         setOpen(true);
+        handleCloseMenu()
     }
 
     function handleClose() {
         setOpen(false);
     }
+
 
     return (
         <Fragment>

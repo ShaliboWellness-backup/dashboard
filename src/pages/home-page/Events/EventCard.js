@@ -17,6 +17,7 @@ import CreateDialog from '../../../components/common/CreateDialog';
 import {Mutation} from "react-apollo";
 import deleteEventMutation from "../../../graphql/event/mutation/delete-event";
 import ActionMenu from "../../../components/common/ActionMenu";
+
 const R = require("ramda");
 
 
@@ -38,7 +39,7 @@ const styles = theme => ({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        
+
 
     },
     cardMedia: {
@@ -64,6 +65,7 @@ function EventCard(props) {
     };
     const {classes} = props;
     const time = moment(date).format('llll');
+    console.log(productDetails)
     return (
         <Card className={classes.card}>
             <Link to="#">

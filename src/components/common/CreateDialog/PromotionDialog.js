@@ -12,6 +12,7 @@ import updatePromotionMutation from "../../../graphql/promotion/mutation/update-
 import {Mutation} from "react-apollo"
 import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
 import updateCompanyMutation from "../../../graphql/companies/mutation/update-company";
+import {useApolloClient} from '@apollo/react-hooks'
 
 
 const styles = () => ({
@@ -38,6 +39,8 @@ const PromotionDialog = (props) => {
 
     });
 
+    const client = useApolloClient()
+
 
     const handleChange = name => (event) => {
         setValues({...values, [name]: event.target.value});
@@ -63,82 +66,110 @@ const PromotionDialog = (props) => {
     const mutation = props.action === 'create' ? createPromotionMutation : updatePromotionMutation
 
     return (
-        <div>
-            <DialogTitle id="form-dialog-title">{props.action === 'create' ? 'Create' : 'Edit'} Promotion</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    Here you can change the details of a specific promotion.
-                    Please note that changes will be visible to all relevant users once submitted.
-                </DialogContentText>
-                <form className={classes.container} noValidate autoComplete="off">
-                    <TextField
-                        id="title"
-                        label="Title"
-                        className={classes.textField}
-                        value={values.title}
-                        onChange={handleChange('title')}
-                        margin="normal"
-                        variant={"outlined"}
-                    />
-                    <TextField
-                        id="subtitle"
-                        label="Subtitle"
-                        className={classes.textField}
-                        value={values.subtitle}
-                        onChange={handleChange('subtitle')}
-                        margin="normal"
-                        variant={"outlined"}
-                    />
-                    <TextField
-                        id="price"
-                        label="Price"
-                        className={classes.textField}
-                        value={values.price}
-                        onChange={handleChange('price')}
-                        margin="normal"
-                        variant={"outlined"}
-                    />
-                    <TextField
-                        id="tag"
-                        label="Tag"
-                        className={classes.textField}
-                        value={values.tag}
-                        onChange={handleChange('tag')}
-                        margin="normal"
-                        variant={"outlined"}
-                    />
-                    <TextField
-                        id="image"
-                        label="Image"
-                        className={classes.textField}
-                        value={values.image}
-                        onChange={handleChange('image')}
-                        margin="normal"
-                        variant={"outlined"}
-                    />
+        <CurrentCompanyContext.Consumer>
+            {value => {
+                const {currentCompany} = value
+                return (
+                    <div>
+                        <DialogTitle
+                            id="form-dialog-title">{props.action === 'create' ? 'Create' : 'Edit'} Promotion</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Here you can change the details of a specific promotion.
+                                Please note that changes will be visible to all relevant users once submitted.
+                            </DialogContentText>
+                            <form className={classes.container} noValidate autoComplete="off">
+                                <TextField
+                                    id="title"
+                                    label="Title"
+                                    className={classes.textField}
+                                    value={values.title}
+                                    onChange={handleChange('title')}
+                                    margin="normal"
+                                    variant={"outlined"}
+                                />
+                                <TextField
+                                    id="subtitle"
+                                    label="Subtitle"
+                                    className={classes.textField}
+                                    value={values.subtitle}
+                                    onChange={handleChange('subtitle')}
+                                    margin="normal"
+                                    variant={"outlined"}
+                                />
+                                <TextField
+                                    id="price"
+                                    label="Price"
+                                    className={classes.textField}
+                                    value={values.price}
+                                    onChange={handleChange('price')}
+                                    margin="normal"
+                                    variant={"outlined"}
+                                />
+                                <TextField
+                                    id="tag"
+                                    label="Tag"
+                                    className={classes.textField}
+                                    value={values.tag}
+                                    onChange={handleChange('tag')}
+                                    margin="normal"
+                                    variant={"outlined"}
+                                />
+                                <TextField
+                                    id="image"
+                                    label="Image"
+                                    className={classes.textField}
+                                    value={values.image}
+                                    onChange={handleChange('image')}
+                                    margin="normal"
+                                    variant={"outlined"}
+                                />
 
-                </form>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={props.handleClose} color="primary">
-                    Cancel
-                </Button>
-                <Mutation mutation={mutation}>
-                    {mutationFunction => (
-                        <Button onClick={async () => {
-                            console.log(variables)
-                            await mutationFunction({variables: variables})
-                            props.handleClose()
-                            window.location.reload()
-                        }} color="primary">
-                            OK
-                        </Button>
-                    )
-                    }
+                            </form>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={props.handleClose} color="primary">
+                                Cancel
+                            </Button>
+                            <Button onClick={() => {
+                                client.mutate({
+                                    mutation,
+                                    variables
+                                })
+                                    .then(async ({data, error}) => {
+                                        props.action === 'edit' &&
+                                        props.handleClose()
+                                        //window.location.reload()
+                                        props.action === 'create' &&
+                                        client.mutate({
+                                            mutation: updateCompanyMutation,
+                                            variables: {
+                                                _id: currentCompany._id,
+                                                promotionsIds: data.createPromotion._id
+                                            }
+                                        })
+                                            .then(({data, error}) => {
+                                                console.log("updated company with promotion")
+                                                props.handleClose()
+                                                window.location.reload()
+                                            })
+                                            .catch((error) => {
+                                                console.log(error)
+                                            })
+                                    })
+                                    .catch((error) => {
+                                        console.log(error)
+                                    })
 
-                </Mutation>
-            </DialogActions>
-        </div>
+                            }} color="primary">
+                                OK
+                            </Button>
+
+                        </DialogActions>
+                    </div>
+                )
+            }}
+        </CurrentCompanyContext.Consumer>
     );
 };
 

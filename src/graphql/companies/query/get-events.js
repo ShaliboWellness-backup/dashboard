@@ -7,6 +7,7 @@ query getCompanyEvents($_id: String!){
     _id
     title
     instructor{
+    _id
       name
     }
     users{

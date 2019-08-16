@@ -2,9 +2,9 @@ import gql from "graphql-tag";
 
 
 const updatePromotionMutation = gql`
-mutation updatePromotion($id: String!, $title: String!, $subtitle: String!, $price: String!, $tag: String!, $image: String!){
+mutation updatePromotion($_id: String!, $title: String!, $subtitle: String!, $price: String!, $tag: String!, $image: String!){
   updatePromotion(
-  id: $id
+  _id: $_id
   title: $title,
   subtitle: $subtitle,
   price: $price,
@@ -16,7 +16,7 @@ mutation updatePromotion($id: String!, $title: String!, $subtitle: String!, $pri
    price
    tag
    image
-   id
+   _id
 }
 }
 `

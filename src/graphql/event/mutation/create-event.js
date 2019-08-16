@@ -2,27 +2,39 @@ import gql from "graphql-tag";
 
 
 const createEventMutation = gql`
-mutation createEvent($title: String!, $instructor: String!, $location: String!, $takenSpots: String!, $totalSpots: String!, $description: String!, $image: String!, $date: String!){
-  createEvent(title: $title,
-    instructor: $instructor,
-    location: $location,
-    date: $date,
-    image: $image,
-    takenSpots: $takenSpots,
-    totalSpots: $totalSpots,
+mutation createEvent(
+  $title: String!
+  $instructor: String!
+  $location: String!
+  $totalSpots: Int!
+  $description: String!
+  $image: String!
+  $date: String!
+) {
+  createEvent(
+    title: $title
+    instructor: $instructor
+    location: $location
+    date: $date
+    image: $image
+    totalSpots: $totalSpots
     description: $description
-    )
-  {
+  ) {
+    _id
     title
-    instructor
+    instructor {
+      name
+      _id
+    }
     location
     date
     image
-    takenSpots
     totalSpots
     description
   }
 }
+
+
 `
 
 export default createEventMutation

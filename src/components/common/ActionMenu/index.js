@@ -8,6 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import PushNotification from "../PushNotification";
 import deletePromotionMutation from "../../../graphql/promotion/mutation/delete-promotion";
 import deleteEventMutation from "../../../graphql/event/mutation/delete-event";
+import {useApolloClient} from '@apollo/react-hooks'
 
 
 const ActionMenu = ({card, promotion}) => {
@@ -21,6 +22,7 @@ const ActionMenu = ({card, promotion}) => {
         setAnchorEl(null);
     }
 
+    const client = useApolloClient()
     const mutation = promotion ? deletePromotionMutation : deleteEventMutation
 
     return (
@@ -38,20 +40,26 @@ const ActionMenu = ({card, promotion}) => {
                 transformOrigin={{horizontal: "right", vertical: "top"}}
             >
 
-                <CreateDialog type={promotion ? 'promotion' : 'companies.js'} data={card}/>
+                <CreateDialog type={promotion ? 'promotion' : 'event'} data={card} handleClose={handleClose}/>
 
-                <Mutation mutation={mutation}>
-                    {(deleteMutation, {data}) => (
-                        <MenuItem onClick={() => {
-                            deleteMutation({variables: {id: card.id}});
+
+                <MenuItem onClick={() => {
+                    client.mutate({
+                        mutation,
+                        variables: {_id: card._id}
+                    })
+                        .then(() => {
                             window.location.reload();
-                        }}>
-                            <Typography variant={"body1"} color={"textSecondary"}>
-                                Delete
-                            </Typography>
-                        </MenuItem>
-                    )}
-                </Mutation>
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+
+                }}>
+                    <Typography variant={"body1"} color={"textSecondary"}>
+                        Delete
+                    </Typography>
+                </MenuItem>
 
                 {promotion ? null : <PushNotification handleClick={handleClose}/>}
 
