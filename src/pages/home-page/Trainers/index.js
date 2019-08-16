@@ -32,44 +32,10 @@ const styles = theme => ({
 
 })
 
-const trainers = [
-    {
-        "id": 1,
-        "first_name": "Daniel",
-        "last_name": "Shalibo",
-        "email": "tyarn0@ed.gov",
-        "role": "Trainer",
-        "image": "https://robohash.org/doloremquequassit.png?size=50x50&set=set1"
-    },
-    {
-        "id": 2,
-        "first_name": "Yarden",
-        "last_name": "Harari",
-        "email": "lsego1@theatlantic.com",
-        "role": "Trainer",
-        "image": "https://robohash.org/sedquibusdamdistinctio.png?size=50x50&set=set1"
-    },
-    {
-        "id": 3,
-        "first_name": "Johnny",
-        "last_name": "Marr",
-        "email": "dganiford2@bizjournals.com",
-        "role": "Trainer",
-        "image": "https://robohash.org/rerumnonest.png?size=50x50&set=set1"
-    },
-    {
-        "id": 4,
-        "first_name": "Noam",
-        "last_name": "MacCallion",
-        "email": "fmaccallion3@fastcompany.com",
-        "role": "Trainer",
-        "image": "https://robohash.org/etsednihil.png?size=50x50&set=set1"
-    },
 
-]
+const Trainers = ({classes, users}) => {
 
-
-const Trainers = ({classes}) => {
+    let trainers = users.filter(user => user.roles.includes('trainer'))
 
     return (
         <Paper className={classes.root}>
@@ -82,9 +48,9 @@ const Trainers = ({classes}) => {
                         <TableCell className={classes.tableHead}>
                             <PushNotification icon/>
                         </TableCell>
-                        <TableCell className={classes.tableHead}>First Name</TableCell>
-                        <TableCell className={classes.tableHead}>Last Name</TableCell>
+                        <TableCell className={classes.tableHead}>Name</TableCell>
                         <TableCell className={classes.tableHead}>Email</TableCell>
+                        <TableCell className={classes.tableHead}>Company</TableCell>
                         <TableCell className={classes.tableHead}>Role</TableCell>
                     </TableRow>
                 </TableHead>
@@ -94,10 +60,10 @@ const Trainers = ({classes}) => {
                             <TableCell component="th" scope="row">
                                 <Avatar alt={user.first_name} src={user.image}/>
                             </TableCell>
-                            <TableCell className={classes.tableBody}>{user.first_name}</TableCell>
-                            <TableCell className={classes.tableBody}>{user.last_name}</TableCell>
+                            <TableCell className={classes.tableBody}>{user.name}</TableCell>
                             <TableCell className={classes.tableBody}>{user.email}</TableCell>
-                            <TableCell className={classes.tableBody}>{user.role}</TableCell>
+                            <TableCell className={classes.tableBody}>""</TableCell>
+                            <TableCell className={classes.tableBody}>Trainer</TableCell>
                         </TableRow>
                     ))
                     }

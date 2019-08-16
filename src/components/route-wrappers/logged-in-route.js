@@ -37,6 +37,7 @@ const LoggedInRoute = (props) => {
                             return <Redirect to={"/"}/>
                         }
                         if (!loading && !!data.user) {
+                            console.log(data)
                             return <HomePage user={data.user}/>
                         } else {
                             return <Redirect to={"/"}/>

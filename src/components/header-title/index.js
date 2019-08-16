@@ -81,7 +81,7 @@ class HeaderTitle extends Component {
                     <Query query={getCompaniesQuery}>
                         {({loading, error, data}) => {
                             console.log(data)
-
+                            let companies = []
                             if (loading) {
                                 return <Typography style={{marginRight: 20}} variant="caption" color="textSecondary">
                                     Loading...
@@ -89,10 +89,12 @@ class HeaderTitle extends Component {
                             }
                             if (error) {
                                 console.log(`Error! ${error.message}`)
+                                return null
                             }
-                            if (!loading) {
+
+                            if (!loading && !!data) {
                                 console.log(data)
-                                const {companies} = data
+                                let {companies} = data
                                 if (currentCompany === null) {
                                     handleSetCompany(companies[0])
                                 }

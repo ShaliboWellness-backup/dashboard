@@ -36,7 +36,25 @@ class HomePage extends Component {
                                    render={props => <WelcomePage {...props} user={this.props.user}
                                                                  company={currentCompany}/>}/>
                             <Route exact path="/home/trainers"
-                                   render={props => <Trainers {...props} company={currentCompany}/>}/>
+                                   render={props => <Query query={usersQuery}>
+                                       {({loading, error, data}) => {
+                                           let users = []
+                                           if (loading) {
+                                               return <div style={{width: "100%", textAlign: "center"}}>
+                                                   <CircularProgress/>
+                                               </div>
+                                           }
+                                           if (error) {
+                                               console.log(error)
+                                               return null
+                                           }
+                                           if (!loading && data.users) {
+                                               let {users} = data
+                                               return <Trainers {...props} users={users}/>
+                                           }
+                                       }
+                                       }
+                                   </Query>}/>
                             <Route exact path="/home/all-users"
                                    render={props => <Query query={usersQuery}>
                                        {({loading, error, data}) => {
