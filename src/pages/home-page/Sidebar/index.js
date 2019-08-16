@@ -51,7 +51,7 @@ class Sidebar extends Component {
 
                 <List component="nav" aria-label="main mailbox folders">
 
-                    <ListItem className={classes.logo} component={Link} to="/home"
+                    <ListItem className={classes.logo} component={Link} to="/"
                               onClick={event => this.handleListItemClick(event, null)}>
                         <ListItemAvatar>
                             <Avatar alt="ShaliboLogo"
@@ -67,7 +67,7 @@ class Sidebar extends Component {
 
                     <ListItem
                         component={Link}
-                        to="/home/members"
+                        to="/members"
                         button
                         selected={selectedIndex === 1}
                         onClick={event => this.handleListItemClick(event, 1)}
@@ -85,7 +85,7 @@ class Sidebar extends Component {
                         selected={selectedIndex === 2}
                         onClick={event => this.handleListItemClick(event, 2)}
                         component={Link}
-                        to="/home/events"
+                        to="/events"
                     >
                         <ListItemIcon>
                             <FitnessCenter fontSize={"small"} style={{color: '#fff'}}/>
@@ -100,7 +100,7 @@ class Sidebar extends Component {
                         selected={selectedIndex === 3}
                         onClick={event => this.handleListItemClick(event, 3)}
                         component={Link}
-                        to="/home/promotions"
+                        to="/promotions"
                     >
                         <ListItemIcon>
                             <ShoppingBasket fontSize={"small"} style={{color: '#fff'}}/>
