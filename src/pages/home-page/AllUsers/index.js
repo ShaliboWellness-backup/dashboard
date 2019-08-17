@@ -11,6 +11,8 @@ import {Mutation} from "react-apollo";
 import updateRoleMutation from "../../../graphql/user/mutation/update-role";
 import {withStyles} from "@material-ui/styles";
 
+const R = require("ramda");
+
 
 const styles = theme => ({
     root: {
@@ -43,6 +45,7 @@ const AllUsers = ({classes, users}) => {
         setState({...state, [name]: event.target.checked});
     };
 
+
     return (
         <Paper className={classes.root}>
             <Typography variant={"h5"} style={{fontWeight: 100}}>
@@ -62,6 +65,7 @@ const AllUsers = ({classes, users}) => {
                 </TableHead>
                 <TableBody>
                     {users.length > 0 && users.map(user => {
+                        let company = R.pathOr("", ['name'])(user.company)
                         const {_id} = user
                         let roles = user.roles.includes('trainer') ? 'user' : 'trainer'
                         return (
@@ -72,7 +76,8 @@ const AllUsers = ({classes, users}) => {
                                 </TableCell>
                                 <TableCell className={classes.tableBody}>{user.name}</TableCell>
                                 <TableCell className={classes.tableBody}>{user.email}</TableCell>
-                                <TableCell className={classes.tableBody}>{user.company}</TableCell>
+                                <TableCell
+                                    className={classes.tableBody}>{company}</TableCell>
                                 <TableCell className={classes.tableBody}>
                                     <Mutation mutation={updateRoleMutation}>
                                         {(updateRoleMutation, {loading, error}) => {

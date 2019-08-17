@@ -1,21 +1,12 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {withStyles} from '@material-ui/styles'
-import {Mutation} from "react-apollo";
-import Add from '@material-ui/icons/Add'
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    ListItemIcon,
-    ListItemText,
-    MenuItem,
-    TextField
-} from "@material-ui/core";
-import CreateCompanyMutation from "../../../graphql/companies/mutation/create-company"
-import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
 import {useApolloClient} from '@apollo/react-hooks'
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField} from "@material-ui/core";
+import CreateCompanyMutation from "../../../graphql/companies/mutation/create-company"
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import Zoom from "@material-ui/core/Zoom";
+import Tooltip from "@material-ui/core/Tooltip";
+import updateCompanyMutation from "../../../graphql/companies/mutation/update-company";
 
 
 const styles = () => ({
@@ -31,15 +22,12 @@ const styles = () => ({
     },
 });
 
-function NewCompany({classes, closeMenu}) {
-
-    const client = useApolloClient()
+function EditCompany({classes, company}) {
 
     const [open, setOpen] = React.useState(false);
 
     function handleClickOpen() {
         setOpen(true);
-        closeMenu()
     }
 
     function handleClose() {
@@ -47,12 +35,17 @@ function NewCompany({classes, closeMenu}) {
     }
 
     const [values, setValues] = React.useState({
-        name: '',
-        emailSuffix: '',
-        logo: '',
-
+        name: "",
+        emailSuffix: "",
+        logo: "",
     });
 
+    useEffect(() => {
+        // Update the document title using the browser API
+        values.name == "" && setValues({name: company.name, emailSuffix: company.emailSuffix, logo: company.logo})
+    });
+
+    const client = useApolloClient()
 
     const handleChange = name => (event) => {
         setValues({...values, [name]: event.target.value});
@@ -60,17 +53,14 @@ function NewCompany({classes, closeMenu}) {
 
     return (
         <Fragment>
-            <MenuItem onClick={handleClickOpen}>
-                <ListItemIcon>
-                    <Add/>
-                </ListItemIcon>
-                <ListItemText
-                    primaryTypographyProps={{variant: "body1", color: "textSecondary"}}
-                    primary={"New Company"}/>
-            </MenuItem>
+            <Tooltip TransitionComponent={Zoom} title="Edit Company">
+                <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickOpen}>
+                    <MoreVertIcon style={{color: "white"}} color={"secondary"}/>
+                </IconButton>
+            </Tooltip>
 
             <Dialog maxWidth={"xs"} scroll={"body"} open={open} onClose={handleClose}>
-                <DialogTitle id="form-dialog-title">Create New Company</DialogTitle>
+                <DialogTitle id="form-dialog-title">Edit Company Info</DialogTitle>
                 <DialogContent>
                     <form className={classes.container} noValidate autoComplete="off">
                         <TextField
@@ -110,38 +100,31 @@ function NewCompany({classes, closeMenu}) {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <SnackbarContext.Consumer>
-                        {value => (
-                            <Button onClick={() => {
-                                const {name, emailSuffix, logo} = values
-                                const variables = {name, emailSuffix, logo}
-                                return name === "" ||
-                                emailSuffix === "" ||
-                                logo === "" ?
-                                    value.openSnackbar('error', 'Please make sure there are no empty fields')
-                                    :
-                                    client.mutate({
-                                        mutation: CreateCompanyMutation,
-                                        variables
-                                    })
-                                        .then(() => {
-                                            handleClose()
-                                            window.location.reload()
-                                        })
-                                        .catch((error) => {
-                                            console.log(error)
-                                        })
-                            }} color="primary">
-                                OK
-                            </Button>
-                        )
-                        }
+                    <Button onClick={() => {
+                        const {name, emailSuffix, logo} = values
+                        client.mutate({
+                            mutation: updateCompanyMutation,
+                            variables: {_id: company._id, name, emailSuffix, logo}
+                        }).then(() => {
+                            handleClose()
+                            window.location.reload()
+                        })
+                            .catch((error) => {
+                                console.log(error)
+                            })
 
-                    </SnackbarContext.Consumer>
+                    }} color="primary">
+                        OK
+                    </Button>
                 </DialogActions>
             </Dialog>
         </Fragment>
     );
 }
 
-export default withStyles(styles)(NewCompany);
+EditCompany.defaultProps = ({
+    company: {name: "", emailSuffix: "", logo: ""}
+})
+
+
+export default withStyles(styles)(EditCompany);

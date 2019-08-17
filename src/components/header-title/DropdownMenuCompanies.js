@@ -12,7 +12,7 @@ import NewCompany from "../common/NewCompany";
 const styles = () => ({
     button: {
         textTransform: "none"
-    }
+    },
 })
 
 const StyledMenu = withStyles({
@@ -106,7 +106,7 @@ const DropdownMenuCompanies = (props) => {
                         return (
                             <StyledMenuItem onClick={() => handleChangeCompany(company)}>
                                 <ListItemAvatar>
-                                    <Avatar alt={company.name} src={""}/>
+                                    <Avatar alt={company.name} src={company.logo}/>
                                 </ListItemAvatar>
                                 <ListItemText
                                     primaryTypographyProps={{variant: "body1", color: "textSecondary"}}

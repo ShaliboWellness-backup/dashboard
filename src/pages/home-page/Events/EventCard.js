@@ -1,22 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Delete from "@material-ui/icons/Delete"
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import {IconButton, CardHeader, Divider} from '@material-ui/core';
-import Edit from '@material-ui/icons/Edit';
-import Tooltip from '@material-ui/core/Tooltip';
-import Zoom from '@material-ui/core/Zoom';
-import {Link} from 'react-router-dom';
+import {CardHeader, Divider} from '@material-ui/core';
 import moment from 'moment';
-import CreateDialog from '../../../components/common/CreateDialog';
-import {Mutation} from "react-apollo";
-import deleteEventMutation from "../../../graphql/event/mutation/delete-event";
 import ActionMenu from "../../../components/common/ActionMenu";
+import EventModal from "./EventModal"
 
 const R = require("ramda");
 
@@ -68,7 +61,7 @@ function EventCard(props) {
     console.log(productDetails)
     return (
         <Card className={classes.card}>
-            <Link to="#">
+            <EventModal event={event}>
                 <CardMedia
                     className={classes.cardMedia}
                     image={image}
@@ -76,7 +69,7 @@ function EventCard(props) {
                     src=""
                 />
 
-            </Link>
+            </EventModal>
             <CardHeader
                 action={<ActionMenu card={event}/>}
                 title={title}

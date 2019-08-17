@@ -8,6 +8,8 @@ const getCompaniesQuery = gql`
     events{
       title
     }
+    logo
+    emailSuffix
   }
 }
             `

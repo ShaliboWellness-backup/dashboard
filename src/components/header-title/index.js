@@ -65,9 +65,13 @@ class HeaderTitle extends Component {
             <div className={classes.root}>
                 {/* <AppBar position="static" color={"secondary"}> */}
                 <Toolbar className={classes.toolbar}>
-                    <Typography variant="h6" className={classes.title}>
-                        Dashboard
-                    </Typography>
+                    <div className={classes.title}>
+                        <Button classes={{root: classes.usersButton}} component={Link} to={"/"}>
+                            <Typography variant="h6" className={classes.title}>
+                                Shalibo Wellness
+                            </Typography>
+                        </Button>
+                    </div>
                     <Button classes={{root: classes.usersButton}} component={Link} to={"/all-users"}>
                         <Typography variant="caption" color="textSecondary">
                             All Users

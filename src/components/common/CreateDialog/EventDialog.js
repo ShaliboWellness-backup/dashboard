@@ -7,20 +7,18 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {withStyles} from '@material-ui/styles';
 import {DateTimePicker} from '@material-ui/pickers';
-import {Mutation} from "react-apollo";
 import createEventMutation from "../../../graphql/event/mutation/create-event";
 import updateEventMutation from "../../../graphql/event/mutation/update-event";
 import {useApolloClient} from '@apollo/react-hooks'
 import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
 import updateCompanyMutation from "../../../graphql/companies/mutation/update-company";
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import usersQuery from "../../../graphql/user/query/users";
+import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
 
 const R = require("ramda");
 
@@ -58,7 +56,7 @@ const EventDialog = (props) => {
 
     const [values, setValues] = React.useState({
         title: event.title || '',
-        instructor: event.instructor || '',
+        instructor: event.instructor._id || '',
         location: event.location || '',
         totalSpotsString: event.totalSpots || '',
         description: event.description || '',
@@ -226,39 +224,54 @@ const EventDialog = (props) => {
                             color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={() => {
-                            client.mutate({
-                                mutation,
-                                variables
-                            })
-                                .then(async ({data, error}) => {
-                                    props.action === 'edit' &&
-                                    props.handleClose()
-                                    window.location.reload()
-                                    props.action === 'create' &&
-                                    client.mutate({
-                                        mutation: updateCompanyMutation,
-                                        variables: {
-                                            _id: currentCompany._id,
-                                            eventsIds: data.createEvent._id
-                                        }
-                                    })
-                                        .then(({data, error}) => {
-                                            console.log("updated company with event")
-                                            props.handleClose()
-                                            window.location.reload()
+                        <SnackbarContext.Consumer>
+                            {value => {
+                                return <Button onClick={() => {
+                                    return variables.title === "" ||
+                                    variables.instructor === "" ||
+                                    variables.date === "" ||
+                                    variables.location === "" ||
+                                    variables.totalSpotsString === "" ||
+                                    variables.description === "" ||
+                                    variables.image === ""
+                                        ?
+                                        value.openSnackbar('error', 'Please make sure there are no empty fields')
+                                        :
+                                        client.mutate({
+                                            mutation,
+                                            variables
                                         })
-                                        .catch((error) => {
-                                            console.log(error)
-                                        })
-                                })
-                                .catch((error) => {
-                                    console.log(error)
-                                })
+                                            .then(async ({data, error}) => {
+                                                props.action === 'edit' &&
+                                                props.handleClose()
+                                                window.location.reload()
+                                                props.action === 'create' &&
+                                                client.mutate({
+                                                    mutation: updateCompanyMutation,
+                                                    variables: {
+                                                        _id: currentCompany._id,
+                                                        eventsIds: data.createEvent._id
+                                                    }
+                                                })
+                                                    .then(({data, error}) => {
+                                                        console.log("updated company with event")
+                                                        props.handleClose()
+                                                        window.location.reload()
+                                                    })
+                                                    .catch((error) => {
+                                                        console.log(error)
+                                                    })
+                                            })
+                                            .catch((error) => {
+                                                console.log(error)
+                                            })
 
-                        }} color="primary">
-                            OK
-                        </Button>
+                                }} color="primary">
+                                    OK
+                                </Button>
+                            }}
+                        </SnackbarContext.Consumer>
+
                     </DialogActions>
                 </div>
 

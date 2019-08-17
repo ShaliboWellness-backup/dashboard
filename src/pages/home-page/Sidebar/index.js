@@ -6,11 +6,15 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import PermIdentity from '@material-ui/icons/PermIdentity';
-import DirectionsRun from "@material-ui/icons/DirectionsRun"
 import FitnessCenter from '@material-ui/icons/FitnessCenter';
 import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
-import {Avatar, ListItemAvatar, Paper} from '@material-ui/core';
+import {Avatar, ListItemAvatar, ListItemSecondaryAction, Paper} from '@material-ui/core';
 import {Link} from 'react-router-dom';
+import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
+import EditCompany from "../../../components/common/EditCompany";
+
+const R = require("ramda");
+
 
 const styles = theme => ({
     root: {
@@ -29,6 +33,9 @@ const styles = theme => ({
     },
     logo: {
         marginBottom: 5,
+        boxShadow: "0px 2px 1px rgba(0, 0, 0, 0.3)",
+        padding: 0,
+        //background: "#000"
     }
 });
 
@@ -46,19 +53,25 @@ class Sidebar extends Component {
     render() {
         const {classes} = this.props;
         const {selectedIndex} = this.state;
+        const currentCompany = R.pathOr({name: "", emailSuffix: "", logo: ""}, ["currentCompany"])(this.context)
         return (
             <Paper elevation={18} className={classes.root}>
 
                 <List component="nav" aria-label="main mailbox folders">
 
-                    <ListItem className={classes.logo} component={Link} to="/"
-                              onClick={event => this.handleListItemClick(event, null)}>
+                    <ListItem
+                        onClick={event => this.handleListItemClick(event, null)}>
                         <ListItemAvatar>
-                            <Avatar alt="ShaliboLogo"
-                                    src="https://scontent.fhfa1-1.fna.fbcdn.net/v/t1.0-9/1471112_942030945860301_2736404039396499273_n.png?_nc_cat=106&_nc_oc=AQlXrpgkHydn-yxT76PO2KIIgCnda5AcvsWyTOZVYj35Y9ryLTcPe-KU7WqqJhnkMoU&_nc_ht=scontent.fhfa1-1.fna&oh=6f2c1ca63d7078412c9c356518350d1d&oe=5DA6ECE7"/>
+                            <Avatar className={classes.logo}
+                                    alt="ShaliboLogo"
+                                    src={currentCompany.logo}
+                            />
                         </ListItemAvatar>
-                        <ListItemText classes={{primary: classes.text}} primary="Shalibo Wellness"
+                        <ListItemText classes={{primary: classes.text}} primary={currentCompany.name}
                                       primaryTypographyProps={{color: 'textSecondary', variant: 'body1'}}/>
+                        <ListItemSecondaryAction>
+                            <EditCompany company={currentCompany}/>
+                        </ListItemSecondaryAction>
 
 
                     </ListItem>
@@ -131,4 +144,5 @@ class Sidebar extends Component {
     }
 }
 
+Sidebar.contextType = CurrentCompanyContext
 export default withStyles(styles)(Sidebar);

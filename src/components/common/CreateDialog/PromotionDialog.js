@@ -9,10 +9,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {withStyles} from '@material-ui/styles';
 import createPromotionMutation from "../../../graphql/promotion/mutation/create-promotion";
 import updatePromotionMutation from "../../../graphql/promotion/mutation/update-promotion";
-import {Mutation} from "react-apollo"
 import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
 import updateCompanyMutation from "../../../graphql/companies/mutation/update-company";
 import {useApolloClient} from '@apollo/react-hooks'
+import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
 
 
 const styles = () => ({
@@ -52,6 +52,7 @@ const PromotionDialog = (props) => {
         props.handleClose();
     };
 
+
     const {classes} = props;
 
     const {
@@ -87,6 +88,7 @@ const PromotionDialog = (props) => {
                                     onChange={handleChange('title')}
                                     margin="normal"
                                     variant={"outlined"}
+
                                 />
                                 <TextField
                                     id="subtitle"
@@ -123,6 +125,7 @@ const PromotionDialog = (props) => {
                                     onChange={handleChange('image')}
                                     margin="normal"
                                     variant={"outlined"}
+                                    required
                                 />
 
                             </form>
@@ -131,39 +134,47 @@ const PromotionDialog = (props) => {
                             <Button onClick={props.handleClose} color="primary">
                                 Cancel
                             </Button>
-                            <Button onClick={() => {
-                                client.mutate({
-                                    mutation,
-                                    variables
-                                })
-                                    .then(async ({data, error}) => {
-                                        props.action === 'edit' &&
-                                        props.handleClose()
-                                        //window.location.reload()
-                                        props.action === 'create' &&
-                                        client.mutate({
-                                            mutation: updateCompanyMutation,
-                                            variables: {
-                                                _id: currentCompany._id,
-                                                promotionsIds: data.createPromotion._id
-                                            }
-                                        })
-                                            .then(({data, error}) => {
-                                                console.log("updated company with promotion")
-                                                props.handleClose()
-                                                window.location.reload()
+                            <SnackbarContext.Consumer>
+                                {value => {
+                                    return <Button onClick={() => {
+                                        return variables.title === "" || variables.subtitle === "" ||
+                                        variables.price === "" || variables.tag === "" || variables.image === "" ?
+                                            value.openSnackbar('error', 'Please make sure there are no empty fields')
+                                            :
+                                            client.mutate({
+                                                mutation,
+                                                variables
                                             })
-                                            .catch((error) => {
-                                                console.log(error)
-                                            })
-                                    })
-                                    .catch((error) => {
-                                        console.log(error)
-                                    })
+                                                .then(async ({data, error}) => {
+                                                    props.action === 'edit' &&
+                                                    props.handleClose()
+                                                    //window.location.reload()
+                                                    props.action === 'create' &&
+                                                    client.mutate({
+                                                        mutation: updateCompanyMutation,
+                                                        variables: {
+                                                            _id: currentCompany._id,
+                                                            promotionsIds: data.createPromotion._id
+                                                        }
+                                                    })
+                                                        .then(({data, error}) => {
+                                                            console.log("updated company with promotion")
+                                                            props.handleClose()
+                                                            window.location.reload()
+                                                        })
+                                                        .catch((error) => {
+                                                            console.log(error)
+                                                        })
+                                                })
+                                                .catch((error) => {
+                                                    console.log(error)
+                                                })
 
-                            }} color="primary">
-                                OK
-                            </Button>
+                                    }} color="primary">
+                                        OK
+                                    </Button>
+                                }}
+                            </SnackbarContext.Consumer>
 
                         </DialogActions>
                     </div>

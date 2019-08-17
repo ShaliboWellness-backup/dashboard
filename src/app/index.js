@@ -14,6 +14,7 @@ import GlobalDataProvider from '../global-data-provider';
 import CurrentCompany from "../containers/CurrentCompany";
 import HeaderTitle from "../components/header-title";
 import HomePage from "../pages/home-page";
+import CustomSnackbar from "../containers/CustomSnackbar";
 
 // Given that we are implementing App Shell Architecture and, therefore,
 // injecting (via reactDOM.render) the Header and Main components into
@@ -35,8 +36,9 @@ const App = () => (
                 <MuiThemeProvider theme={theme}>
                     <CssBaseline/>
                     <CurrentCompany>
-
-                        <Routes/>
+                        <CustomSnackbar>
+                            <Routes/>
+                        </CustomSnackbar>
                     </CurrentCompany>
                     {/*<GlobalDataProvider>*/}
                     {/**/}
