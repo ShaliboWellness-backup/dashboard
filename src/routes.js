@@ -9,6 +9,7 @@ import NotFoundPage from './pages/not-found-page';
 import LoginPage from "./pages/login-page";
 import SignupPage from "./pages/signup-page";
 import UnverifiedPage from "./pages/unverified-page";
+import ForgotPasswordPage from './pages/forgot-password-page'
 
 const Routes = props => (
     <ScrollToTop>
@@ -16,6 +17,7 @@ const Routes = props => (
             <Route exact path="/login" component={LoginPage}/>
             <Route exact path="/signup" component={SignupPage}/>
             <Route exact path="/unverified" component={UnverifiedPage}/>
+            <Route path="/reset-password/:forgotToken" component={ForgotPasswordPage}/>
             <LoggedInRoute path="/" component={HomePage} {...props} />
             <LoggedInRoute path="" component={HomePage} {...props} />
             <Route component={NotFoundPage}/>

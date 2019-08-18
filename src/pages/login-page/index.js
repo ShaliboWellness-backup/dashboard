@@ -18,7 +18,9 @@ import {Mutation, withApollo} from "react-apollo";
 import loginMutation from "../../graphql/login";
 
 import userQuery from '../../graphql/user/query/user'
-import { useApolloClient } from '@apollo/react-hooks'
+import {useApolloClient} from '@apollo/react-hooks'
+import ForgotPasswordDialog from "../../components/common/ForgotPasswordDialog";
+
 const R = require("ramda");
 
 function MadeWithLove() {
@@ -59,13 +61,6 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
-    background: {
-        position: 'absolute',
-        width: "100%",
-        height: '100vh',
-
-
-    }
 }));
 
 
@@ -99,8 +94,8 @@ const LoginPage = (props) => {
         <div style={{
             minHeight: "100vh",
             backgroundImage: `url("${background}")`,
-            backgroundRepeat: 'none',
-            backgroundSize: '100%',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
             display: 'flex',
             alignItems: 'center',
             justify: 'center',
@@ -152,44 +147,41 @@ const LoginPage = (props) => {
                         color="primary"
                         className={classes.submit}
                         onClick={() => {
-                        client.mutate({
-                            mutation: loginMutation,
-                            variables: values
-                        })
-                            .then(async ({data, error}) => {
-                            const token = data.login.token;
-                            localStorage.setItem('x-auth-token', token);
-                            await props.client.resetStore();
-
-                            client.query({query: userQuery})
-                                .then(({data, error}) => {
-                                props.history.push('/')
+                            client.mutate({
+                                mutation: loginMutation,
+                                variables: values
                             })
+                                .then(async ({data, error}) => {
+                                    const token = data.login.token;
+                                    localStorage.setItem('x-auth-token', token);
+                                    await props.client.resetStore();
+
+                                    client.query({query: userQuery})
+                                        .then(({data, error}) => {
+                                            props.history.push('/')
+                                        })
+                                        .catch((error) => {
+                                            const code = R.path(['graphQLErrors', 0, "extensions", "exception", "code"])(error);
+
+                                            if (code === 2) props.history.push('/unverified');
+                                            if (code === 1) props.history.push('/login');
+                                        });
+                                })
                                 .catch((error) => {
-                                const code = R.path(['graphQLErrors', 0, "extensions", "exception", "code"])(error);
-
-                                if (code === 2) props.history.push('/unverified');
-                                if (code === 1) props.history.push('/login');
-                            });
-                        })
-                            .catch((error) => {
-                                const apolloCode = R.path(['graphQLErrors', 0, "extensions", "code"])(error);
-                                if (apolloCode === "BAD_USER_INPUT") alert("Wrong email or password")
-                            })
-                    }}>
+                                    const apolloCode = R.path(['graphQLErrors', 0, "extensions", "code"])(error);
+                                    if (apolloCode === "BAD_USER_INPUT") alert("Wrong email or password")
+                                })
+                        }}>
                         Sign In
                     </Button>
-                    <Grid container>
-                        <Grid item xs>
-
-                            <Typography color={'primary'} component={Link} to={'#'} variant={"body2"}>
-                                Forgot password?
-                            </Typography>
-
+                    <Grid container style={{width: '100%'}} justify='space-between'>
+                        <Grid item>
+                            <ForgotPasswordDialog/>
                         </Grid>
                         <Grid item>
-                            <Typography color={'primary'} component={Link} to={'/signup'} variant={"body2"}>
-                                {"Don't have an account? Sign Up"}
+                            <Typography style={{textDecoration: 'none'}} color={'primary'} component={Link}
+                                        to={'/signup'}>
+                                Not a member?
                             </Typography>
                         </Grid>
                     </Grid>

@@ -7,6 +7,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Zoom from "@material-ui/core/Zoom";
 import Tooltip from "@material-ui/core/Tooltip";
 import updateCompanyMutation from "../../../graphql/companies/mutation/update-company";
+import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
 
 
 const styles = () => ({
@@ -41,9 +42,11 @@ function EditCompany({classes, company}) {
     });
 
     useEffect(() => {
-        // Update the document title using the browser API
-        values.name == "" && setValues({name: company.name, emailSuffix: company.emailSuffix, logo: company.logo})
-    });
+            // Update the document title using the browser API
+            setValues({name: company.name, emailSuffix: company.emailSuffix, logo: company.logo})
+        }, [company]
+    )
+    ;
 
     const client = useApolloClient()
 
@@ -100,22 +103,33 @@ function EditCompany({classes, company}) {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={() => {
-                        const {name, emailSuffix, logo} = values
-                        client.mutate({
-                            mutation: updateCompanyMutation,
-                            variables: {_id: company._id, name, emailSuffix, logo}
-                        }).then(() => {
-                            handleClose()
-                            window.location.reload()
-                        })
-                            .catch((error) => {
-                                console.log(error)
-                            })
+                    <SnackbarContext.Consumer>
+                        {value => {
+                            return <Button onClick={() => {
+                                const {name, emailSuffix, logo} = values
+                                return name === "" ||
+                                emailSuffix === "" ||
+                                logo === "" ?
+                                    value.openSnackbar('error', 'Please make sure there are no empty fields')
+                                    :
+                                    client.mutate({
+                                        mutation: updateCompanyMutation,
+                                        variables: {_id: company._id, name, emailSuffix, logo}
+                                    }).then(() => {
+                                        handleClose()
+                                        window.location.reload()
+                                    })
+                                        .catch((error) => {
+                                            console.log(error)
+                                        })
 
-                    }} color="primary">
-                        OK
-                    </Button>
+                            }} color="primary">
+                                OK
+                            </Button>
+
+                        }}
+
+                    </SnackbarContext.Consumer>
                 </DialogActions>
             </Dialog>
         </Fragment>

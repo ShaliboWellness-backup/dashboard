@@ -10,6 +10,7 @@ const getEventsQuery = gql`
     }
     users{
       name
+      email
     }
     location
     date

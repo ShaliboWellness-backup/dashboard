@@ -58,13 +58,6 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
-    background: {
-        position: 'absolute',
-        width: "100%",
-        height: '100vh',
-
-
-    }
 }));
 
 
@@ -99,8 +92,8 @@ const SignupPage = (props) => {
         <div style={{
             minHeight: "100vh",
             backgroundImage: `url("${background}")`,
-            backgroundRepeat: 'none',
-            backgroundSize: '100%',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
             display: 'flex',
             alignItems: 'center',
             justify: 'center',
@@ -209,9 +202,9 @@ const SignupPage = (props) => {
                         }}
 
                     </Mutation>
-                    <Grid container justify="flex-end">
+                    <Grid container justify="center">
                         <Grid item>
-                            <Typography color={'primary'} component={Link} to={'/'} variant={"body2"}>
+                            <Typography style={{textDecoration: 'none'}} color={'primary'} component={Link} to={'/'}>
                                 Already have an account? Sign in!
                             </Typography>
                         </Grid>
