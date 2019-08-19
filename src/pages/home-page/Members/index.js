@@ -44,7 +44,6 @@ const styles = theme => ({
 
 
 const Members = ({classes, company}) => {
-    console.log(company)
 
     return <Query query={getCompanyUsersQuery}
                   variables={company ? {_id: company._id} : {_id: "null"}}

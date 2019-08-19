@@ -1,17 +1,14 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import DropdownMenuProfile from './DropdownMenuProfile';
-import DropdownMenuCompanies from './DropdownMenuCompanies';
 import CurrentCompanyContext from '../../containers/CurrentCompany/CurrentCompanyContext';
-import ButtonBase from '@material-ui/core/ButtonBase'
 import Button from '@material-ui/core/Button'
-import {Query} from "react-apollo";
-import getCompaniesQuery from "../../graphql/companies/query/companies";
-import Grid from "@material-ui/core/Grid";
-import {CircularProgress} from "@material-ui/core";
 import {Link} from 'react-router-dom'
+import Sidebar from "./Sidebar";
+import AdminMenu from "./AdminMenu";
+import {useApolloClient} from '@apollo/react-hooks'
+import getCompaniesQuery from "../../graphql/companies/query/companies";
 
 
 const styles = theme => ({
@@ -42,87 +39,50 @@ const styles = theme => ({
 });
 
 
-class HeaderTitle extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentCompany: '',
-        };
+const HeaderTitle = ({classes}) => {
+
+    const value = React.useContext(CurrentCompanyContext)
+
+    const {handleSetCompany, currentCompany} = value
+
+    const client = useApolloClient()
+
+    const getCompanies = () => {
+        client.query({
+            query: getCompaniesQuery
+        }).then(({data}) => {
+            setCompanies(data.companies)
+            handleSetCompany(data.companies[0])
+
+        })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
+    const [companies, setCompanies] = useState([{name: "Loading...", logo: ""}])
 
-    handleCompanySelect = () => {
-        this.setState({});
-    }
+    useEffect(() => {
+        getCompanies()
+    }, []);
 
-
-    render() {
-        const {classes} = this.props;
-        const {handleSetCompany, currentCompany} = this.context;
-
-        // console.log(currentCompany)
-        return (
-            <div className={classes.root}>
-                {/* <AppBar position="static" color={"secondary"}> */}
-                <Toolbar className={classes.toolbar}>
-                    <div className={classes.title}>
-                        <Button classes={{root: classes.usersButton}} component={Link} to={"/"}>
-                            <Typography variant="h6" className={classes.title}>
-                                Shalibo Wellness
-                            </Typography>
-                        </Button>
-                    </div>
-                    <Button classes={{root: classes.usersButton}} component={Link} to={"/all-users"}>
-                        <Typography variant="caption" color="textSecondary">
-                            All Users
+    return (
+        <div className={classes.root}>
+            <Toolbar className={classes.toolbar}>
+                <Sidebar companies={companies}/>
+                <div className={classes.title}>
+                    <Button classes={{root: classes.usersButton}} component={Link} to={"/"}>
+                        <Typography variant="h6" className={classes.title}>
+                            Shalibo Wellness
                         </Typography>
                     </Button>
-                    <Button classes={{root: classes.usersButton}} component={Link} to={"/trainers"}>
-                        <Typography variant="caption" color="textSecondary">
-                            Trainers
-                        </Typography>
-                    </Button>
-                    <Query query={getCompaniesQuery}>
-                        {({loading, error, data}) => {
-                            console.log(data)
-                            let companies = []
-                            if (loading) {
-                                return <Typography style={{marginRight: 20}} variant="caption" color="textSecondary">
-                                    Loading...
-                                </Typography>
-                            }
-                            if (error) {
-                                console.log(`Error! ${error.message}`)
-                                return null
-                            }
+                </div>
+                <AdminMenu companies={companies}/>
+            </Toolbar>
+        </div>
+    )
 
-                            if (!loading && !!data) {
-                                console.log(data)
-                                let {companies} = data
-                                if (currentCompany === null) {
-                                    handleSetCompany(companies[0])
-                                }
-
-
-                                return (
-                                    <DropdownMenuCompanies companies={companies} className={classes.menuButton}
-                                                           handleSetCompany={handleSetCompany}/>
-                                )
-                            }
-
-                        }}
-                    </Query>
-                    < DropdownMenuProfile
-                        className={classes.menuButton}
-                    />
-
-                </Toolbar>
-                {/* </AppBar> */}
-            </div>
-        );
-    }
 }
 
-HeaderTitle.contextType = CurrentCompanyContext;
 
 export default withStyles(styles)(HeaderTitle);

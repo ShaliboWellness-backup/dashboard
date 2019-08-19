@@ -58,7 +58,6 @@ function EventCard(props) {
     };
     const {classes} = props;
     const time = moment(date).format('llll');
-    console.log(productDetails)
     return (
         <Card className={classes.card}>
             <EventModal event={event}>
