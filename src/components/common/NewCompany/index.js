@@ -126,7 +126,6 @@ function NewCompany({classes, closeMenu}) {
                                     })
                                         .then(() => {
                                             handleClose()
-                                            window.location.reload()
                                         })
                                         .catch((error) => {
                                             console.log(error)

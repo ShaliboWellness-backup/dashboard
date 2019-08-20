@@ -23,10 +23,10 @@ const styles = theme => ({
         padding: `${theme.spacing.unit * 8}px 0`,
     },
     card: {
-        height: "auto",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
-        
+
 
     },
     cardHeader: {

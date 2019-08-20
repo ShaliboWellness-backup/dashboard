@@ -95,7 +95,7 @@ const WelcomePage = ({classes, company, user}) => {
                     Here Are Your Upcoming Events
                 </Typography>
             </Paper>
-            <Query query={getEventsQuery}>
+            <Query query={getEventsQuery} pollInterval={500}>
                 {({loading, error, data}) => {
                     if (loading) {
                         console.log("loading")

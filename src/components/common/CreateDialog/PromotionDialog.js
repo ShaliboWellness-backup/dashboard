@@ -13,6 +13,7 @@ import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCom
 import updateCompanyMutation from "../../../graphql/companies/mutation/update-company";
 import {useApolloClient} from '@apollo/react-hooks'
 import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
+import getCompanyEventsQuery from "../../../graphql/companies/query/get-events";
 
 
 const styles = () => ({
@@ -143,7 +144,7 @@ const PromotionDialog = (props) => {
                                             :
                                             client.mutate({
                                                 mutation,
-                                                variables
+                                                variables,
                                             })
                                                 .then(async ({data, error}) => {
                                                     props.action === 'edit' &&
@@ -160,7 +161,7 @@ const PromotionDialog = (props) => {
                                                         .then(({data, error}) => {
                                                             console.log("updated company with promotion")
                                                             props.handleClose()
-                                                            window.location.reload()
+                                                            // window.location.reload()
                                                         })
                                                         .catch((error) => {
                                                             console.log(error)

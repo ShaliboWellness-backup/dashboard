@@ -84,7 +84,8 @@ const HomePage = (props) => {
                         <Route path="/promotions"
                                render={props => (
                                    <Query query={getCompanyPromotionsQuery}
-                                          variables={currentCompany ? {_id: currentCompany._id} : {_id: "null"}}>
+                                          variables={currentCompany ? {_id: currentCompany._id} : {_id: "null"}}
+                                          pollInterval={500}>
                                        {({loading, error, data}) => {
                                            let promotions = []
                                            if (loading) {
@@ -112,7 +113,8 @@ const HomePage = (props) => {
                         <Route path="/events"
                                render={props =>
                                    <Query query={getCompanyEventsQuery}
-                                          variables={currentCompany ? {_id: currentCompany._id} : {_id: "null"}}>
+                                          variables={currentCompany ? {_id: currentCompany._id} : {_id: "null"}}
+                                          pollInterval={500}>
                                        {({loading, error, data}) => {
                                            let events = []
                                            if (loading) {

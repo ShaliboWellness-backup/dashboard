@@ -244,7 +244,6 @@ const EventDialog = (props) => {
                                             .then(async ({data, error}) => {
                                                 props.action === 'edit' &&
                                                 props.handleClose()
-                                                window.location.reload()
                                                 props.action === 'create' &&
                                                 client.mutate({
                                                     mutation: updateCompanyMutation,
@@ -256,7 +255,6 @@ const EventDialog = (props) => {
                                                     .then(({data, error}) => {
                                                         console.log("updated company with event")
                                                         props.handleClose()
-                                                        window.location.reload()
                                                     })
                                                     .catch((error) => {
                                                         console.log(error)
