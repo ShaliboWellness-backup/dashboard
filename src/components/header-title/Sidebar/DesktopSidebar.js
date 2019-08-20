@@ -35,9 +35,12 @@ const styles = theme => ({
     },
     logo: {
         marginBottom: 5,
-        boxShadow: "0px 2px 1px rgba(0, 0, 0, 0.3)",
+        // boxShadow: "0px 2px 1px rgba(0, 0, 0, 0.3)",
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#fff',
         padding: 0,
-        //background: "#000"
+        backgroundColor: "rgba(0,0,0,0.49)"
     }
 });
 
