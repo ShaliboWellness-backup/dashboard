@@ -23,6 +23,8 @@ import Select from "@material-ui/core/Select";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import FormControl from "@material-ui/core/FormControl";
 import updateUserMutation from "../../../graphql/user/mutation/update-user";
+import usersQuery from "../../../graphql/user/query/users";
+import getCompaniesQuery from "../../../graphql/companies/query/companies";
 
 
 const styles = () => ({
@@ -70,7 +72,8 @@ function UserDialog({classes, closeMenu, user}) {
         email: '',
         company: '',
         verified: '',
-        roles: ['user']
+        roles: ['user'],
+        companies: []
 
     });
 
@@ -78,8 +81,24 @@ function UserDialog({classes, closeMenu, user}) {
         const {name, email, company, verified, roles} = user
         console.log(roles)
         setValues({...values, name, email, company, verified, roles})
+        getCompanies()
     }, [user]);
 
+    const getCompanies = () => {
+        client.query({
+            query: getCompaniesQuery
+        })
+            .then(({data}) => {
+
+                const {companies} = data
+                setValues({...values, companies})
+                return null
+
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
 
     const handleChange = name => (event) => {
         setValues({...values, [name]: event.target.value});
@@ -133,16 +152,25 @@ function UserDialog({classes, closeMenu, user}) {
                             variant={"outlined"}
                             fullWidth={true}
                         />
-                        <TextField
-                            id="company"
-                            label="Company"
-                            className={classes.textField}
-                            value={values.company}
-                            onChange={handleChange('company')}
-                            margin="normal"
-                            variant={"outlined"}
-                            fullWidth={true}
-                        />
+                        <FormControl variant="outlined" className={classes.selectInput}>
+                            <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
+                                Company
+                            </InputLabel>
+                            <Select
+                                MenuProps={{classes: {list: classes.test}}}
+                                value={values.company}
+                                onChange={handleChange('company')}
+                                input={<OutlinedInput labelWidth={60} name="company"
+                                                      id="outlined-age-simple"/>}
+                            >
+                                {values.companies.length > 0 ? values.companies.map((company) => (
+                                        <MenuItem key={company._id} value={company._id}>{company.name}</MenuItem>
+                                    )) :
+                                    <MenuItem key={1} value={""}>No Available Companies</MenuItem>
+                                }
+
+                            </Select>
+                        </FormControl>
                         <FormControl variant="outlined" className={classes.selectInput}>
                             <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
                                 Verified

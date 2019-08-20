@@ -21,7 +21,10 @@ mutation updateUser(
     _id
     name
     email
-    company
+    company{
+    _id
+    name
+    }
     roles
     verified
   }
