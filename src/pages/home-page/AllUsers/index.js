@@ -10,6 +10,7 @@ import PushNotification from "../../../components/common/PushNotification";
 import {Mutation} from "react-apollo";
 import updateRoleMutation from "../../../graphql/user/mutation/update-role";
 import {withStyles} from "@material-ui/styles";
+import UserActionMenu from "../../../components/common/UserActionMenu";
 
 const R = require("ramda");
 
@@ -61,6 +62,7 @@ const AllUsers = ({classes, users}) => {
                         <TableCell className={classes.tableHead}>Email</TableCell>
                         <TableCell className={classes.tableHead}>Company</TableCell>
                         <TableCell className={classes.tableHead}>Trainer</TableCell>
+                        <TableCell className={classes.tableHead}>Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -96,6 +98,9 @@ const AllUsers = ({classes, users}) => {
                                         }}
 
                                     </Mutation>
+                                </TableCell>
+                                <TableCell>
+                                    <UserActionMenu user={user}/>
                                 </TableCell>
                             </TableRow>
                         )
