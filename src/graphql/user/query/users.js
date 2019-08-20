@@ -9,6 +9,7 @@ const usersQuery = gql`
       email
       username
       roles
+      verified
       company{
       _id
       name

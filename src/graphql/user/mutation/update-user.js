@@ -1,0 +1,33 @@
+import gql from "graphql-tag";
+
+
+const updateUserMutation = gql`
+mutation updateUser(
+  $_id: String!
+  $name: String
+  $email: String
+  $company: String
+  $roles: [Role!]
+  $verified: Boolean
+) {
+  updateUser(
+    _id: $_id
+    name: $name
+    email: $email
+    company: $company
+    roles: $roles
+    verified: $verified
+  ) {
+    _id
+    name
+    email
+    company
+    roles
+    verified
+  }
+}
+
+
+`
+
+export default updateUserMutation

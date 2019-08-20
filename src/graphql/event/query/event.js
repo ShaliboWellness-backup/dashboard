@@ -7,6 +7,7 @@ const getEventsQuery = gql`
     title
     instructor{
       name
+      _id
     }
     users{
       name
