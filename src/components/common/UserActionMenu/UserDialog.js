@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import {withStyles} from '@material-ui/styles'
 import {
     Button,
+    Checkbox,
     Dialog,
     DialogActions,
     DialogContent,
@@ -12,10 +13,8 @@ import {
     FormLabel,
     MenuItem,
     TextField,
-    Typography,
-    Checkbox
+    Typography
 } from "@material-ui/core";
-import CreateCompanyMutation from "../../../graphql/companies/mutation/create-company"
 import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
 import {useApolloClient} from '@apollo/react-hooks'
 import InputLabel from "@material-ui/core/InputLabel";
@@ -23,7 +22,6 @@ import Select from "@material-ui/core/Select";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import FormControl from "@material-ui/core/FormControl";
 import updateUserMutation from "../../../graphql/user/mutation/update-user";
-import usersQuery from "../../../graphql/user/query/users";
 import getCompaniesQuery from "../../../graphql/companies/query/companies";
 
 
@@ -47,13 +45,22 @@ const styles = () => ({
         borderWidth: 1,
         borderColor: "black"
     },
+    checkbox: {
+        marginLeft: 8,
+        marginRight: 8,
+        marginTop: 16,
+        width: 400,
+        
+
+    },
     test: {
         border: '1px solid #e0e0e0'
     }
 });
 
-function UserDialog({classes, closeMenu, user}) {
+function UserDialog(props) {
 
+    const {classes, closeMenu, user} = props
     const client = useApolloClient()
 
     const [open, setOpen] = React.useState(false);
@@ -78,11 +85,8 @@ function UserDialog({classes, closeMenu, user}) {
     });
 
     React.useEffect(() => {
-        const {name, email, company, verified, roles} = user
-        console.log(roles)
-        setValues({...values, name, email, company, verified, roles})
         getCompanies()
-    }, [user]);
+    }, [props.user]);
 
     const getCompanies = () => {
         client.query({
@@ -91,7 +95,9 @@ function UserDialog({classes, closeMenu, user}) {
             .then(({data}) => {
 
                 const {companies} = data
-                setValues({...values, companies})
+                const {name, email, company, verified, roles} = user
+                setValues({...values, name, email, company, verified, roles, companies})
+
                 return null
 
             })
@@ -102,6 +108,7 @@ function UserDialog({classes, closeMenu, user}) {
 
     const handleChange = name => (event) => {
         setValues({...values, [name]: event.target.value});
+        console.log(values)
     };
 
     const handleRoleChange = (role) => {
@@ -114,12 +121,11 @@ function UserDialog({classes, closeMenu, user}) {
             newRoles.push(role)
         }
 
-        setValues({...values, roles: newRoles});
+
     };
 
     const inputLabel = React.useRef(null);
 
-    console.log(values)
     return (
         <Fragment>
             <MenuItem onClick={() => handleClickOpen()}>
@@ -128,8 +134,8 @@ function UserDialog({classes, closeMenu, user}) {
                 </Typography>
             </MenuItem>
 
-            <Dialog maxWidth={"xs"} scroll={"body"} open={open} onClose={handleClose}>
-                <DialogTitle id="form-dialog-title">Create New Company</DialogTitle>
+            <Dialog maxWidth={"sm"} fullWidth scroll={"body"} open={open} onClose={handleClose}>
+                <DialogTitle id="form-dialog-title">Edit User</DialogTitle>
                 <DialogContent>
                     <form className={classes.container} noValidate autoComplete="off">
                         <TextField
@@ -179,7 +185,7 @@ function UserDialog({classes, closeMenu, user}) {
                                 MenuProps={{classes: {list: classes.test}}}
                                 value={values.verified}
                                 onChange={handleChange('verified')}
-                                input={<OutlinedInput labelWidth={60} name="verified"
+                                input={<OutlinedInput labelWidth={50} name="verified"
                                                       id="outlined-age-simple"/>}
                             >
                                 <MenuItem key={1} value={true}>True</MenuItem>
@@ -187,28 +193,29 @@ function UserDialog({classes, closeMenu, user}) {
                             </Select>
                         </FormControl>
 
-                        <FormControl component="fieldset" className={classes.selectInput}>
+                        <FormControl component="fieldset" className={classes.checkbox}>
                             <FormLabel component="legend">Roles</FormLabel>
                             <FormGroup>
                                 <FormControlLabel
-                                    control={<Checkbox checked={values.roles.includes('user')}
+                                    control={<Checkbox color="primary" checked={values.roles.includes('user')}
                                                        onChange={() => handleRoleChange('user')} value="user"/>}
                                     label="User"
                                 />
                                 <FormControlLabel
-                                    control={<Checkbox checked={values.roles.includes('trainer')}
+                                    control={<Checkbox color="primary" checked={values.roles.includes('trainer')}
                                                        onChange={() => handleRoleChange('trainer')} value="trainer"/>}
                                     label="Trainer"
                                 />
                                 <FormControlLabel
                                     control={
-                                        <Checkbox checked={values.roles.includes('admin')}
+                                        <Checkbox color="primary" checked={values.roles.includes('admin')}
                                                   onChange={() => handleRoleChange('admin')} value="admin"/>
                                     }
                                     label="Admin"
                                 />
                             </FormGroup>
-                            <FormHelperText>Be careful</FormHelperText>
+                            <FormHelperText>Notice: Users marked as 'admin' or 'trainer' can make changes to events,
+                                promotions and user data.</FormHelperText>
                         </FormControl>
 
                     </form>
