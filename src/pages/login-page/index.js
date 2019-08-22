@@ -14,12 +14,12 @@ import Container from '@material-ui/core/Container';
 import background from '../../fakeData/Images/loginBg.jpg'
 import {Paper} from '@material-ui/core'
 import {handleLogin, isSignedIn} from "../../utils/auth-api";
-import {Mutation, withApollo} from "react-apollo";
+import {withApollo} from "react-apollo";
 import loginMutation from "../../graphql/login";
-
 import userQuery from '../../graphql/user/query/user'
 import {useApolloClient} from '@apollo/react-hooks'
 import ForgotPasswordDialog from "../../components/common/ForgotPasswordDialog";
+import SnackbarContext from "../../containers/CustomSnackbar/SnackbarContext";
 
 const R = require("ramda");
 
@@ -69,6 +69,8 @@ const LoginPage = (props) => {
     const {history} = props
 
     const client = useApolloClient()
+
+    const snackbar = React.useContext(SnackbarContext)
 
     const [values, setValues] = React.useState({
         email: "",
@@ -147,30 +149,36 @@ const LoginPage = (props) => {
                         color="primary"
                         className={classes.submit}
                         onClick={() => {
-                            client.mutate({
-                                mutation: loginMutation,
-                                variables: values
-                            })
-                                .then(async ({data, error}) => {
-                                    const token = data.login.token;
-                                    localStorage.setItem('x-auth-token', token);
-                                    await props.client.resetStore();
-
-                                    client.query({query: userQuery})
-                                        .then(({data, error}) => {
-                                            props.history.push('/')
-                                        })
-                                        .catch((error) => {
-                                            const code = R.path(['graphQLErrors', 0, "extensions", "exception", "code"])(error);
-
-                                            if (code === 2) props.history.push('/unverified');
-                                            if (code === 1) props.history.push('/login');
-                                        });
+                            values.email === '' ||
+                            values.password === '' ?
+                                snackbar.openSnackbar('error', 'Please make sure to enter your email and password.')
+                                :
+                                client.mutate({
+                                    mutation: loginMutation,
+                                    variables: values
                                 })
-                                .catch((error) => {
-                                    const apolloCode = R.path(['graphQLErrors', 0, "extensions", "code"])(error);
-                                    if (apolloCode === "BAD_USER_INPUT") alert("Wrong email or password")
-                                })
+                                    .then(async ({data, error}) => {
+                                        const token = data.login.token;
+                                        localStorage.setItem('x-auth-token', token);
+                                        await props.client.resetStore();
+
+                                        client.query({query: userQuery})
+                                            .then(({data, error}) => {
+                                                props.history.push('/')
+                                            })
+                                            .catch((error) => {
+                                                const code = R.path(['graphQLErrors', 0, "extensions", "exception", "code"])(error);
+
+                                                if (code === 2) props.history.push('/unverified');
+                                                if (code === 1) props.history.push('/login');
+                                            });
+                                    })
+                                    .catch((error) => {
+                                        const apolloCode = R.path(['graphQLErrors', 0, "extensions", "code"])(error);
+                                        if (apolloCode === "BAD_USER_INPUT") {
+                                            snackbar.openSnackbar('error', "Wrong email or password")
+                                        }
+                                    })
                         }}>
                         Sign In
                     </Button>

@@ -13,7 +13,6 @@ import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCom
 import updateCompanyMutation from "../../../graphql/companies/mutation/update-company";
 import {useApolloClient} from '@apollo/react-hooks'
 import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
-import getCompanyEventsQuery from "../../../graphql/companies/query/get-events";
 
 
 const styles = () => ({

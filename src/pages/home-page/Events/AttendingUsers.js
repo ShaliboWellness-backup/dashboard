@@ -47,6 +47,10 @@ const useStyles = makeStyles(theme => ({
 export default function AttendingUsers({users}) {
     const classes = useStyles();
 
+    React.useEffect(() => {
+        return undefined
+    }, [users])
+
     return (
         <ExpansionPanel classes={{root: classes.root}}>
             <ExpansionPanelSummary

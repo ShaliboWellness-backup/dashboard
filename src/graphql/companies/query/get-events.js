@@ -12,6 +12,7 @@ query getCompanyEvents($_id: String!){
     }
     users{
       name
+      _id
      
     }
     location
