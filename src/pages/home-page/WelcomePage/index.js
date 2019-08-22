@@ -109,8 +109,8 @@ const WelcomePage = ({classes, company, user}) => {
                     }
                     let events = []
                     if (!loading && !!data) {
-                        const allEvents = data.events
-                        events = allEvents.filter(event => event.instructor._id == user._id)
+                        const allEvents = data.events;
+                        events = allEvents.filter(event => event.instructor && event.instructor._id === user._id);
                         return <Events disableCreateEvent events={events}/>
                     }
                 }
