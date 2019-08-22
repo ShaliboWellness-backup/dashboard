@@ -49,7 +49,7 @@ const ActionMenu = ({card, promotion}) => {
                         variables: {_id: card._id}
                     })
                         .then(() => {
-                            window.location.reload();
+                            console.log(`item with id: ${card._id} was deleted!`)
                         })
                         .catch((error) => {
                             console.log(error)

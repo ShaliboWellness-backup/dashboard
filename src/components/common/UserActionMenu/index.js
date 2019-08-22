@@ -2,12 +2,7 @@ import React from 'react';
 import {IconButton, Typography} from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert"
 import Menu from "@material-ui/core/Menu";
-import CreateDialog from "../CreateDialog";
-import {Mutation} from "react-apollo";
 import MenuItem from "@material-ui/core/MenuItem";
-import PushNotification from "../PushNotification";
-import deletePromotionMutation from "../../../graphql/promotion/mutation/delete-promotion";
-import deleteEventMutation from "../../../graphql/event/mutation/delete-event";
 import {useApolloClient} from '@apollo/react-hooks'
 import UserDialog from "./UserDialog";
 import deleteUserMutation from "../../../graphql/user/mutation/delete-user";
@@ -24,8 +19,7 @@ const UserActionMenu = ({user}) => {
         setAnchorEl(null);
     }
 
-    const client = useApolloClient()
-
+    const client = useApolloClient();
     return (
         <div>
             <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
@@ -64,7 +58,7 @@ const UserActionMenu = ({user}) => {
             </Menu>
         </div>
     );
-}
+};
 
 
 export default UserActionMenu;

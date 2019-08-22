@@ -48,16 +48,17 @@ const HeaderTitle = ({classes}) => {
     const client = useApolloClient()
 
     const getCompanies = () => {
-        client.query({
-            query: getCompaniesQuery
-        }).then(({data}) => {
-            setCompanies(data.companies)
-            handleSetCompany(data.companies[0])
-
-        })
-            .catch((error) => {
+        client.watchQuery({
+            query: getCompaniesQuery,
+            pollInterval: 500
+        }).subscribe(({data}) => {
+                setCompanies(data.companies)
+                handleSetCompany(data.companies[0])
+            },
+            error => {
                 console.log(error)
             })
+
     }
 
     const [companies, setCompanies] = useState([{name: "Loading...", logo: ""}])
