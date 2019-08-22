@@ -17,6 +17,8 @@ import usersQuery from "../../graphql/user/query/users";
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useTheme from '@material-ui/styles/useTheme'
 
+const R = require("ramda")
+
 
 const HomePage = (props) => {
 
@@ -60,7 +62,7 @@ const HomePage = (props) => {
                                    }
                                </Query>}/>
                         <Route exact path="/all-users"
-                               render={props => <Query query={usersQuery}>
+                               render={props => <Query query={usersQuery} pollInterval={500}>
                                    {({loading, error, data}) => {
                                        let users = []
                                        if (loading) {
@@ -116,7 +118,6 @@ const HomePage = (props) => {
                                           variables={currentCompany ? {_id: currentCompany._id} : {_id: "null"}}
                                           pollInterval={500}>
                                        {({loading, error, data}) => {
-                                           let events = []
                                            if (loading) {
                                                return <div style={{width: "100%", textAlign: "center"}}>
                                                    <CircularProgress/>
@@ -127,7 +128,7 @@ const HomePage = (props) => {
                                                return null
                                            }
                                            if (!loading && data.company.events) {
-                                               let {events} = data.company
+                                               let events = R.pathOr([], ['events'])(data.company)
                                                if (data) {
 
                                                    return <Events {...props} events={events}/>

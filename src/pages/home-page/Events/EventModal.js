@@ -59,6 +59,7 @@ function EventModal(props) {
 
     const {event, classes} = props
 
+    console.log(event.users)
     return (
         <div>
             <div style={{cursor: "pointer"}} onClick={handleClickOpen}>
