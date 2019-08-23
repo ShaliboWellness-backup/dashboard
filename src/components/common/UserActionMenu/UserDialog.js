@@ -24,6 +24,8 @@ import FormControl from "@material-ui/core/FormControl";
 import updateUserMutation from "../../../graphql/user/mutation/update-user";
 import getCompaniesQuery from "../../../graphql/companies/query/companies";
 
+const R = require('ramda')
+
 
 const styles = () => ({
     container: {
@@ -50,7 +52,7 @@ const styles = () => ({
         marginRight: 8,
         marginTop: 16,
         width: 400,
-        
+
 
     },
     test: {
@@ -60,7 +62,7 @@ const styles = () => ({
 
 function UserDialog(props) {
 
-    const {classes, closeMenu, user} = props
+    const {classes, closeMenu, user,} = props
     const client = useApolloClient()
 
     const [open, setOpen] = React.useState(false);
@@ -77,7 +79,7 @@ function UserDialog(props) {
     const [values, setValues] = React.useState({
         name: '',
         email: '',
-        company: '',
+        company: {_id: ""},
         verified: '',
         roles: ['user'],
         companies: []
@@ -95,7 +97,11 @@ function UserDialog(props) {
             .then(({data}) => {
 
                 const {companies} = data
-                const {name, email, company, verified, roles} = user
+                const name = R.pathOr('', ['name'])(user)
+                const email = R.pathOr('', ['email'])(user)
+                const company = R.pathOr({_id: ''}, ['company'])(user)
+                const verified = R.pathOr('', ['verified'])(user)
+                const roles = R.pathOr(['user'], ['roles'])(user)
                 setValues({...values, name, email, company, verified, roles, companies})
 
                 return null
@@ -110,6 +116,11 @@ function UserDialog(props) {
         setValues({...values, [name]: event.target.value});
         console.log(values)
     };
+    const handleCompanyChange = name => (event) => {
+        let newCompany = {_id: event.target.value}
+        setValues({...values, company: newCompany});
+        console.log(values)
+    };
 
     const handleRoleChange = (role) => {
         let currentRoles = values.roles
@@ -120,7 +131,7 @@ function UserDialog(props) {
             newRoles = currentRoles
             newRoles.push(role)
         }
-
+        setValues({...values, roles: newRoles})
 
     };
 
@@ -164,8 +175,8 @@ function UserDialog(props) {
                             </InputLabel>
                             <Select
                                 MenuProps={{classes: {list: classes.test}}}
-                                value={values.company}
-                                onChange={handleChange('company')}
+                                value={values.company._id}
+                                onChange={handleCompanyChange('company')}
                                 input={<OutlinedInput labelWidth={60} name="company"
                                                       id="outlined-age-simple"/>}
                             >
@@ -196,16 +207,16 @@ function UserDialog(props) {
                         <FormControl component="fieldset" className={classes.checkbox}>
                             <FormLabel component="legend">Roles</FormLabel>
                             <FormGroup>
-                                <FormControlLabel
-                                    control={<Checkbox color="primary" checked={values.roles.includes('user')}
-                                                       onChange={() => handleRoleChange('user')} value="user"/>}
-                                    label="User"
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox color="primary" checked={values.roles.includes('trainer')}
-                                                       onChange={() => handleRoleChange('trainer')} value="trainer"/>}
-                                    label="Trainer"
-                                />
+                                {/*<FormControlLabel*/}
+                                {/*    control={<Checkbox color="primary" checked={values.roles.includes('user')}*/}
+                                {/*                       onChange={() => handleRoleChange('user')} value="user"/>}*/}
+                                {/*    label="User"*/}
+                                {/*/>*/}
+                                {/*<FormControlLabel*/}
+                                {/*    control={<Checkbox color="primary" checked={values.roles.includes('trainer')}*/}
+                                {/*                       onChange={() => handleRoleChange('trainer')} value="trainer"/>}*/}
+                                {/*    label="Trainer"*/}
+                                {/*/>*/}
                                 <FormControlLabel
                                     control={
                                         <Checkbox color="primary" checked={values.roles.includes('admin')}
@@ -228,7 +239,7 @@ function UserDialog(props) {
                         {value => (
                             <Button onClick={() => {
                                 const {name, email, company, roles, verified} = values
-                                const variables = {_id: user._id, name, email, company, roles, verified}
+                                const variables = {_id: user._id, name, email, company: company._id, roles, verified}
                                 console.log(variables)
                                 return name === "" ||
                                 email === "" ||
@@ -242,7 +253,7 @@ function UserDialog(props) {
                                     })
                                         .then(() => {
                                             handleClose()
-                                            window.location.reload()
+                                            //window.location.reload()
                                         })
                                         .catch((error) => {
                                             console.log(error)

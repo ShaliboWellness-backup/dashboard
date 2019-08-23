@@ -41,9 +41,15 @@ const styles = theme => ({
 const AllUsers = ({classes, users}) => {
 
     const [state, setState] = React.useState({});
+    const [newRoles, setRoles] = React.useState([]);
 
-    const handleChange = name => event => {
-        setState({...state, [name]: event.target.checked});
+    const handleChange = (user, mutation, _id) => {
+        const {roles} = user
+        let newRoles = ['user']
+        roles.includes('admin') && newRoles.push('admin')
+        !roles.includes('trainer') && newRoles.push('trainer')
+        setRoles(newRoles);
+        mutation({variables: {_id, roles: newRoles}})
     };
 
 
@@ -69,7 +75,6 @@ const AllUsers = ({classes, users}) => {
                     {users.length > 0 && users.map(user => {
                         let company = R.pathOr("", ['name'])(user.company)
                         const {_id} = user
-                        let roles = user.roles.includes('trainer') ? 'user' : 'trainer'
                         return (
 
                             <TableRow key={user._id}>
@@ -83,14 +88,12 @@ const AllUsers = ({classes, users}) => {
                                 <TableCell className={classes.tableBody}>
                                     <Mutation mutation={updateRoleMutation}>
                                         {(updateRoleMutation, {loading, error}) => {
-                                            console.log(error)
                                             return <Switch
                                                 checked={state._id}
                                                 name={_id}
                                                 defaultChecked={user.roles.includes('trainer')}
                                                 onChange={() => {
-                                                    updateRoleMutation({variables: {_id, roles}})
-                                                    handleChange(_id)
+                                                    handleChange(user, updateRoleMutation, user._id)
                                                 }}
                                                 color="primary"
                                                 inputProps={{'aria-label': 'primary checkbox'}}
