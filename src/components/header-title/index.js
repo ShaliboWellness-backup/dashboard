@@ -53,7 +53,18 @@ const HeaderTitle = ({classes}) => {
             pollInterval: 500
         }).subscribe(({data}) => {
                 setCompanies(data.companies)
-                handleSetCompany(data.companies[0])
+                const lastCompanyId = localStorage.getItem('company_id')
+                if (lastCompanyId) {
+                    const lastCompany = data.companies.filter((company) => company._id === lastCompanyId)
+                    if (lastCompany.length === 1) {
+                        handleSetCompany(lastCompany[0])
+                    } else {
+                        localStorage.setItem('company_id', null);
+                        handleSetCompany(data.companies[0])
+                    }
+                } else {
+                    handleSetCompany(data.companies[0])
+                }
             },
             error => {
                 console.log(error)

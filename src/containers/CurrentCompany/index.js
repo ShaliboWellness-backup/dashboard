@@ -13,8 +13,8 @@ class CurrentCompany extends Component {
 
 
     handleSetCompany = company => {
-        this.setState({currentCompany: company})
-
+        this.setState({currentCompany: company});
+        localStorage.setItem('company_id', company._id);
     }
 
     render() {
