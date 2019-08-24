@@ -49,6 +49,10 @@ class UserPicker extends React.Component {
         };
     }
 
+    componentWillUpdate(nextProps, nextState, nextContext) {
+        users = nextProps.users
+    }
+
     onChange = (event, { newValue }) => {
         this.setState({
             value: newValue

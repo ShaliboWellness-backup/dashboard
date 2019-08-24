@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -49,12 +49,12 @@ const styles = (theme) => ({
     }
 });
 
+var userToAdd = null;
+
 function EventModal(props) {
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
-    var userToAdd = null;
 
     const companyContext = React.useContext(CurrentCompanyContext);
     const company = (companyContext != null) ? companyContext.currentCompany : null;
@@ -70,6 +70,7 @@ function EventModal(props) {
     const {event, classes} = props
     const client = useApolloClient()
 
+    const userPickerRef = useRef();
     return (
         <div>
             <div style={{cursor: "pointer"}} onClick={handleClickOpen}>
@@ -109,25 +110,36 @@ function EventModal(props) {
                         margin: '6px 26px 26px 26px',
                         display: 'flex',
                         flexDirection: 'row'}}>
-                        <UserPicker users={(company && company.users) ? company.users.filter((user) => {
-                            const eventUserIds = event.users.map((user) => user._id)
-                            return eventUserIds.indexOf(user._id) === -1
-                        }) : []} onSelected={selectedUser => {
-                            userToAdd = selectedUser
-                        }}/>
-                        <Button onClick={() => {
-                            event.users.push(userToAdd);
-                            client.mutate({
-                                mutation: updateEventMutation,
-                                variables: {
-                                    _id: event._id,
-                                    users: event.users.map((user) => user._id)
-                                }
-                            }).then(value => {
-                                console.log('Success')
-                            });
-                            if (userToAdd) {
+                        <UserPicker
+                            users={(() => {
+                            if (company && company.users) {
+                                const eventUserIds = event.users.map((user) => user._id);
+                                const filtered = company.users.filter((user) => { return eventUserIds.indexOf(user._id) === -1 })
+                                return filtered
+                            } else {
+                                return []
+                            }})()}
 
+                            onSelected={selectedUser => {
+                                userToAdd = selectedUser
+                            }
+                        }
+                        ref={userPickerRef}/>
+                        <Button onClick={() => {
+                            const picker = userPickerRef.current;
+                            if (userToAdd) {
+                                event.users.push(userToAdd);
+                                client.mutate({
+                                    mutation: updateEventMutation,
+                                    variables: {
+                                        _id: event._id,
+                                        users: event.users.map((user) => user._id)
+                                    }
+                                }).then(value => {
+                                    userToAdd = null;
+                                    picker.onChange(null, {newValue: ''});
+                                    picker.onSuggestionsClearRequested()
+                                });
                             }
                         }} color="primary">Add</Button>
                     </div>
