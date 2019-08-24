@@ -11,6 +11,10 @@ import Typography from "@material-ui/core/Typography";
 import moment from 'moment';
 import {CardHeader} from "@material-ui/core";
 import AttendingUsers from "./AttendingUsers";
+import UserPicker from "../../../components/common/AutoSuggest";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
+import {useApolloClient} from "@apollo/react-hooks";
 
 const R = require("ramda");
 
@@ -42,12 +46,17 @@ const styles = (theme) => ({
         bottom: 16,
         color: "white"
     }
-})
+});
 
 function EventModal(props) {
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+    var userToAdd = null;
+
+    const companyContext = React.useContext(CurrentCompanyContext);
+    const company = (companyContext != null) ? companyContext.currentCompany : null;
 
     function handleClickOpen() {
         setOpen(true);
@@ -59,7 +68,6 @@ function EventModal(props) {
 
     const {event, classes} = props
 
-    console.log(event.users)
     return (
         <div>
             <div style={{cursor: "pointer"}} onClick={handleClickOpen}>
@@ -95,6 +103,26 @@ function EventModal(props) {
                 <DialogContent className={classes.cardContent}>
                     <Typography>{event.description}</Typography>
                     <AttendingUsers users={event.users}/>
+                    <div style={{
+                        margin: '6px 26px 26px 26px',
+                        display: 'flex',
+                        flexDirection: 'row'}}>
+                        <UserPicker users={(company && company.users) ? company.users : []} onSelected={selectedUser => {
+                            userToAdd = selectedUser
+                        }}/>
+                        <Button onClick={() => {
+                            const client = useApolloClient()
+                            client.mutate(
+                                require('../../../graphql/event/mutation/update-event'),
+                                {users: event.users.push(userToAdd)}
+                                ).then(value => {
+                                    console.log('Succes MOFO')
+                            });
+                            if (userToAdd) {
+
+                            }
+                        }} color="primary">Add</Button>
+                    </div>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">

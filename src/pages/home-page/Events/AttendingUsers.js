@@ -13,6 +13,8 @@ import PushNotification from "../../../components/common/PushNotification";
 import TableBody from "@material-ui/core/TableBody";
 import {Avatar} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
+import Button from '@material-ui/core/Button';
+import UserPicker from "../../../components/common/AutoSuggest";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -49,7 +51,7 @@ export default function AttendingUsers({users}) {
 
     React.useEffect(() => {
         return undefined
-    }, [users])
+    }, [users]);
 
     return (
         <ExpansionPanel classes={{root: classes.root}}>
@@ -65,9 +67,9 @@ export default function AttendingUsers({users}) {
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
-
                                 <TableCell className={classes.tableHead}>Name</TableCell>
                                 <TableCell className={classes.tableHead}>Email</TableCell>
+                                <TableCell className={classes.tableHead}>Remove</TableCell>
                                 {/*<TableCell className={classes.tableHead}>Company</TableCell>*/}
                             </TableRow>
                         </TableHead>
@@ -79,6 +81,11 @@ export default function AttendingUsers({users}) {
                                     <TableCell
                                         className={classes.tableBody}>{user.name}</TableCell>
                                     <TableCell className={classes.tableBody}>{user.email}</TableCell>
+                                    <TableCell className={classes.tableBody}>
+                                        <Button onClick={() => {}} color="primary">
+                                            Remove
+                                        </Button>
+                                    </TableCell>
                                     {/*<TableCell className={classes.tableBody}>{user.company.name}</TableCell>*/}
                                 </TableRow>
                             ))}
@@ -86,7 +93,7 @@ export default function AttendingUsers({users}) {
                     </Table>
                     : <div className={classes.message}>
                         <Typography variant={'body1'}>
-                            There are no active users for this company.
+                            There are no active users for this event.
                         </Typography>
                     </div>}
             </ExpansionPanelDetails>
