@@ -127,7 +127,7 @@ const HomePage = (props) => {
                                                console.log(error)
                                                return null
                                            }
-                                           if (!loading && data.company.events) {
+                                           if (!loading && data && data.company && data.company.events) {
                                                let events = R.pathOr([], ['events'])(data.company)
                                                if (data) {
 

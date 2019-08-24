@@ -13,6 +13,9 @@ import PushNotification from "../../../components/common/PushNotification";
 import TableBody from "@material-ui/core/TableBody";
 import {Avatar} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
+import Button from '@material-ui/core/Button';
+import {useApolloClient} from "@apollo/react-hooks";
+import updateEventMutation from '../../../graphql/event/mutation/update-event';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -44,12 +47,14 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function AttendingUsers({users}) {
+export default function AttendingUsers({event, users}) {
     const classes = useStyles();
+
+    const client = useApolloClient()
 
     React.useEffect(() => {
         return undefined
-    }, [users])
+    }, [users]);
 
     return (
         <ExpansionPanel classes={{root: classes.root}}>
@@ -65,20 +70,36 @@ export default function AttendingUsers({users}) {
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
-
                                 <TableCell className={classes.tableHead}>Name</TableCell>
                                 <TableCell className={classes.tableHead}>Email</TableCell>
+                                <TableCell className={classes.tableHead}>Remove</TableCell>
                                 {/*<TableCell className={classes.tableHead}>Company</TableCell>*/}
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {users.length > 0 &&
 
-                            users.map(user => (
+                                users.map(user => (
                                 <TableRow key={user._id}>
                                     <TableCell
-                                        className={classes.tableBody}>{user.name}</TableCell>
+                                        className={classes.tableBody}>  {user.name}</TableCell>
                                     <TableCell className={classes.tableBody}>{user.email}</TableCell>
+                                    <TableCell className={classes.tableBody}>
+                                        <Button onClick={() => {
+                                            const updatedUsers = event.users.filter((value) => value._id !== user._id);
+                                            client.mutate({
+                                                mutation: updateEventMutation,
+                                                variables: {
+                                                    _id: event._id,
+                                                    users: updatedUsers.map((user) => user._id)
+                                                }
+                                            }).then(value => {
+                                                console.log('Success')
+                                            });
+                                        }} color="primary">
+                                            Remove
+                                        </Button>
+                                    </TableCell>
                                     {/*<TableCell className={classes.tableBody}>{user.company.name}</TableCell>*/}
                                 </TableRow>
                             ))}
@@ -86,7 +107,7 @@ export default function AttendingUsers({users}) {
                     </Table>
                     : <div className={classes.message}>
                         <Typography variant={'body1'}>
-                            There are no active users for this company.
+                            There are no active users for this event.
                         </Typography>
                     </div>}
             </ExpansionPanelDetails>

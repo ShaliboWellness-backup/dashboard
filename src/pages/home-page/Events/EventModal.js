@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -11,6 +11,11 @@ import Typography from "@material-ui/core/Typography";
 import moment from 'moment';
 import {CardHeader} from "@material-ui/core";
 import AttendingUsers from "./AttendingUsers";
+import UserPicker from "../../../components/common/AutoSuggest";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
+import {useApolloClient} from "@apollo/react-hooks";
+import updateEventMutation from '../../../graphql/event/mutation/update-event';
 
 const R = require("ramda");
 
@@ -42,12 +47,17 @@ const styles = (theme) => ({
         bottom: 16,
         color: "white"
     }
-})
+});
+
+var userToAdd = null;
 
 function EventModal(props) {
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const companyContext = React.useContext(CurrentCompanyContext);
+    const company = (companyContext != null) ? companyContext.currentCompany : null;
 
     function handleClickOpen() {
         setOpen(true);
@@ -58,8 +68,9 @@ function EventModal(props) {
     }
 
     const {event, classes} = props
+    const client = useApolloClient()
 
-    console.log(event.users)
+    const userPickerRef = useRef();
     return (
         <div>
             <div style={{cursor: "pointer"}} onClick={handleClickOpen}>
@@ -94,7 +105,44 @@ function EventModal(props) {
 
                 <DialogContent className={classes.cardContent}>
                     <Typography>{event.description}</Typography>
-                    <AttendingUsers users={event.users}/>
+                    <AttendingUsers event={event} users={event.users}/>
+                    <div style={{
+                        margin: '6px 26px 26px 26px',
+                        display: 'flex',
+                        flexDirection: 'row'}}>
+                        <UserPicker
+                            users={(() => {
+                            if (company && company.users) {
+                                const eventUserIds = event.users.map((user) => user._id);
+                                const filtered = company.users.filter((user) => { return eventUserIds.indexOf(user._id) === -1 })
+                                return filtered
+                            } else {
+                                return []
+                            }})()}
+
+                            onSelected={selectedUser => {
+                                userToAdd = selectedUser
+                            }
+                        }
+                        ref={userPickerRef}/>
+                        <Button onClick={() => {
+                            const picker = userPickerRef.current;
+                            if (userToAdd) {
+                                event.users.push(userToAdd);
+                                client.mutate({
+                                    mutation: updateEventMutation,
+                                    variables: {
+                                        _id: event._id,
+                                        users: event.users.map((user) => user._id)
+                                    }
+                                }).then(value => {
+                                    userToAdd = null;
+                                    picker.onChange(null, {newValue: ''});
+                                    picker.onSuggestionsClearRequested()
+                                });
+                            }
+                        }} color="primary">Add</Button>
+                    </div>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">

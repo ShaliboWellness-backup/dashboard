@@ -8,6 +8,11 @@ const getCompaniesQuery = gql`
     events{
       title
     }
+    users {
+      _id
+      name
+      email
+    }
     logo
     emailSuffix
   }

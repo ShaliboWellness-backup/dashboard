@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import {Avatar, Button, ListItemAvatar, Typography} from "@material-ui/core";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
 import NewCompany from "../../common/NewCompany";
+import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
 
 const R = require('ramda')
 
@@ -63,8 +64,10 @@ const DropdownMenuCompanies = (props) => {
         logo: ""
     });
 
+    const companyContext = React.useContext(CurrentCompanyContext);
+
     useEffect(() => {
-        setCompany(companies[0])
+        setCompany((companyContext && companyContext.currentCompany) ? companyContext.currentCompany : companies[0])
 
     }, [companies])
 

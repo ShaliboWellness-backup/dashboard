@@ -8,9 +8,6 @@ query getCompanyUsers($_id: String!){
                   _id
                   email
                   username
-                  company{
-                    name
-                  }
                 }
               }
   

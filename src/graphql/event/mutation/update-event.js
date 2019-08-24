@@ -8,6 +8,7 @@ mutation updateEvent(
   $instructor: String
   $location: String
   $totalSpots: Int
+  $users: [String!]
   $description: String
   $image: String
   $date: String
@@ -17,10 +18,11 @@ mutation updateEvent(
     title: $title
     instructor: $instructor
     location: $location
-    date: $date
-    image: $image
     totalSpots: $totalSpots
+    users: $users
     description: $description
+    image: $image
+    date: $date
   ) {
     title
     instructor {
