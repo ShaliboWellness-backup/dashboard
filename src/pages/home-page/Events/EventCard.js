@@ -70,6 +70,7 @@ function EventCard(props) {
             <CardHeader
                 action={<ActionMenu card={event}/>}
                 title={title}
+                titleTypographyProps={{style: {textTransform: 'capitalize'}}}
                 subheader={moment(date).format(" MMMM Do, HH:mm")}
 
             />

@@ -6,6 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {useApolloClient} from '@apollo/react-hooks'
 import UserDialog from "./UserDialog";
 import deleteUserMutation from "../../../graphql/user/mutation/delete-user";
+import ConfirmDelete from "./ConfirmDelete";
 
 
 const UserActionMenu = ({user}) => {
@@ -37,23 +38,8 @@ const UserActionMenu = ({user}) => {
 
                 <UserDialog user={user} closeMenu={handleClose}/>
 
-                <MenuItem onClick={() => {
-                    client.mutate({
-                        mutation: deleteUserMutation,
-                        variables: {_id: user._id}
-                    })
-                        .then(() => {
-                            window.location.reload();
-                        })
-                        .catch((error) => {
-                            console.log(error)
-                        })
+                <ConfirmDelete _id={user._id} closeMenu={handleClose}/>
 
-                }}>
-                    <Typography variant={"body1"} color={"textSecondary"}>
-                        Delete
-                    </Typography>
-                </MenuItem>
 
             </Menu>
         </div>
