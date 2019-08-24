@@ -15,6 +15,7 @@ import UserPicker from "../../../components/common/AutoSuggest";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
 import {useApolloClient} from "@apollo/react-hooks";
+import updateEventMutation from '../../../graphql/event/mutation/update-event';
 
 const R = require("ramda");
 
@@ -67,6 +68,7 @@ function EventModal(props) {
     }
 
     const {event, classes} = props
+    const client = useApolloClient()
 
     return (
         <div>
@@ -102,21 +104,27 @@ function EventModal(props) {
 
                 <DialogContent className={classes.cardContent}>
                     <Typography>{event.description}</Typography>
-                    <AttendingUsers users={event.users}/>
+                    <AttendingUsers event={event} users={event.users}/>
                     <div style={{
                         margin: '6px 26px 26px 26px',
                         display: 'flex',
                         flexDirection: 'row'}}>
-                        <UserPicker users={(company && company.users) ? company.users : []} onSelected={selectedUser => {
+                        <UserPicker users={(company && company.users) ? company.users.filter((user) => {
+                            const eventUserIds = event.users.map((user) => user._id)
+                            return eventUserIds.indexOf(user._id) === -1
+                        }) : []} onSelected={selectedUser => {
                             userToAdd = selectedUser
                         }}/>
                         <Button onClick={() => {
-                            const client = useApolloClient()
-                            client.mutate(
-                                require('../../../graphql/event/mutation/update-event'),
-                                {users: event.users.push(userToAdd)}
-                                ).then(value => {
-                                    console.log('Succes MOFO')
+                            event.users.push(userToAdd);
+                            client.mutate({
+                                mutation: updateEventMutation,
+                                variables: {
+                                    _id: event._id,
+                                    users: event.users.map((user) => user._id)
+                                }
+                            }).then(value => {
+                                console.log('Success')
                             });
                             if (userToAdd) {
 

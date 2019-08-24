@@ -14,7 +14,8 @@ import TableBody from "@material-ui/core/TableBody";
 import {Avatar} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
-import UserPicker from "../../../components/common/AutoSuggest";
+import {useApolloClient} from "@apollo/react-hooks";
+import updateEventMutation from '../../../graphql/event/mutation/update-event';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -46,8 +47,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function AttendingUsers({users}) {
+export default function AttendingUsers({event, users}) {
     const classes = useStyles();
+
+    const client = useApolloClient()
 
     React.useEffect(() => {
         return undefined
@@ -76,13 +79,24 @@ export default function AttendingUsers({users}) {
                         <TableBody>
                             {users.length > 0 &&
 
-                            users.map(user => (
+                                users.map(user => (
                                 <TableRow key={user._id}>
                                     <TableCell
-                                        className={classes.tableBody}>{user.name}</TableCell>
+                                        className={classes.tableBody}>  {user.name}</TableCell>
                                     <TableCell className={classes.tableBody}>{user.email}</TableCell>
                                     <TableCell className={classes.tableBody}>
-                                        <Button onClick={() => {}} color="primary">
+                                        <Button onClick={() => {
+                                            const updatedUsers = event.users.filter((value) => value._id !== user._id);
+                                            client.mutate({
+                                                mutation: updateEventMutation,
+                                                variables: {
+                                                    _id: event._id,
+                                                    users: updatedUsers.map((user) => user._id)
+                                                }
+                                            }).then(value => {
+                                                console.log('Success')
+                                            });
+                                        }} color="primary">
                                             Remove
                                         </Button>
                                     </TableCell>

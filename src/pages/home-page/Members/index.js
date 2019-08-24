@@ -58,8 +58,8 @@ const Members = ({classes, company}) => {
                 console.log(error)
                 return null
             }
-            if (!loading && !!data) {
-                const {users} = data.company
+            if (!loading && data && data.company) {
+                const users = data.company.users
 
                 return (
                     <Paper className={classes.root}>
@@ -81,7 +81,7 @@ const Members = ({classes, company}) => {
                                     <TableRow key={user._id}>
                                         <TableCell component="th" scope="row">
                                             <Avatar color={"primary"}>
-                                                {user.name[0]}
+                                                {user.name.charAt(0)}
                                             </Avatar>
                                         </TableCell>
                                         <TableCell
@@ -99,6 +99,8 @@ const Members = ({classes, company}) => {
                         </div>}
                     </Paper>
                 )
+            } else {
+                return <Typography variant={'h5'}>Error</Typography>
             }
         }
         }
