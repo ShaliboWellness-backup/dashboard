@@ -11,7 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import PushNotification from "../../../components/common/PushNotification";
 import TableBody from "@material-ui/core/TableBody";
-import {Avatar} from "@material-ui/core";
+import {Avatar, ExpansionPanelActions} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
 import {useApolloClient} from "@apollo/react-hooks";
@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
     },
     table: {
         marginTop: 0,
+
 
     },
     tableHead: {
@@ -47,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function AttendingUsers({event, users}) {
+export default function AttendingUsers({event, users, children}) {
     const classes = useStyles();
 
     const client = useApolloClient()
@@ -64,8 +65,12 @@ export default function AttendingUsers({event, users}) {
                 id="panel1a-header"
             >
                 <Typography variant={"subtitle2"} className={classes.heading}>Attending Members</Typography>
+
             </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            <ExpansionPanelActions style={{display: 'flex', justifyContent: 'flex-start'}}>
+                {children}
+            </ExpansionPanelActions>
+            <ExpansionPanelDetails style={{minHeight: 125}}>
                 {users.length > 0 ?
                     <Table className={classes.table}>
                         <TableHead>
@@ -79,7 +84,7 @@ export default function AttendingUsers({event, users}) {
                         <TableBody>
                             {users.length > 0 &&
 
-                                users.map(user => (
+                            users.map(user => (
                                 <TableRow key={user._id}>
                                     <TableCell
                                         className={classes.tableBody}>  {user.name}</TableCell>

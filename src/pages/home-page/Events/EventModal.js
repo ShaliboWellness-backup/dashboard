@@ -37,6 +37,8 @@ const styles = (theme) => ({
         flexGrow: 1,
         alignItems: "flex-start",
         paddingTop: 0,
+        
+
     },
     timeCaption: {
         display: 'flex',
@@ -47,6 +49,11 @@ const styles = (theme) => ({
         right: 16,
         bottom: 16,
         color: "white"
+    },
+    scrollbarThumb: {
+        background: 'linear-gradient(0deg, #0098f0 0%, #00f2c3 100%)',
+        opacity: 0.5,
+        borderRadius: 10,
     }
 });
 
@@ -106,10 +113,10 @@ function EventModal(props) {
 
                 <DialogContent className={classes.cardContent}>
                     <Typography>{event.description}</Typography>
-                    <AttendingUsers event={event} users={event.users}/>
-                    <Scrollbars style={{width: '100%', height: 100}}>
+
+                    <AttendingUsers event={event} users={event.users} style={{marginBottom: 20}}>
                         <div style={{
-                            margin: '6px 26px 26px 26px',
+                            marginLeft: 26,
                             display: 'flex',
                             flexDirection: 'row'
                         }}>
@@ -149,7 +156,9 @@ function EventModal(props) {
                                 }
                             }} color="primary">Add</Button>
                         </div>
-                    </Scrollbars>
+                    </AttendingUsers>
+
+
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">

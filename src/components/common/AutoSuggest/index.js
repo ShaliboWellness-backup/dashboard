@@ -1,5 +1,6 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
+import {Scrollbars} from "react-custom-scrollbars";
 
 var users = [];
 var selectedUser = null;
@@ -31,6 +32,15 @@ const renderSuggestion = suggestion => (
     </div>
 );
 
+const renderSuggestionsContainer = ({containerProps, children, query}) => (
+    <Scrollbars
+        style={{width: '100%', height: 300}}
+        {...containerProps}
+    >
+        {children}
+    </Scrollbars>
+)
+
 class UserPicker extends React.Component {
     constructor(props) {
         super(props);
@@ -53,7 +63,7 @@ class UserPicker extends React.Component {
         users = nextProps.users
     }
 
-    onChange = (event, { newValue }) => {
+    onChange = (event, {newValue}) => {
         this.setState({
             value: newValue
         });
@@ -61,7 +71,7 @@ class UserPicker extends React.Component {
 
     // Autosuggest will call this function every time you need to update suggestions.
     // You already implemented this logic above, so just use it.
-    onSuggestionsFetchRequested = ({ value }) => {
+    onSuggestionsFetchRequested = ({value}) => {
         this.setState({
             suggestions: getSuggestions(value)
         });
@@ -75,7 +85,7 @@ class UserPicker extends React.Component {
     };
 
     render() {
-        const { value, suggestions } = this.state;
+        const {value, suggestions} = this.state;
 
         // Autosuggest will pass through all these props to the input.
         const inputProps = {
@@ -94,6 +104,7 @@ class UserPicker extends React.Component {
                 onSuggestionsClearRequested={this.onSuggestionsClearRequested}
                 getSuggestionValue={getSuggestionValue}
                 renderSuggestion={renderSuggestion}
+                renderSuggestionsContainer={renderSuggestionsContainer}
                 inputProps={inputProps}
             />
         );
@@ -138,7 +149,8 @@ const styles = {
         fontSize: "16px",
         borderBottomLeftRadius: "4px",
         borderBottomRightRadius: "4px",
-        zIndex: "2"
+        zIndex: "2",
+        minHeight: 125
     },
     suggestionsList: {
         margin: "0",
