@@ -62,7 +62,7 @@ const styles = () => ({
 
 function UserDialog(props) {
 
-    const {classes, closeMenu, user,} = props
+    const {classes, closeMenu, user} = props
     const client = useApolloClient()
 
     const [open, setOpen] = React.useState(false);
@@ -136,6 +136,8 @@ function UserDialog(props) {
     };
 
     const inputLabel = React.useRef(null);
+
+    const {_id} = user
 
     return (
         <Fragment>
@@ -239,7 +241,7 @@ function UserDialog(props) {
                         {value => (
                             <Button onClick={() => {
                                 const {name, email, company, roles, verified} = values
-                                const variables = {_id: user._id, name, email, company: company._id, roles, verified}
+                                const variables = {_id, name, email, company: company._id, roles, verified}
                                 console.log(variables)
                                 return name === "" ||
                                 email === "" ||

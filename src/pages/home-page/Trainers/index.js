@@ -62,7 +62,7 @@ const Trainers = ({classes, users}) => {
                             </TableCell>
                             <TableCell className={classes.tableBody}>{user.name}</TableCell>
                             <TableCell className={classes.tableBody}>{user.email}</TableCell>
-                            <TableCell className={classes.tableBody}>""</TableCell>
+                            <TableCell className={classes.tableBody}>{user.company ? user.company.name : ''}</TableCell>
                             <TableCell className={classes.tableBody}>Trainer</TableCell>
                         </TableRow>
                     ))
