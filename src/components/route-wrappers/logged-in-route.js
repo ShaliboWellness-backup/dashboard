@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import {Redirect, Route} from 'react-router-dom';
 import {propType} from 'graphql-anywhere';
 import userFragment from '../../graphql/user/fragment/user';
-import {CircularProgress} from "@material-ui/core";
+import {CircularProgress, Typography, Link, Button} from "@material-ui/core";
 import HomePage from "../../pages/home-page";
-// import {isSignedIn} from "../../utils/auth-api";
 import {Query} from "react-apollo";
 import userQuery from "../../graphql/user/query/user";
+import TrainersPage from "../../pages/trainers-page";
+import logo from '../../Assets/logo-white.png'
+import UserRedirect from "../common/UserRedirect";
+
 
 //------------------------------------------------------------------------------
 // COMPONENT:
@@ -38,7 +41,15 @@ const LoggedInRoute = (props) => {
                         }
                         if (!loading && !!data.user) {
                             console.log(data)
-                            return <HomePage user={data.user}/>
+                            if (data.user.roles.includes('admin')) {
+                                return <HomePage user={data.user}/>
+                            }
+                            if (data.user.roles.includes('trainer')) {
+                                return <TrainersPage user={data.user}/>
+                            } else {
+                                return <UserRedirect/>
+                            }
+
                         } else {
                             return <Redirect to={"/login"}/>
                         }

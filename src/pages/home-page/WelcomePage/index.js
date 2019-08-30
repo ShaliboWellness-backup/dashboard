@@ -105,7 +105,7 @@ const WelcomePage = ({classes, company, user}) => {
                     }
                     if (error) {
                         console.log(`error: ${error}`)
-                        return null
+                        return <div>error</div>
                     }
                     let events = []
                     if (!loading && !!data) {
