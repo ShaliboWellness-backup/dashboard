@@ -2,15 +2,20 @@ import gql from 'graphql-tag';
 
 
 const userQuery = gql`
-  query {
-    user {
+{
+  user {
     _id
+    firstName
+    lastName
+    phone
+    email
+    roles
+    company {
+      _id
       name
-      email
-      username
-      roles
     }
   }
+}
 `;
 
 export default userQuery;

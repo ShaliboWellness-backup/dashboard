@@ -37,7 +37,7 @@ const styles = (theme) => ({
         flexGrow: 1,
         alignItems: "flex-start",
         paddingTop: 0,
-        
+
 
     },
     timeCaption: {
@@ -104,9 +104,9 @@ function EventModal(props) {
                     </Typography>
 
                 </CardMedia>
-                <CardHeader
-                    title={`${event.title} with ${R.pathOr("Unknown", ["name"])(event.instructor)}`}
-                    subheader={`${moment(event.date).format(" MMMM Do, HH:mm")} at ${event.location}`}
+                <CardHeader style={{textTransform: 'capitalize'}}
+                            title={`${event.title} with ${R.pathOr("Unknown", ["firstName"])(event.instructor)} ${R.pathOr("", ["lastName"])(event.instructor)}`}
+                            subheader={`${moment(event.date).format(" MMMM Do, HH:mm")} at ${event.location}`}
                     // subheaderTypographyProps={{style: {color: 'white'}}}
                     // titleTypographyProps={{style: {color: 'white'}}}
                 />

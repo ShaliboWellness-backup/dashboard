@@ -87,7 +87,7 @@ export default function AttendingUsers({event, users, children}) {
                             users.map(user => (
                                 <TableRow key={user._id}>
                                     <TableCell
-                                        className={classes.tableBody}>  {user.name}</TableCell>
+                                        className={classes.tableBody}>{user.firstName} {user.lastName}</TableCell>
                                     <TableCell className={classes.tableBody}>{user.email}</TableCell>
                                     <TableCell className={classes.tableBody}>
                                         <Button onClick={() => {

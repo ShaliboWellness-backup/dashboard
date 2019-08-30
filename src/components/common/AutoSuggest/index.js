@@ -12,7 +12,7 @@ const getSuggestions = value => {
     const inputLength = inputValue.length;
 
     return inputLength === 0 ? users : users.filter(lang =>
-        lang.name.toLowerCase().slice(0, inputLength) === inputValue
+        lang.firstName.toLowerCase().slice(0, inputLength) === inputValue
     );
 };
 
@@ -22,13 +22,13 @@ const getSuggestions = value => {
 const getSuggestionValue = suggestion => {
     selectedUser = suggestion;
     if (onSelected != null) onSelected(selectedUser);
-    return suggestion.name;
+    return `${suggestion.firstName} ${suggestion.lastName}`;
 };
 
 // Use your imagination to render suggestions.
 const renderSuggestion = suggestion => (
     <div>
-        {suggestion.name}
+        {suggestion.firstName} {suggestion.lastName}
     </div>
 );
 

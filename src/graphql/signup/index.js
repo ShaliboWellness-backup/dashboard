@@ -2,11 +2,24 @@ import gql from 'graphql-tag';
 
 const signupMutation = gql`
 
-mutation signup($name: String!, $email: String!, $username: String!, $password: String!){
-  signup(name: $name, email: $email, username: $username, password: $password){
+mutation signup(
+  $firstName: String!
+  $lastName: String!
+  $phone: String!
+  $email: String!
+  $password: String!
+) {
+  signup(
+    firstName: $firstName
+    lastName: $lastName
+    phone: $phone
+    email: $email
+    password: $password
+  ) {
     token
   }
 }
+
 `
 
 export default signupMutation

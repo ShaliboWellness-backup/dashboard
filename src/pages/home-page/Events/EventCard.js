@@ -91,7 +91,7 @@ function EventCard(props) {
             <CardActions>
                 <div style={{textAlign: "center", width: "100%"}}>
                     <Typography color={'primary'} variant={'caption'}>
-                        {location} | {R.pathOr("Unknown", ["name"])(instructor)}
+                        {location} | {R.pathOr("Unknown", ["firstName"])(instructor)} {R.pathOr("", ["lastName"])(instructor)}
                     </Typography>
                 </div>
             </CardActions>

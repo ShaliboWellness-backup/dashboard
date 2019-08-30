@@ -19,17 +19,6 @@ import {withApollo} from "react-apollo";
 import {useApolloClient} from '@apollo/react-hooks'
 import SnackbarContext from "../../containers/CustomSnackbar/SnackbarContext";
 
-function MadeWithLove() {
-    return (<div/>
-        //   <Typography variant="body2" color="textSecondary" align="center">
-        //      {'Built with love by the '}
-        //    <Link color="inherit" to="https://material-ui.com/">
-        //      Material-UI
-        //</Link>
-        //  {' team.'}
-        //</Typography>
-    );
-}
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -38,7 +27,8 @@ const useStyles = makeStyles(theme => ({
         },
     },
     paper: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -66,7 +56,9 @@ const SignupPage = (props) => {
     const client = useApolloClient()
 
     const [values, setValues] = React.useState({
-        name: "",
+        firstName: "",
+        lastName: "",
+        phone: "",
         email: "",
         password: "",
         confirmPassword: ""
@@ -81,8 +73,8 @@ const SignupPage = (props) => {
     };
 
     const handleValidate = () => {
-        const {name, email, password, confirmPassword} = values
-        return name && email && password === confirmPassword ? true
+        const {firstName, lastName, phone, email, password, confirmPassword} = values
+        return firstName && lastName && phone && email && password === confirmPassword ? true
             :
             password !== confirmPassword ?
                 snackbar.openSnackbar('error', 'Please make sure your passwords match.')
@@ -112,16 +104,28 @@ const SignupPage = (props) => {
                         Sign up
                     </Typography>
                     <form className={classes.form} noValidate>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={1}>
                             <Grid item xs={12}>
                                 <TextField
                                     variant="outlined"
                                     required
                                     fullWidth
-                                    id="name"
-                                    label="Name"
-                                    name="name"
-                                    onChange={handleChange('name')}
+                                    id="firstName"
+                                    label="First Name"
+                                    name="firstName"
+                                    onChange={handleChange('firstName')}
+
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="lastName"
+                                    label="Last Name"
+                                    name="lastName"
+                                    onChange={handleChange('lastName')}
 
                                 />
                             </Grid>
@@ -135,6 +139,18 @@ const SignupPage = (props) => {
                                     name="email"
                                     autoComplete="email"
                                     onChange={handleChange('email')}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="phone"
+                                    label="Phone"
+                                    name="phone"
+                                    autoComplete="phone"
+                                    onChange={handleChange('phone')}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -178,8 +194,8 @@ const SignupPage = (props) => {
                         color="primary"
                         className={classes.submit}
                         onClick={() => {
-                            const {name, email, password} = values
-                            let variables = {name, email, password, username: email}
+                            const {firstName, lastName, phone, email, password} = values
+                            let variables = {firstName, lastName, phone, email, password,}
                             if (handleValidate()) {
                                 client.mutate({mutation: signupMutation, variables})
                                     .then(({data}) => {
@@ -209,9 +225,7 @@ const SignupPage = (props) => {
                         </Grid>
                     </Grid>
                 </Paper>
-                <Box mt={5}>
-                    <MadeWithLove/>
-                </Box>
+
             </Container>
         </div>
     );

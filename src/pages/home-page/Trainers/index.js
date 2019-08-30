@@ -55,8 +55,8 @@ const Trainers = ({classes, users}) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {trainers.map(user => (
-                        <TableRow key={user.id}>
+                    {trainers.map((user, index) => (
+                        <TableRow key={index}>
                             <TableCell component="th" scope="row">
                                 <Avatar alt={user.first_name} src={user.image}/>
                             </TableCell>

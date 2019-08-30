@@ -6,11 +6,13 @@ const getEventsQuery = gql`
     _id
     title
     instructor{
-      name
+      firstName
+      lastName
       _id
     }
     users{
-      name
+      firstName
+      lastName
       email
     }
     location

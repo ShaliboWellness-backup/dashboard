@@ -55,13 +55,13 @@ const EventDialog = (props) => {
     console.log(event)
 
     const [values, setValues] = React.useState({
-        title: event.title || '',
-        instructor: event.instructor._id || '',
-        location: event.location || '',
-        totalSpotsString: event.totalSpots || '',
-        description: event.description || '',
-        image: event.image || '',
-        date: event.date || new Date(),
+        title: !!event.title ? event.title : '',
+        instructor: !!event.instructor ? event.instructor._id : '',
+        location: !!event.location ? event.location : '',
+        totalSpotsString: !!event.totalSpots ? event.totalSpots : '',
+        description: !!event.description ? event.description : '',
+        image: !!event.image ? event.image : '',
+        date: !!event.date ? event.date : new Date(),
         trainers: []
     });
 
@@ -157,7 +157,8 @@ const EventDialog = (props) => {
                                                           id="outlined-age-simple"/>}
                                 >
                                     {values.trainers.length > 0 ? values.trainers.map((trainer) => (
-                                            <MenuItem key={trainer._id} value={trainer._id}>{trainer.name}</MenuItem>
+                                            <MenuItem key={trainer._id}
+                                                      value={trainer._id}>{trainer.firstName} {trainer.lastName}</MenuItem>
                                         )) :
                                         <MenuItem key={1} value={""}>No Available Trainers</MenuItem>
                                     }

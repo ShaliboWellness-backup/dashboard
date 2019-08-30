@@ -10,7 +10,8 @@ const getCompaniesQuery = gql`
     }
     users {
       _id
-      name
+      firstName
+      lastName
       email
     }
     logo

@@ -8,11 +8,13 @@ query getCompanyEvents($_id: String!){
     title
     instructor{
     _id
-      name
+      firstName
+      lastName
     }
     users{
       _id
-      name
+      firstName
+      lastName
       email
     }
     location

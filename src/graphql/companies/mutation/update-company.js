@@ -35,7 +35,8 @@ mutation updateCompany(
     }
     users {
       _id
-      name
+      firstName
+      lastName
     }
   }
 }

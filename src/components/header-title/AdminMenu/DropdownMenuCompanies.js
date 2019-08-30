@@ -69,7 +69,7 @@ const DropdownMenuCompanies = (props) => {
     useEffect(() => {
         setCompany((companyContext && companyContext.currentCompany) ? companyContext.currentCompany : companies[0])
 
-    }, [companies])
+    }, [companyContext])
 
     function handleClick(event) {
         setAnchorEl(event.currentTarget);
@@ -122,9 +122,9 @@ const DropdownMenuCompanies = (props) => {
                 onClose={handleClose}
             >
                 <NewCompany closeMenu={handleClose}/>
-                {companies.map((company) => {
+                {companies.map((company, index) => {
                         return (
-                            <StyledMenuItem onClick={() => handleChangeCompany(company)}>
+                            <StyledMenuItem key={index} onClick={() => handleChangeCompany(company)}>
                                 <ListItemAvatar>
                                     <Avatar alt={company.name} src={company.logo}/>
                                 </ListItemAvatar>

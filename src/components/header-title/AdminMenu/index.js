@@ -2,12 +2,10 @@ import React from 'react';
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
-import getCompaniesQuery from "../../../graphql/companies/query/companies";
 import DropdownMenuCompanies from "./DropdownMenuCompanies";
 import DropdownMenuProfile from "./DropdownMenuProfile";
 import {IconButton, makeStyles} from "@material-ui/core";
 import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
-import {Query} from 'react-apollo'
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useTheme from '@material-ui/styles/useTheme'
 import MoreVertIcon from "@material-ui/icons/MoreVert"

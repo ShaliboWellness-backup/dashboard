@@ -4,7 +4,9 @@ import gql from "graphql-tag";
 const updateUserMutation = gql`
 mutation updateUser(
   $_id: String!
-  $name: String
+  $firstName: String
+  $lastName: String
+  $phone: String
   $email: String
   $company: String
   $roles: [Role!]
@@ -12,14 +14,18 @@ mutation updateUser(
 ) {
   updateUser(
     _id: $_id
-    name: $name
+    firstName: $firstName
+    lastName: $lastName
+    phone: $phone
     email: $email
     company: $company
     roles: $roles
     verified: $verified
   ) {
     _id
-    name
+    firstName
+      lastName
+      phone
     email
     company{
     _id

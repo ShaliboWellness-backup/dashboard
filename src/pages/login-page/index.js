@@ -13,7 +13,6 @@ import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import background from '../../fakeData/Images/loginBg.jpg'
 import {Paper} from '@material-ui/core'
-import {handleLogin, isSignedIn} from "../../utils/auth-api";
 import {withApollo} from "react-apollo";
 import loginMutation from "../../graphql/login";
 import userQuery from '../../graphql/user/query/user'
@@ -78,7 +77,7 @@ const LoginPage = (props) => {
     });
 
     React.useEffect(() => {
-        isSignedIn(history)
+        // isSignedIn(history)
     })
 
     const handleChange = name => (event) => {
@@ -86,10 +85,10 @@ const LoginPage = (props) => {
         console.log(values)
     };
 
-    const handleSubmit = () => {
-        const {email, password} = values
-        handleLogin(email, password, history)
-    }
+    // const handleSubmit = () => {
+    //     const {email, password} = values
+    //     // handleLogin(email, password, history)
+    // }
 
     console.log(props)
     return (
@@ -155,7 +154,7 @@ const LoginPage = (props) => {
                                 :
                                 client.mutate({
                                     mutation: loginMutation,
-                                    variables: values
+                                    variables: {email: values.email, password: values.password}
                                 })
                                     .then(async ({data, error}) => {
                                         const token = data.login.token;
@@ -167,13 +166,18 @@ const LoginPage = (props) => {
                                                 props.history.push('/')
                                             })
                                             .catch((error) => {
+                                                console.log('error in userQuery')
+                                                snackbar.openSnackbar('error', 'Something went wrong. Please try again later.')
                                                 const code = R.path(['graphQLErrors', 0, "extensions", "exception", "code"])(error);
 
                                                 if (code === 2) props.history.push('/unverified');
                                                 if (code === 1) props.history.push('/login');
+
                                             });
                                     })
                                     .catch((error) => {
+                                        console.log('error in login mutation')
+                                        snackbar.openSnackbar('error', 'Something went wrong. Please try again later.')
                                         const apolloCode = R.path(['graphQLErrors', 0, "extensions", "code"])(error);
                                         if (apolloCode === "BAD_USER_INPUT") {
                                             snackbar.openSnackbar('error', "Wrong email or password")

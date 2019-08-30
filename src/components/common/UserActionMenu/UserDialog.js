@@ -77,7 +77,8 @@ function UserDialog(props) {
     }
 
     const [values, setValues] = React.useState({
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
         company: {_id: ""},
         verified: '',
@@ -97,12 +98,13 @@ function UserDialog(props) {
             .then(({data}) => {
 
                 const {companies} = data
-                const name = R.pathOr('', ['name'])(user)
+                const firstName = R.pathOr('', ['firstName'])(user)
+                const lastName = R.pathOr('', ['lastName'])(user)
                 const email = R.pathOr('', ['email'])(user)
                 const company = R.pathOr({_id: ''}, ['company'])(user)
                 const verified = R.pathOr('', ['verified'])(user)
                 const roles = R.pathOr(['user'], ['roles'])(user)
-                setValues({...values, name, email, company, verified, roles, companies})
+                setValues({...values, firstName, lastName, email, company, verified, roles, companies})
 
                 return null
 
@@ -152,11 +154,21 @@ function UserDialog(props) {
                 <DialogContent>
                     <form className={classes.container} noValidate autoComplete="off">
                         <TextField
-                            id="name"
-                            label="Name"
+                            id="firstName"
+                            label="First Name"
                             className={classes.textField}
-                            value={values.name}
-                            onChange={handleChange('name')}
+                            value={values.firstName}
+                            onChange={handleChange('firstName')}
+                            margin="normal"
+                            variant={"outlined"}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            id="lastName"
+                            label="Last Name"
+                            className={classes.textField}
+                            value={values.lastName}
+                            onChange={handleChange('lastName')}
                             margin="normal"
                             variant={"outlined"}
                             fullWidth={true}
@@ -240,10 +252,19 @@ function UserDialog(props) {
                     <SnackbarContext.Consumer>
                         {value => (
                             <Button onClick={() => {
-                                const {name, email, company, roles, verified} = values
-                                const variables = {_id, name, email, company: company._id, roles, verified}
+                                const {firstName, lastName, email, company, roles, verified} = values
+                                const variables = {
+                                    _id,
+                                    firstName,
+                                    lastName,
+                                    email,
+                                    company: company._id,
+                                    roles,
+                                    verified
+                                }
                                 console.log(variables)
-                                return name === "" ||
+                                return firstName === "" ||
+                                lastName === "" ||
                                 email === "" ||
                                 company === "" ||
                                 roles.length === 0 ?

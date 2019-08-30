@@ -89,7 +89,7 @@ const WelcomePage = ({classes, company, user}) => {
                     transform: "rotate(150deg)", right: -70, top: 40
                 }}/>
                 <Typography variant="h4">
-                    Hey {user ? user.name : ""},
+                    Hey {user ? user.firstName : ""},
                 </Typography>
                 <Typography gutterBottom color="textSecondary" variant="h5">
                     Here Are Your Upcoming Events

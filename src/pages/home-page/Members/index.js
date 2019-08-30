@@ -10,6 +10,7 @@ import {Avatar, CircularProgress, Typography} from "@material-ui/core";
 import PushNotification from "../../../components/common/PushNotification";
 import {Query} from "react-apollo";
 import getCompanyUsersQuery from "../../../graphql/companies/query/get-users";
+import UserActionMenu from "../../../components/common/UserActionMenu";
 
 
 const styles = theme => ({
@@ -71,7 +72,8 @@ const Members = ({classes, company}) => {
                                     </TableCell>
                                     <TableCell className={classes.tableHead}>Name</TableCell>
                                     <TableCell className={classes.tableHead}>Email</TableCell>
-                                    {/*<TableCell className={classes.tableHead}>Company</TableCell>*/}
+                                    <TableCell className={classes.tableHead}>Company</TableCell>
+                                    <TableCell className={classes.tableHead}>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -81,13 +83,17 @@ const Members = ({classes, company}) => {
                                     <TableRow key={user._id}>
                                         <TableCell component="th" scope="row">
                                             <Avatar color={"primary"}>
-                                                {user.name.charAt(0)}
+                                                {user.firstName.charAt(0)}
                                             </Avatar>
                                         </TableCell>
                                         <TableCell
-                                            className={classes.tableBody}>{user.name}</TableCell>
+                                            className={classes.tableBody}>{user.firstName} {user.lastName}</TableCell>
                                         <TableCell className={classes.tableBody}>{user.email}</TableCell>
-                                        {/*<TableCell className={classes.tableBody}>{user.company.name}</TableCell>*/}
+                                        <TableCell
+                                            className={classes.tableBody}>{!!user.company ? user.company.name : "bug"}</TableCell>
+                                        <TableCell>
+                                            <UserActionMenu user={user}/>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

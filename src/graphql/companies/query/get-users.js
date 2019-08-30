@@ -4,10 +4,11 @@ const getCompanyUsersQuery = gql`
 query getCompanyUsers($_id: String!){
    company(_id: $_id){
                 users{
-                  name
+                  firstName
+                  lastName
                   _id
                   email
-                  username
+                  verified
                 }
               }
   

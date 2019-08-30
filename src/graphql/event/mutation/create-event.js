@@ -23,7 +23,8 @@ mutation createEvent(
     _id
     title
     instructor {
-      name
+      firstName
+      lastName
       _id
     }
     location

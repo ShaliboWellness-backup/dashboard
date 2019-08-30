@@ -27,13 +27,15 @@ mutation updateEvent(
     title
     instructor {
       _id
-      name
+      firstName
+      lastName
     }
     location
     date
     image
     users {
-      name
+      firstName
+      lastName
       _id
     }
     totalSpots
