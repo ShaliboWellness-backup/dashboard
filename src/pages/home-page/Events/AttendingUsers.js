@@ -11,7 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import Checkbox from '@material-ui/core/Checkbox'
-import {ExpansionPanelActions} from "@material-ui/core";
+import {ExpansionPanelActions, Switch} from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import {useApolloClient} from "@apollo/react-hooks";
 import updateEventMutation from '../../../graphql/event/mutation/update-event';
@@ -52,17 +52,7 @@ export default function AttendingUsers({event, users, children}) {
     const classes = useStyles();
 
     const client = useApolloClient()
-
-    React.useEffect(() => {
-        users.map((user) => {
-            const {_id} = user
-            setAttendance({...attendance, [_id]: false})
-        })
-        console.log(attendance)
-    }, [users]);
-
-    const [attendance, setAttendance] = React.useState({})
-
+    
     return (
         <ExpansionPanel classes={{root: classes.root}}>
             <ExpansionPanelSummary
@@ -93,10 +83,8 @@ export default function AttendingUsers({event, users, children}) {
                             {users.length > 0 &&
 
                             users.map(user => {
-                                console.log(user)
                                 const {_id} = user
-                                console.log(`user Id is ${_id}`)
-
+                                let oldVerifiedUsers = event.verifiedUsers.map((user) => user._id)
                                 return (
                                     <TableRow key={user._id}>
                                         <TableCell
@@ -105,16 +93,13 @@ export default function AttendingUsers({event, users, children}) {
                                         <TableCell className={classes.tableBody}>
                                             <Checkbox
                                                 color={"primary"}
-                                                checked={attendance[_id]}
+                                                defaultChecked={oldVerifiedUsers.includes(_id)}
                                                 onChange={() => {
-                                                    let oldVerifiedUsers = event.verifiedUsers.map((user) => user._id)
-                                                    console.log('oldVerifiedUsers')
-                                                    console.log(oldVerifiedUsers)
-                                                    let newVerifiedUsers = attendance[_id] ?
+                                                    let newVerifiedUsers = oldVerifiedUsers.includes(_id) ?
                                                         oldVerifiedUsers.filter((userId) => userId !== _id)
                                                         :
                                                         [...oldVerifiedUsers, _id]
-                                                    console.log(newVerifiedUsers)
+
                                                     client.mutate({
                                                         mutation: verifyEventUsersMutation,
                                                         variables:
@@ -123,10 +108,9 @@ export default function AttendingUsers({event, users, children}) {
                                                                 usersIds: newVerifiedUsers
                                                             }
                                                     })
-                                                        .then(({data}) => {
-                                                            console.log(attendance[_id])
-                                                            setAttendance({...attendance, [_id]: !attendance[_id]})
-                                                            console.log(attendance[_id])
+                                                        .then((data) => {
+                                                            console.log(data)
+
                                                         })
                                                         .catch((error) => {
                                                             console.log(error)

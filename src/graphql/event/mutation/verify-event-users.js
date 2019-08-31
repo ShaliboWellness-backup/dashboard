@@ -11,21 +11,6 @@ mutation verifyEventUsers(
     usersIds: $usersIds
   ) {
     title
-    instructor {
-      _id
-      firstName
-      lastName
-    }
-    location
-    date
-    image
-    users {
-      firstName
-      lastName
-      _id
-    }
-    totalSpots
-    description
     verifiedUsers{
     _id
     }

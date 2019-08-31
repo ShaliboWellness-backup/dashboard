@@ -8,6 +8,7 @@ const usersQuery = gql`
       firstName
       lastName
       email
+      phone
       roles
       verified
       company{

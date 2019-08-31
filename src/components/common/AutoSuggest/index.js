@@ -150,7 +150,8 @@ const styles = {
         borderBottomLeftRadius: "4px",
         borderBottomRightRadius: "4px",
         zIndex: "2",
-        minHeight: 125
+        minHeight: 125,
+        
     },
     suggestionsList: {
         margin: "0",

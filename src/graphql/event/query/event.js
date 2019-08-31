@@ -21,6 +21,7 @@ const getEventsQuery = gql`
     totalSpots
     description
     image
+    coins
     verifiedUsers{
       _id
     }

@@ -1,15 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {Redirect, Route} from 'react-router-dom';
-import {propType} from 'graphql-anywhere';
-import userFragment from '../../graphql/user/fragment/user';
 import {CircularProgress} from "@material-ui/core";
 import HomePage from "../../pages/home-page";
 import {Query} from "react-apollo";
 import userQuery from "../../graphql/user/query/user";
 import TrainersPage from "../../pages/trainers-page";
 import UserRedirect from "../common/UserRedirect";
-import CurrentUserContext from '../../containers/CurrentUser/CurrentUserContext'
 
 
 //------------------------------------------------------------------------------
@@ -41,7 +37,6 @@ const LoggedInRoute = (props) => {
                             return <Redirect to={"/login"}/>
                         }
                         if (!loading && !!data.user) {
-                            console.log(data)
                             if (data.user.roles.includes('admin')) {
                                 return <HomePage user={data.user}/>
                             }
@@ -62,13 +57,5 @@ const LoggedInRoute = (props) => {
         />)
 }
 
-LoggedInRoute.propTypes = {
-    curUser: propType(userFragment),
-    component: PropTypes.func.isRequired,
-};
-
-LoggedInRoute.defaultProps = {
-    curUser: null,
-};
 
 export default LoggedInRoute;

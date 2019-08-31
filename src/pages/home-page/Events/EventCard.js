@@ -11,6 +11,7 @@ import moment from 'moment';
 import ActionMenu from "../../../components/common/ActionMenu";
 import EventModal from "./EventModal"
 import CurrentUserContext from "../../../containers/CurrentUser/CurrentUserContext";
+import logo from '../../../Assets/logo-white.png'
 
 const R = require("ramda");
 
@@ -36,6 +37,7 @@ const styles = theme => ({
     },
     cardMedia: {
         paddingTop: '56.25%', // 16:9
+        position: 'relative'
     },
     cardContent: {
         flexGrow: 1,
@@ -45,6 +47,15 @@ const styles = theme => ({
     timeCaption: {
         display: 'flex',
         justifyContent: 'space-between',
+    },
+    coinTag: {
+        backgroundColor: "#85d7a9",
+        paddingRight: 10,
+        paddingLeft: 10,
+        position: "absolute",
+        top: 0,
+        right: 0,
+        zIndex: 100,
     },
 });
 
@@ -59,6 +70,9 @@ function EventCard(props) {
     const time = moment(date).format('llll');
 
     let userContext = React.useContext(CurrentUserContext)
+    console.log(event)
+
+    const coins = R.pathOr('0', ['coins'])(event)
 
     return (
         <Card className={classes.card}>
@@ -68,7 +82,9 @@ function EventCard(props) {
                     image={image}
                     title={title}
                     src=""
-                />
+                >
+                    <div className={classes.coinTag}>{coins} Coins Reward</div>
+                </CardMedia>
 
             </EventModal>
             <CardHeader

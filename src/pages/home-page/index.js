@@ -29,7 +29,7 @@ const HomePage = (props) => {
     const {currentCompany} = value;
     const {user} = props
     let userContext = React.useContext(CurrentUserContext)
-    
+
     React.useEffect(() => {
         userContext.handleSetUser(props.user)
     }, [props.user])
@@ -67,26 +67,7 @@ const HomePage = (props) => {
                                    }
                                    }
                                </Query>}/>
-                        <Route exact path="/all-users"
-                               render={props => <Query query={usersQuery} pollInterval={500}>
-                                   {({loading, error, data}) => {
-                                       let users = []
-                                       if (loading) {
-                                           return <div style={{width: "100%", textAlign: "center"}}>
-                                               <CircularProgress/>
-                                           </div>
-                                       }
-                                       if (error) {
-                                           console.log(error)
-                                           return null
-                                       }
-                                       if (!loading && data.users) {
-                                           let {users} = data
-                                           return <AllUsers {...props} users={users}/>
-                                       }
-                                   }
-                                   }
-                               </Query>}/>
+                        <Route exact path="/all-users" render={props => <AllUsers {...props}/>}/>
                         <Route exact path="/members"
                                render={props => <Members {...props} company={currentCompany}/>}/>
                         <Route path="/promotions"

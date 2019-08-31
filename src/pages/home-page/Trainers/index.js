@@ -8,6 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {Avatar, Typography} from "@material-ui/core";
 import PushNotification from "../../../components/common/PushNotification";
+import {stringToColor} from "../../../utils/random-color";
 
 const styles = theme => ({
     root: {
@@ -50,6 +51,7 @@ const Trainers = ({classes, users}) => {
                         </TableCell>
                         <TableCell className={classes.tableHead}>Name</TableCell>
                         <TableCell className={classes.tableHead}>Email</TableCell>
+                        <TableCell className={classes.tableHead}>Phone</TableCell>
                         <TableCell className={classes.tableHead}>Company</TableCell>
                         <TableCell className={classes.tableHead}>Role</TableCell>
                     </TableRow>
@@ -58,10 +60,16 @@ const Trainers = ({classes, users}) => {
                     {trainers.map((user, index) => (
                         <TableRow key={index}>
                             <TableCell component="th" scope="row">
-                                <Avatar alt={user.first_name} src={user.image}/>
+                                {!!user.image ?
+                                    <Avatar alt={user.first_name} src={user.image}/>
+                                    :
+                                    <Avatar
+                                        style={{backgroundColor: stringToColor(user.firstName)}}> {user.firstName[0]}</Avatar>
+                                }
                             </TableCell>
                             <TableCell className={classes.tableBody}>{user.firstName} {user.lastName}</TableCell>
                             <TableCell className={classes.tableBody}>{user.email}</TableCell>
+                            <TableCell className={classes.tableBody}>{user.phone}</TableCell>
                             <TableCell className={classes.tableBody}>{user.company ? user.company.name : ''}</TableCell>
                             <TableCell className={classes.tableBody}>Trainer</TableCell>
                         </TableRow>

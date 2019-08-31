@@ -9,6 +9,7 @@ query getCompanyUsers($_id: String!){
                   _id
                   email
                   verified
+                  phone
                 }
               }
   

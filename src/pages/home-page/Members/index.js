@@ -11,6 +11,7 @@ import PushNotification from "../../../components/common/PushNotification";
 import {Query} from "react-apollo";
 import getCompanyUsersQuery from "../../../graphql/companies/query/get-users";
 import UserActionMenu from "../../../components/common/UserActionMenu";
+import {stringToColor} from "../../../utils/random-color";
 
 
 const styles = theme => ({
@@ -72,7 +73,7 @@ const Members = ({classes, company}) => {
                                     </TableCell>
                                     <TableCell className={classes.tableHead}>Name</TableCell>
                                     <TableCell className={classes.tableHead}>Email</TableCell>
-                                    <TableCell className={classes.tableHead}>Company</TableCell>
+                                    <TableCell className={classes.tableHead}>Phone</TableCell>
                                     <TableCell className={classes.tableHead}>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -82,15 +83,16 @@ const Members = ({classes, company}) => {
                                 users.map(user => (
                                     <TableRow key={user._id}>
                                         <TableCell component="th" scope="row">
-                                            <Avatar color={"primary"}>
+                                            <Avatar style={{backgroundColor: stringToColor(user.firstName)}}>
                                                 {user.firstName.charAt(0)}
                                             </Avatar>
                                         </TableCell>
                                         <TableCell
                                             className={classes.tableBody}>{user.firstName} {user.lastName}</TableCell>
                                         <TableCell className={classes.tableBody}>{user.email}</TableCell>
-                                        <TableCell
-                                            className={classes.tableBody}>{!!user.company ? user.company.name : "bug"}</TableCell>
+                                        <TableCell className={classes.tableBody}>
+                                            {user.phone}
+                                        </TableCell>
                                         <TableCell>
                                             <UserActionMenu user={user}/>
                                         </TableCell>
