@@ -10,11 +10,9 @@ import scTheme from '../theme/sc';
 import theme from '../theme/mui';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Routes from '../routes'
-import GlobalDataProvider from '../global-data-provider';
 import CurrentCompany from "../containers/CurrentCompany";
-import HeaderTitle from "../components/header-title";
-import HomePage from "../pages/home-page";
 import CustomSnackbar from "../containers/CustomSnackbar";
+import CurrentUser from "../containers/CurrentUser";
 
 // Given that we are implementing App Shell Architecture and, therefore,
 // injecting (via reactDOM.render) the Header and Main components into
@@ -35,11 +33,13 @@ const App = () => (
             <ApolloProvider client={client}>
                 <MuiThemeProvider theme={theme}>
                     <CssBaseline/>
-                    <CurrentCompany>
-                        <CustomSnackbar>
-                            <Routes/>
-                        </CustomSnackbar>
-                    </CurrentCompany>
+                    <CurrentUser>
+                        <CurrentCompany>
+                            <CustomSnackbar>
+                                <Routes/>
+                            </CustomSnackbar>
+                        </CurrentCompany>
+                    </CurrentUser>
                     {/*<GlobalDataProvider>*/}
                     {/**/}
                     {/*</GlobalDataProvider>*/}

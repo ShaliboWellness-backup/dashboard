@@ -9,13 +9,13 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import PushNotification from "../../../components/common/PushNotification";
 import TableBody from "@material-ui/core/TableBody";
-import {Avatar, ExpansionPanelActions} from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
+import Checkbox from '@material-ui/core/Checkbox'
+import {ExpansionPanelActions} from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import {useApolloClient} from "@apollo/react-hooks";
 import updateEventMutation from '../../../graphql/event/mutation/update-event';
+import verifyEventUsersMutation from "../../../graphql/event/mutation/verify-event-users";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -54,8 +54,14 @@ export default function AttendingUsers({event, users, children}) {
     const client = useApolloClient()
 
     React.useEffect(() => {
-        return undefined
+        users.map((user) => {
+            const {_id} = user
+            setAttendance({...attendance, [_id]: false})
+        })
+        console.log(attendance)
     }, [users]);
+
+    const [attendance, setAttendance] = React.useState({})
 
     return (
         <ExpansionPanel classes={{root: classes.root}}>
@@ -77,37 +83,82 @@ export default function AttendingUsers({event, users, children}) {
                             <TableRow>
                                 <TableCell className={classes.tableHead}>Name</TableCell>
                                 <TableCell className={classes.tableHead}>Email</TableCell>
+                                <TableCell className={classes.tableHead}>Attended</TableCell>
                                 <TableCell className={classes.tableHead}>Remove</TableCell>
+
                                 {/*<TableCell className={classes.tableHead}>Company</TableCell>*/}
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {users.length > 0 &&
 
-                            users.map(user => (
-                                <TableRow key={user._id}>
-                                    <TableCell
-                                        className={classes.tableBody}>{user.firstName} {user.lastName}</TableCell>
-                                    <TableCell className={classes.tableBody}>{user.email}</TableCell>
-                                    <TableCell className={classes.tableBody}>
-                                        <Button onClick={() => {
-                                            const updatedUsers = event.users.filter((value) => value._id !== user._id);
-                                            client.mutate({
-                                                mutation: updateEventMutation,
-                                                variables: {
-                                                    _id: event._id,
-                                                    users: updatedUsers.map((user) => user._id)
-                                                }
-                                            }).then(value => {
-                                                console.log('Success')
-                                            });
-                                        }} color="primary">
-                                            Remove
-                                        </Button>
-                                    </TableCell>
-                                    {/*<TableCell className={classes.tableBody}>{user.company.name}</TableCell>*/}
-                                </TableRow>
-                            ))}
+                            users.map(user => {
+                                console.log(user)
+                                const {_id} = user
+                                console.log(`user Id is ${_id}`)
+
+                                return (
+                                    <TableRow key={user._id}>
+                                        <TableCell
+                                            className={classes.tableBody}>{user.firstName} {user.lastName}</TableCell>
+                                        <TableCell className={classes.tableBody}>{user.email}</TableCell>
+                                        <TableCell className={classes.tableBody}>
+                                            <Checkbox
+                                                color={"primary"}
+                                                checked={attendance[_id]}
+                                                onChange={() => {
+                                                    let oldVerifiedUsers = event.verifiedUsers.map((user) => user._id)
+                                                    console.log('oldVerifiedUsers')
+                                                    console.log(oldVerifiedUsers)
+                                                    let newVerifiedUsers = attendance[_id] ?
+                                                        oldVerifiedUsers.filter((userId) => userId !== _id)
+                                                        :
+                                                        [...oldVerifiedUsers, _id]
+                                                    console.log(newVerifiedUsers)
+                                                    client.mutate({
+                                                        mutation: verifyEventUsersMutation,
+                                                        variables:
+                                                            {
+                                                                _id: event._id,
+                                                                usersIds: newVerifiedUsers
+                                                            }
+                                                    })
+                                                        .then(({data}) => {
+                                                            console.log(attendance[_id])
+                                                            setAttendance({...attendance, [_id]: !attendance[_id]})
+                                                            console.log(attendance[_id])
+                                                        })
+                                                        .catch((error) => {
+                                                            console.log(error)
+                                                        })
+
+                                                }}
+                                                value="checkedA"
+                                                inputProps={{
+                                                    'aria-label': 'primary checkbox',
+                                                }}
+                                            />
+                                        </TableCell>
+                                        <TableCell className={classes.tableBody}>
+                                            <Button onClick={() => {
+                                                const updatedUsers = event.users.filter((value) => value._id !== user._id);
+                                                client.mutate({
+                                                    mutation: updateEventMutation,
+                                                    variables: {
+                                                        _id: event._id,
+                                                        users: updatedUsers.map((user) => user._id)
+                                                    }
+                                                }).then(value => {
+                                                    console.log('Success')
+                                                });
+                                            }} color="primary">
+                                                Remove
+                                            </Button>
+                                        </TableCell>
+
+                                    </TableRow>
+                                )
+                            })}
                         </TableBody>
                     </Table>
                     : <div className={classes.message}>

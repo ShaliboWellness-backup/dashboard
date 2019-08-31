@@ -11,6 +11,7 @@ const getEventsQuery = gql`
       _id
     }
     users{
+    _id
       firstName
       lastName
       email
@@ -20,6 +21,9 @@ const getEventsQuery = gql`
     totalSpots
     description
     image
+    verifiedUsers{
+      _id
+    }
   }
 }
 `

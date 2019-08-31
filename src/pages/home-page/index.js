@@ -16,6 +16,7 @@ import AllUsers from "./AllUsers";
 import usersQuery from "../../graphql/user/query/users";
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useTheme from '@material-ui/styles/useTheme'
+import CurrentUserContext from "../../containers/CurrentUser/CurrentUserContext";
 
 const R = require("ramda")
 
@@ -27,6 +28,11 @@ const HomePage = (props) => {
     const value = React.useContext(CurrentCompanyContext)
     const {currentCompany} = value;
     const {user} = props
+    let userContext = React.useContext(CurrentUserContext)
+    
+    React.useEffect(() => {
+        userContext.handleSetUser(props.user)
+    }, [props.user])
 
 
     return (

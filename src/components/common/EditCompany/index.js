@@ -1,13 +1,26 @@
 import React, {Fragment, useEffect} from 'react';
 import {withStyles} from '@material-ui/styles'
 import {useApolloClient} from '@apollo/react-hooks'
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField} from "@material-ui/core";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    MenuItem,
+    TextField
+} from "@material-ui/core";
 import CreateCompanyMutation from "../../../graphql/companies/mutation/create-company"
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Zoom from "@material-ui/core/Zoom";
 import Tooltip from "@material-ui/core/Tooltip";
 import updateCompanyMutation from "../../../graphql/companies/mutation/update-company";
 import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 
 
 const styles = () => ({
@@ -21,6 +34,17 @@ const styles = () => ({
         marginLeft: 8,
         marginRight: 8,
     },
+    selectInput: {
+        marginLeft: 8,
+        marginRight: 8,
+        width: '100%',
+        marginTop: 16,
+        borderWidth: 1,
+        borderColor: "black"
+    },
+    test: {
+        border: '1px solid #e0e0e0'
+    }
 });
 
 function EditCompany({classes, company}) {
@@ -39,11 +63,17 @@ function EditCompany({classes, company}) {
         name: "",
         emailSuffix: "",
         logo: "",
+        isPublic: true
     });
 
     useEffect(() => {
             // Update the document title using the browser API
-            setValues({name: company.name, emailSuffix: company.emailSuffix, logo: company.logo})
+            setValues({
+                name: company.name,
+                emailSuffix: company.emailSuffix,
+                logo: company.logo,
+                isPublic: company.isPublic
+            })
         }, [company]
     )
     ;
@@ -96,6 +126,21 @@ function EditCompany({classes, company}) {
                             variant={"outlined"}
                             fullWidth={true}
                         />
+                        <FormControl variant="outlined" className={classes.selectInput}>
+                            <InputLabel htmlFor="outlined-age-simple">
+                                Public
+                            </InputLabel>
+                            <Select
+                                MenuProps={{classes: {list: classes.test}}}
+                                value={values.isPublic}
+                                onChange={handleChange('isPublic')}
+                                input={<OutlinedInput labelWidth={50} name="verified"
+                                                      id="outlined-age-simple"/>}
+                            >
+                                <MenuItem key={1} value={true}>True</MenuItem>
+                                <MenuItem key={2} value={false}>False</MenuItem>
+                            </Select>
+                        </FormControl>
 
                     </form>
                 </DialogContent>
@@ -106,7 +151,7 @@ function EditCompany({classes, company}) {
                     <SnackbarContext.Consumer>
                         {value => {
                             return <Button onClick={() => {
-                                const {name, emailSuffix, logo} = values
+                                const {name, emailSuffix, logo, isPublic} = values
                                 return name === "" ||
                                 emailSuffix === "" ||
                                 logo === "" ?
@@ -114,7 +159,7 @@ function EditCompany({classes, company}) {
                                     :
                                     client.mutate({
                                         mutation: updateCompanyMutation,
-                                        variables: {_id: company._id, name, emailSuffix, logo}
+                                        variables: {_id: company._id, name, emailSuffix, logo, isPublic}
                                     }).then(() => {
                                         handleClose()
                                         window.location.reload()

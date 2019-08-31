@@ -16,6 +16,7 @@ const getCompaniesQuery = gql`
     }
     logo
     emailSuffix
+    isPublic
   }
 }
             `

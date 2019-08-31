@@ -60,7 +60,7 @@ const Trainers = ({classes, users}) => {
                             <TableCell component="th" scope="row">
                                 <Avatar alt={user.first_name} src={user.image}/>
                             </TableCell>
-                            <TableCell className={classes.tableBody}>{user.name}</TableCell>
+                            <TableCell className={classes.tableBody}>{user.firstName} {user.lastName}</TableCell>
                             <TableCell className={classes.tableBody}>{user.email}</TableCell>
                             <TableCell className={classes.tableBody}>{user.company ? user.company.name : ''}</TableCell>
                             <TableCell className={classes.tableBody}>Trainer</TableCell>

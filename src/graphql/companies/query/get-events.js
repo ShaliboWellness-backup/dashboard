@@ -22,6 +22,9 @@ query getCompanyEvents($_id: String!){
     totalSpots
     description
     image
+    verifiedUsers{
+      _id
+    }
   }
                 }
               }

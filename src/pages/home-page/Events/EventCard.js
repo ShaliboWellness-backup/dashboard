@@ -10,6 +10,7 @@ import {CardHeader, Divider} from '@material-ui/core';
 import moment from 'moment';
 import ActionMenu from "../../../components/common/ActionMenu";
 import EventModal from "./EventModal"
+import CurrentUserContext from "../../../containers/CurrentUser/CurrentUserContext";
 
 const R = require("ramda");
 
@@ -56,6 +57,9 @@ function EventCard(props) {
     };
     const {classes} = props;
     const time = moment(date).format('llll');
+
+    let userContext = React.useContext(CurrentUserContext)
+
     return (
         <Card className={classes.card}>
             <EventModal event={event}>
@@ -68,7 +72,7 @@ function EventCard(props) {
 
             </EventModal>
             <CardHeader
-                action={<ActionMenu card={event}/>}
+                action={userContext.currentUser.roles.includes('admin') ? <ActionMenu card={event}/> : null}
                 title={title}
                 titleTypographyProps={{style: {textTransform: 'capitalize'}}}
                 subheader={moment(date).format(" MMMM Do, HH:mm")}
