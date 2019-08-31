@@ -86,6 +86,7 @@ function EventModal(props) {
             </div>
             <Dialog
                 fullWidth
+                fullScreen={true}
                 maxWidth={"sm"}
                 open={open}
                 onClose={handleClose}

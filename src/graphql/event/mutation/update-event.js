@@ -12,6 +12,7 @@ mutation updateEvent(
   $description: String
   $image: String
   $date: String
+  $coins: Int
 ) {
   updateEvent(
     _id: $_id
@@ -23,6 +24,7 @@ mutation updateEvent(
     description: $description
     image: $image
     date: $date
+    coins: $coins
   ) {
     title
     instructor {
@@ -40,6 +42,7 @@ mutation updateEvent(
     }
     totalSpots
     description
+    coins
   }
 }
 

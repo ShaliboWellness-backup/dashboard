@@ -10,6 +10,7 @@ mutation createEvent(
   $description: String!
   $image: String!
   $date: String!
+  $coins: Int!
 ) {
   createEvent(
     title: $title
@@ -19,6 +20,7 @@ mutation createEvent(
     image: $image
     totalSpots: $totalSpots
     description: $description
+    coins: $coins
   ) {
     _id
     title
@@ -32,6 +34,7 @@ mutation createEvent(
     image
     totalSpots
     description
+    coins
   }
 }
 

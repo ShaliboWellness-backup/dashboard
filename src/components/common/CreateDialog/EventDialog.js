@@ -62,6 +62,7 @@ const EventDialog = (props) => {
         description: !!event.description ? event.description : '',
         image: !!event.image ? event.image : '',
         date: !!event.date ? event.date : new Date(),
+        coinsString: !!event.coins ? event.coins : "100",
         trainers: []
     });
 
@@ -108,12 +109,13 @@ const EventDialog = (props) => {
 
 
     let {
-        title, instructor, location, totalSpotsString, description, image, date,
+        title, instructor, location, totalSpotsString, coinsString, description, image, date,
     } = values;
 
     let totalSpots = parseInt(totalSpotsString)
+    let coins = parseInt(coinsString)
     const formData = {
-        title, instructor, location, totalSpots, description, image, date,
+        title, instructor, location, totalSpots, coins, description, image, date,
     };
 
     const takenSpots = props.action === 'create' ? 0 : event.takenSpots
@@ -181,6 +183,16 @@ const EventDialog = (props) => {
                                 className={classes.textField}
                                 value={values.totalSpotsString}
                                 onChange={handleChange('totalSpotsString')}
+                                margin="normal"
+                                variant={"outlined"}
+                                type={"number"}
+                            />
+                            <TextField
+                                id="coins"
+                                label="Coins"
+                                className={classes.textField}
+                                value={values.coinsString}
+                                onChange={handleChange('coinsString')}
                                 margin="normal"
                                 variant={"outlined"}
                                 type={"number"}
