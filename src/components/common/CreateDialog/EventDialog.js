@@ -49,6 +49,7 @@ const styles = () => ({
 
 const EventDialog = (props) => {
 
+
     const client = useApolloClient()
 
     const {event} = props;

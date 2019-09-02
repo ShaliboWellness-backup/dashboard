@@ -13,7 +13,8 @@ import {
     FormLabel,
     MenuItem,
     TextField,
-    Typography
+    Typography,
+    useMediaQuery, useTheme
 } from "@material-ui/core";
 import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
 import {useApolloClient} from '@apollo/react-hooks'
@@ -62,6 +63,7 @@ const styles = () => ({
 
 function UserDialog(props) {
 
+
     const {classes, closeMenu, user} = props
     const client = useApolloClient()
 
@@ -90,6 +92,7 @@ function UserDialog(props) {
     React.useEffect(() => {
         getCompanies()
     }, [props.user]);
+
 
     const getCompanies = () => {
         client.query({
@@ -141,6 +144,9 @@ function UserDialog(props) {
 
     const {_id} = user
 
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
     return (
         <Fragment>
             <MenuItem onClick={() => handleClickOpen()}>
@@ -149,7 +155,7 @@ function UserDialog(props) {
                 </Typography>
             </MenuItem>
 
-            <Dialog maxWidth={"sm"} fullWidth scroll={"body"} open={open} onClose={handleClose}>
+            <Dialog fullScreen={fullScreen} maxWidth={"sm"} fullWidth scroll={"body"} open={open} onClose={handleClose}>
                 <DialogTitle id="form-dialog-title">Edit User</DialogTitle>
                 <DialogContent>
                     <form className={classes.container} noValidate autoComplete="off">

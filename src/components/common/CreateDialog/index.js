@@ -1,12 +1,13 @@
 import React, {Fragment} from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import {IconButton, Paper, Typography} from '@material-ui/core';
+import {IconButton, Paper, Typography, useTheme} from '@material-ui/core';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import PromotionDialog from './PromotionDialog';
 import EventDialog from './EventDialog';
 import Add from '@material-ui/icons/Add';
 import MenuItem from '@material-ui/core/MenuItem';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const R = require("ramda");
 
@@ -26,6 +27,8 @@ export default function CreateDialog(props) {
         setOpen(false);
     }
 
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
         <Fragment>
@@ -52,7 +55,7 @@ export default function CreateDialog(props) {
             )}
 
             <MuiPickersUtilsProvider utils={MomentUtils}>
-                <Dialog maxWidth={"sm"} scroll={"body"} open={open} onClose={handleClose}
+                <Dialog maxWidth={"sm"} scroll={"body"} fullScreen={fullScreen} open={open} onClose={handleClose}
                         aria-labelledby="form-dialog-title">
                     {props.type === 'event' ?
                         <EventDialog action={props.action} handleClose={handleClose} event={props.data}/> :

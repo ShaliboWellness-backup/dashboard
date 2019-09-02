@@ -9,7 +9,7 @@ import {
     DialogTitle,
     IconButton,
     MenuItem,
-    TextField
+    TextField, useTheme
 } from "@material-ui/core";
 import CreateCompanyMutation from "../../../graphql/companies/mutation/create-company"
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -21,6 +21,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 
 const styles = () => ({
@@ -66,6 +67,9 @@ function EditCompany({classes, company}) {
         isPublic: true
     });
 
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
     useEffect(() => {
             // Update the document title using the browser API
             setValues({
@@ -92,7 +96,7 @@ function EditCompany({classes, company}) {
                 </IconButton>
             </Tooltip>
 
-            <Dialog maxWidth={"xs"} scroll={"body"} open={open} onClose={handleClose}>
+            <Dialog fullScreen={fullScreen} maxWidth={"xs"} scroll={"body"} open={open} onClose={handleClose}>
                 <DialogTitle id="form-dialog-title">Edit Company Info</DialogTitle>
                 <DialogContent>
                     <form className={classes.container} noValidate autoComplete="off">

@@ -11,7 +11,7 @@ import {
     ListItemIcon,
     ListItemText,
     MenuItem,
-    TextField
+    TextField, useTheme, useMediaQuery
 } from "@material-ui/core";
 import CreateCompanyMutation from "../../../graphql/companies/mutation/create-company"
 import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
@@ -54,6 +54,9 @@ function NewCompany({classes, closeMenu}) {
     });
 
 
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
     const handleChange = name => (event) => {
         setValues({...values, [name]: event.target.value});
     };
@@ -69,7 +72,7 @@ function NewCompany({classes, closeMenu}) {
                     primary={"New Company"}/>
             </MenuItem>
 
-            <Dialog maxWidth={"xs"} scroll={"body"} open={open} onClose={handleClose}>
+            <Dialog maxWidth={"xs"} fullScreen={fullScreen} scroll={"body"} open={open} onClose={handleClose}>
                 <DialogTitle id="form-dialog-title">Create New Company</DialogTitle>
                 <DialogContent>
                     <form className={classes.container} noValidate autoComplete="off">
