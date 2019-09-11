@@ -2,13 +2,10 @@ import React from 'react';
 import {IconButton, Typography} from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert"
 import Menu from "@material-ui/core/Menu";
-import CreateDialog from "../CreateDialog";
-import {Mutation} from "react-apollo";
 import MenuItem from "@material-ui/core/MenuItem";
-import PushNotification from "../PushNotification";
-import deletePromotionMutation from "../../../graphql/promotion/mutation/delete-promotion";
-import deleteEventMutation from "../../../graphql/event/mutation/delete-event";
 import {useApolloClient} from '@apollo/react-hooks'
+import deleteEventMakerMutation from "../../../graphql/event-maker/mutation/delete-event-maker";
+import EventMakerDialog from './EventMakerDialog'
 
 
 const ActionMenu = ({card, promotion}) => {
@@ -23,7 +20,6 @@ const ActionMenu = ({card, promotion}) => {
     }
 
     const client = useApolloClient()
-    const mutation = promotion ? deletePromotionMutation : deleteEventMutation
 
     return (
         <div>
@@ -40,12 +36,11 @@ const ActionMenu = ({card, promotion}) => {
                 transformOrigin={{horizontal: "right", vertical: "top"}}
             >
 
-                <CreateDialog type={promotion ? 'promotion' : 'event-maker.js'} data={card} handleClose={handleClose}/>
-
+                <EventMakerDialog action={'edit'} event={card} handleClose={handleClose}/>
 
                 <MenuItem onClick={() => {
                     client.mutate({
-                        mutation,
+                        mutation: deleteEventMakerMutation,
                         variables: {_id: card._id}
                     })
                         .then(() => {
@@ -60,8 +55,6 @@ const ActionMenu = ({card, promotion}) => {
                         Delete
                     </Typography>
                 </MenuItem>
-
-                {promotion ? null : <PushNotification handleClick={handleClose}/>}
 
 
             </Menu>
