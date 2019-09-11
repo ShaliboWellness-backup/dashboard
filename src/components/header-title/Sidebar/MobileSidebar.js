@@ -15,6 +15,7 @@ import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
 import PermIdentity from '@material-ui/icons/PermIdentity';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
+import Timer from '@material-ui/icons/TimerOutlined'
 
 const R = require("ramda");
 
@@ -127,6 +128,20 @@ export default function MobileSidebar() {
                         <ShoppingBasket fontSize={"small"} style={{color: '#fff'}}/>
                     </ListItemIcon>
                     <ListItemText classes={{primary: classes.text}} primary="Promotions"
+                                  primaryTypographyProps={{variant: 'body2'}}/>
+                </ListItem>
+
+                <ListItem
+                    button
+                    selected={selectedIndex === 4}
+                    onClick={event => handleListItemClick(event, 4)}
+                    component={Link}
+                    to="/event-maker"
+                >
+                    <ListItemIcon>
+                        <Timer fontSize={"small"} style={{color: '#fff'}}/>
+                    </ListItemIcon>
+                    <ListItemText classes={{primary: classes.text}} primary="Event Maker"
                                   primaryTypographyProps={{variant: 'body2'}}/>
                 </ListItem>
 

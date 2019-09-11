@@ -12,6 +12,7 @@ import {Avatar, ListItemAvatar, ListItemSecondaryAction, Paper} from '@material-
 import {Link} from 'react-router-dom';
 import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
 import EditCompany from "../../common/EditCompany";
+import Timer from '@material-ui/icons/TimerOutlined'
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 
@@ -119,6 +120,20 @@ const Sidebar = ({classes}) => {
                         <ShoppingBasket fontSize={"small"} style={{color: '#fff'}}/>
                     </ListItemIcon>
                     <ListItemText classes={{primary: classes.text}} primary="Promotions"
+                                  primaryTypographyProps={{variant: 'body2'}}/>
+                </ListItem>
+
+                <ListItem
+                    button
+                    selected={selectedIndex === 4}
+                    onClick={event => handleListItemClick(event, 4)}
+                    component={Link}
+                    to="/event-maker"
+                >
+                    <ListItemIcon>
+                        <Timer fontSize={"small"} style={{color: '#fff'}}/>
+                    </ListItemIcon>
+                    <ListItemText classes={{primary: classes.text}} primary="Event Maker"
                                   primaryTypographyProps={{variant: 'body2'}}/>
                 </ListItem>
 

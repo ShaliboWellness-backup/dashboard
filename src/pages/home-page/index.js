@@ -17,6 +17,7 @@ import usersQuery from "../../graphql/user/query/users";
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useTheme from '@material-ui/styles/useTheme'
 import CurrentUserContext from "../../containers/CurrentUser/CurrentUserContext";
+import EventMaker from './EventMaker'
 
 const R = require("ramda")
 
@@ -126,7 +127,7 @@ const HomePage = (props) => {
                                        }
                                    </Query>}
                         />
-                        {/* <Route path="/statistics" component={Statistics}/> */}
+                        <Route path="/event-maker" component={EventMaker}/>
                     </Switch>
                 </div>
 
