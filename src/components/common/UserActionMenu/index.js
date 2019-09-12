@@ -9,7 +9,7 @@ import deleteUserMutation from "../../../graphql/user/mutation/delete-user";
 import ConfirmDelete from "./ConfirmDelete";
 
 
-const UserActionMenu = ({user}) => {
+const UserActionMenu = ({user, refetch}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     function handleClick(event) {
@@ -38,7 +38,7 @@ const UserActionMenu = ({user}) => {
 
                 <UserDialog user={user} closeMenu={handleClose}/>
 
-                <ConfirmDelete _id={user._id} closeMenu={handleClose}/>
+                <ConfirmDelete _id={user._id} closeMenu={handleClose} refetch={refetch}/>
 
 
             </Menu>

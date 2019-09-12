@@ -122,6 +122,7 @@ export default function CustomSnackbar(props) {
                 variant="success"
                 className={classes.margin}
                 message={settings.message}
+                onClose={closeSnackbar}
 
             />
             break;

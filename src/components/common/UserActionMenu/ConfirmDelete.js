@@ -11,9 +11,10 @@ import {useApolloClient} from '@apollo/react-hooks'
 import SnackbarContext from '../../../containers/CustomSnackbar/SnackbarContext'
 import MenuItem from "@material-ui/core/MenuItem";
 import deleteUserMutation from "../../../graphql/user/mutation/delete-user";
+import searchUsersQuery from "../../../graphql/user/query/search-users";
 
 
-const ConfirmDelete = ({_id, closeMenu}) => {
+const ConfirmDelete = ({_id, closeMenu, refetch}) => {
     const [open, setOpen] = React.useState(false);
 
     function handleClickOpen() {
@@ -56,11 +57,13 @@ const ConfirmDelete = ({_id, closeMenu}) => {
                                     .then(() => {
                                         value.openSnackbar('success', 'User Deleted Successfully')
                                         console.log('user deleted')
-                                        //window.location.reload();
+                                        handleClose()
+                                        refetch()
                                     })
                                     .catch((error) => {
                                         console.log(error)
                                         value.openSnackbar('error', 'Could not delete user')
+                                        handleClose()
                                     })
 
                             }} color='inherit'>

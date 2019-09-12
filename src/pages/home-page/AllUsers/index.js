@@ -19,6 +19,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useTheme from '@material-ui/styles/useTheme'
 import searchUsersQuery from "../../../graphql/user/query/search-users";
 import {Scrollbars} from "react-custom-scrollbars";
+import CreateUserDialog from "../../../components/common/CreateUserDialog";
 
 
 const R = require("ramda");
@@ -28,7 +29,8 @@ const styles = theme => ({
     root: {
         width: '100%',
         overflowX: 'auto',
-        padding: 15
+        padding: 15,
+        maxHeight: 575
     },
     table: {
         minWidth: 650,
@@ -69,7 +71,6 @@ const AllUsers = ({classes}) => {
     const client = useApolloClient()
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
     const [moreToLoad, setMoreToLoad] = React.useState(true);
     const [loading, setLoading] = React.useState(true);
     const [state, setState] = React.useState({});
@@ -85,11 +86,11 @@ const AllUsers = ({classes}) => {
     });
 
     React.useEffect(() => {
-        client.query({
+        client.watchQuery({
             query: searchUsersQuery,
             variables: {...filterValues, offset: 0},
         })
-            .then(({data}) => {
+            .subscribe(({data}) => {
                 if (!!data.searchUsers) {
                     setUsers(data.searchUsers)
                     data.searchUsers.length < 50 ? setMoreToLoad(false) : setMoreToLoad(true)
@@ -98,19 +99,20 @@ const AllUsers = ({classes}) => {
                 }
                 setLoading(false)
 
-            })
-            .catch((error) => {
+            }, (error) => {
                 console.log(error)
             })
-    }, [filterValues.firstName, filterValues.lastName, filterValues.email, filterValues.phone])
+    }, [filterValues.firstName, filterValues.lastName, filterValues.email, filterValues.phone, filterValues.limit])
+
 
     React.useEffect(() => {
         filterValues.offset > 0 &&
-        client.query({
+        client.watchQuery({
             query: searchUsersQuery,
             variables: filterValues,
+
         })
-            .then(({data}) => {
+            .subscribe(({data}) => {
                 if (!!data.searchUsers) {
                     setUsers([...users, ...data.searchUsers])
                     data.searchUsers.length < 50 ? setMoreToLoad(false) : setMoreToLoad(true)
@@ -119,10 +121,10 @@ const AllUsers = ({classes}) => {
                 }
                 setLoading(false)
 
-            })
-            .catch((error) => {
+            }, (error) => {
                 console.log(error)
             })
+
     }, [filterValues.offset])
 
 
@@ -139,6 +141,11 @@ const AllUsers = ({classes}) => {
         setRoles(newRoles);
         mutation({variables: {_id, roles: newRoles}})
     };
+
+    const handleRefetch = async () => {
+        await setFilterValues({...filterValues, limit: 49})
+        setFilterValues({...filterValues, limit: 50})
+    }
 
 
     return (
@@ -188,13 +195,14 @@ const AllUsers = ({classes}) => {
                     variant="outlined"
                     onChange={handleFilterChange('phone')}
                 />
+                <CreateUserDialog refetch={handleRefetch}/>
             </div>
             <Scrollbars
-
                 autoHeight
                 autoHeightMin={300}
-                autoHeightMax={600}
-                style={{width: '100%'}}>
+                autoHeightMax={420}
+                autoHide
+                style={{width: 1050}}>
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
@@ -248,7 +256,7 @@ const AllUsers = ({classes}) => {
                                         </Mutation>
                                     </TableCell>
                                     <TableCell>
-                                        <UserActionMenu user={user}/>
+                                        <UserActionMenu user={user} refetch={handleRefetch}/>
                                     </TableCell>
                                 </TableRow>
                             )
