@@ -50,9 +50,11 @@ const ActionMenu = ({card, promotion}) => {
                     })
                         .then(() => {
                             console.log(`item with id: ${card._id} was deleted!`)
+                            handleClose()
                         })
                         .catch((error) => {
                             console.log(error)
+                            handleClose()
                         })
 
                 }}>

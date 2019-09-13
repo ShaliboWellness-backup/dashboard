@@ -33,6 +33,7 @@ import {
 import createEventMakerMutation from "../../../graphql/event-maker/mutation/create-event-maker";
 import updateEventMakerMutation from "../../../graphql/event-maker/mutation/update-event-maker";
 import getCompaniesQuery from "../../../graphql/companies/query/companies";
+import eventMakersQuery from "../../../graphql/event-maker/query/event-maker";
 
 const R = require("ramda");
 
@@ -466,8 +467,7 @@ const EventMaker = (props) => {
                 <DialogActions>
                     <Button
                         onClick={() => {
-                            console.log(variables)
-                            console.log(values.companies)
+                            handleClose()
                         }}
                         color="primary">
                         Clear
@@ -494,13 +494,16 @@ const EventMaker = (props) => {
                                     :
                                     client.mutate({
                                         mutation,
-                                        variables: {...variables, cron}
+                                        variables: {...variables, cron},
+                                        refetchQueries: [{query: eventMakersQuery}]
                                     })
                                         .then(({data}) => {
                                             console.log(data)
+                                            handleClose()
                                         })
                                         .catch((error) => {
                                             console.log(error)
+                                            handleClose()
                                         })
 
 

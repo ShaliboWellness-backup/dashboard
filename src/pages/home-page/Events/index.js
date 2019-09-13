@@ -43,17 +43,24 @@ const Events = ({disableCreateEvent, classes, events}) => {
         // check if event belongs to existing week
         //If so, add event to week
         let i
+        let addedToWeek = false
         for (i = 0; i < sortedEvents.length; i++) {
             const {startOfWeek, endOfWeek} = sortedEvents[i]
             if (moment(event.date).isBetween(startOfWeek, endOfWeek)) {
-                return sortedEvents[i].events.push(event)
+                sortedEvents[i].events.push(event)
+                addedToWeek = true
             } else {
-                //if not, create new week and add current event to it
-                let startOfWeek = moment(event.date).startOf('week')
-                let endOfWeek = moment(event.date).endOf('week')
-                let newWeek = {startOfWeek, endOfWeek, events: [event]}
-                return sortedEvents.push(newWeek)
+
             }
+        }
+        //if event was not added to any week, create new week and add current event to it
+        if (addedToWeek === true) {
+            return null
+        } else {
+            let startOfWeek = moment(event.date).startOf('week')
+            let endOfWeek = moment(event.date).endOf('week')
+            let newWeek = {startOfWeek, endOfWeek, events: [event]}
+            sortedEvents.push(newWeek)
         }
 
     })

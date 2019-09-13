@@ -48,16 +48,16 @@ const EventMaker = ({classes}) => {
     const [eventMakers, setEventMakers] = React.useState([])
 
     const getEventMakers = () => {
-        client.query({
+        client.watchQuery({
             query: eventMakersQuery
         })
-            .then(({data}) => {
+            .subscribe(({data}) => {
                 const {eventMakers} = data
                 setEventMakers(eventMakers)
-            })
-            .catch((error) => {
+            }, (error) => {
                 console.log(error)
             })
+
     }
 
     React.useEffect(() => {

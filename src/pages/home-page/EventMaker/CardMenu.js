@@ -6,6 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {useApolloClient} from '@apollo/react-hooks'
 import deleteEventMakerMutation from "../../../graphql/event-maker/mutation/delete-event-maker";
 import EventMakerDialog from './EventMakerDialog'
+import eventMakersQuery from "../../../graphql/event-maker/query/event-maker";
 
 
 const ActionMenu = ({card, promotion}) => {
@@ -41,7 +42,8 @@ const ActionMenu = ({card, promotion}) => {
                 <MenuItem onClick={() => {
                     client.mutate({
                         mutation: deleteEventMakerMutation,
-                        variables: {_id: card._id}
+                        variables: {_id: card._id},
+                        refetchQueries: [{query: eventMakersQuery}]
                     })
                         .then(() => {
                             console.log(`item with id: ${card._id} was deleted!`)
