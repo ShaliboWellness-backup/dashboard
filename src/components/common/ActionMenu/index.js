@@ -3,7 +3,6 @@ import {IconButton, Typography} from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert"
 import Menu from "@material-ui/core/Menu";
 import CreateDialog from "../CreateDialog";
-import {Mutation} from "react-apollo";
 import MenuItem from "@material-ui/core/MenuItem";
 import PushNotification from "../PushNotification";
 import deletePromotionMutation from "../../../graphql/promotion/mutation/delete-promotion";
@@ -40,7 +39,7 @@ const ActionMenu = ({card, promotion}) => {
                 transformOrigin={{horizontal: "right", vertical: "top"}}
             >
 
-                <CreateDialog type={promotion ? 'promotion' : 'event-maker.js'} data={card} handleClose={handleClose}/>
+                <CreateDialog type={promotion ? 'promotion' : 'event'} data={card} handleClose={handleClose}/>
 
 
                 <MenuItem onClick={() => {

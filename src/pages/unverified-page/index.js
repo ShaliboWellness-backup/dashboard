@@ -13,7 +13,8 @@ import background from '../../fakeData/Images/loginBg.jpg'
 import {Paper} from '@material-ui/core'
 import {withApollo} from "react-apollo";
 import resendVerifyEmail from '../../graphql/user/mutation/resend-verify-email'
-import { useApolloClient } from '@apollo/react-hooks'
+import {useApolloClient} from '@apollo/react-hooks'
+import SnackbarContext from "../../containers/CustomSnackbar/SnackbarContext";
 
 function MadeWithLove() {
     return (<div/>
@@ -68,6 +69,8 @@ const UnverifiedPage = (props) => {
 
     const client = useApolloClient()
 
+    const {openSnackbar} = React.useContext(SnackbarContext)
+
     return (
         <div style={{
             minHeight: "100vh",
@@ -103,9 +106,9 @@ const UnverifiedPage = (props) => {
                             client.mutate({
                                 mutation: resendVerifyEmail
                             })
-                                .then(({ data }) => {
-                                    alert("Email sent, please your inbox")
-                            });
+                                .then(({data}) => {
+                                    openSnackbar('success', "Email sent, please your inbox")
+                                });
                         }}
                     >
                         Resend Email
