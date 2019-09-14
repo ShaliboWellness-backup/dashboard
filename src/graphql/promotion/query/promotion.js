@@ -5,6 +5,9 @@ const getPromotionsQuery = gql`{
                 title
                 subtitle
                 price
+                codes{
+                value
+                }
                 tag
                 image
                 _id

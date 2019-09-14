@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -13,19 +12,36 @@ import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCom
 import updateCompanyMutation from "../../../graphql/companies/mutation/update-company";
 import {useApolloClient} from '@apollo/react-hooks'
 import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
+import CSVReader from "react-csv-reader";
+import {InputBase, InputLabel, OutlinedInput} from "@material-ui/core";
 
 
-const styles = () => ({
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    textField: {
-        marginLeft: 8,
-        marginRight: 8,
-        width: 200,
-    },
-});
+const styles = (theme) => ({
+        container: {
+            display: 'flex',
+            flexWrap: 'wrap',
+        },
+        textField: {
+            marginLeft: 8,
+            marginRight: 8,
+            width: 200,
+        },
+        upload: {
+            padding: '18.5px 14px',
+            marginLeft: 8,
+            marginRight: 8,
+            marginTop: 16,
+            marginBottom: 8,
+            border: '1px solid #c7c7c7',
+            borderRadius: 5,
+            width: 200,
+            height: 56,
+            overflow: 'hidden'
+
+
+        }
+    })
+;
 const PromotionDialog = (props) => {
     const {promotion} = props;
 
@@ -35,6 +51,7 @@ const PromotionDialog = (props) => {
         price: promotion.price || '',
         tag: promotion.tag || '',
         image: promotion.image || '',
+        codes: []
 
 
     });
@@ -56,11 +73,22 @@ const PromotionDialog = (props) => {
     const {classes} = props;
 
     const {
-        title, subtitle, price, tag, image,
+        title, subtitle, price, tag, image, codes
     } = values;
 
     const formData = {
-        title, subtitle, price, tag, image,
+        title, subtitle, price, tag, image, codes
+    };
+
+    const handleCodesUpload = data => {
+        let newCodes = values.codes
+        data.map((largeArray) => {
+            largeArray.map((code) => {
+                newCodes.push(code)
+            })
+        })
+
+        setValues({...values, codes: newCodes})
     };
 
     const variables = props.action === 'create' ? {...formData} : {...formData, _id: promotion._id}
@@ -127,6 +155,14 @@ const PromotionDialog = (props) => {
                                     variant={"outlined"}
                                     required
                                 />
+                                <div>
+                                    <CSVReader
+                                        cssClass={classes.upload}
+                                        onFileLoaded={handleCodesUpload}
+                                    />
+                                    <InputLabel style={{marginLeft: 8}}>Upload Codes CSV</InputLabel>
+                                </div>
+
 
                             </form>
                         </DialogContent>

@@ -10,6 +10,9 @@ query getCompanyPromotions($_id: String!){
     price
     tag
     image
+    codes{
+    value
+    }
   }
                 }
               }
