@@ -160,7 +160,9 @@ const PromotionDialog = (props) => {
                                         cssClass={classes.upload}
                                         onFileLoaded={handleCodesUpload}
                                     />
-                                    <InputLabel style={{marginLeft: 8}}>Upload Codes CSV</InputLabel>
+                                    <InputLabel style={{marginLeft: 8}}>Upload Codes
+                                        CSV
+                                        ({!!promotion.codes && promotion.codes.length > 1 ? `${promotion.codes.length} codes left` : 'No available codes'})</InputLabel>
                                 </div>
 
 
