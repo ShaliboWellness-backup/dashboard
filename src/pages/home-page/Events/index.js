@@ -64,12 +64,18 @@ const Events = ({disableCreateEvent, classes, events}) => {
         }
 
     })
+    //sort the events by date within week
+    let sortedByDate = sortedEvents.map((weeklyEventsArray) => {
+        let sortedEvents = weeklyEventsArray.events.sort(function (a, b) {
+            return moment(b.date).isAfter(a.date) ? -1 : moment(a.date).isAfter(b.date) ? 1 : 0
+        });
+        return {...weeklyEventsArray, events: sortedEvents}
 
-    console.log(sortedEvents)
+    })
 
     return (
         <div className={classes.grid}>
-            {sortedEvents[0].events.length > 0 && <Typography gutterBottom variant={"h5"}
+            {sortedByDate[0].events.length > 0 && <Typography gutterBottom variant={"h5"}
                                                               style={{
                                                                   paddingLeft: 8,
                                                                   borderBottom: '1px solid black',
@@ -93,7 +99,7 @@ const Events = ({disableCreateEvent, classes, events}) => {
                             </Typography>
                         </div>
                     </Paper> :
-                    sortedEvents[0].events.map((event, index) => (
+                    sortedByDate[0].events.map((event, index) => (
                         <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
                             <EventCard
                                 event={event}
@@ -110,7 +116,7 @@ const Events = ({disableCreateEvent, classes, events}) => {
                         </Grid>
                     ))}
             </Grid>
-            {sortedEvents.slice(1).map((week, index) => (
+            {sortedByDate.slice(1).map((week, index) => (
                 <div style={{marginBottom: 24}}>
                     <Typography gutterBottom variant={"h5"}
                                 style={{

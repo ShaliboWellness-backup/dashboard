@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography"
 import {CardHeader} from "@material-ui/core"
 import ActionMenu from "../../../components/common/ActionMenu";
 import {withStyles} from "@material-ui/styles"
+import CardActions from "@material-ui/core/CardActions";
 
 
 const styles = theme => ({
@@ -55,7 +56,7 @@ const styles = theme => ({
 
 
 const PromotionCard = (props) => {
-    const {promotion, title, subtitle, price, tag, image, thumbnail, id} = props
+    const {promotion, title, subtitle, price, tag, image,} = props
     const {classes} = props
     return (
         <Card className={classes.card}>
@@ -84,7 +85,13 @@ const PromotionCard = (props) => {
             <CardContent className={classes.cardContent}>
                 <Typography> {subtitle}</Typography>
             </CardContent>
-
+            <CardActions>
+                <div style={{textAlign: "center", width: "100%"}}>
+                    <Typography color={'primary'} variant={'caption'}>
+                        {!!promotion.codes && promotion.codes.length > 1 ? `${promotion.codes.length} codes left` : 'No available codes'}
+                    </Typography>
+                </div>
+            </CardActions>
         </Card>
     )
 
