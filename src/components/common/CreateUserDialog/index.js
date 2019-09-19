@@ -24,7 +24,7 @@ import usersQuery from "../../../graphql/user/query/users";
 const useStyles = makeStyles(theme => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white,
+            // backgroundColor: theme.palette.common.white,
         },
     },
     paper: {
