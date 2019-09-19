@@ -112,7 +112,7 @@ const EventMaker = (props) => {
         image: !!event.image ? event.image : '',
         date: !!event.date ? event.date : new Date(),
         coinsString: !!event.coins ? event.coins : "100",
-        company: !!event.company ? event.company : '',
+        company: "",
         trainers: []
     });
 
@@ -120,10 +120,11 @@ const EventMaker = (props) => {
     React.useEffect(() => {
         setLabelWidth(!!inputLabel.current && inputLabel.current.offsetWidth);
         getTrainers()
-        getCompanies()
+        // getCompanies()
+        !!currentCompany && setValues({...values, company: currentCompany._id})
         !!event.cron && setDays(event.cron.split(' ')[4].split(',').map(item => parseInt(item)))
 
-    }, [event]);
+    }, [event, currentCompany]);
 
 
     function handleOpen() {
@@ -136,13 +137,11 @@ const EventMaker = (props) => {
 
     const handleChange = name => (event) => {
         setValues({...values, [name]: event.target.value});
-        console.log(formData);
     };
 
     const handleCompanyChange = name => (event) => {
         let newCompany = {_id: event.target.value}
         setValues({...values, company: newCompany});
-        console.log(values)
     };
 
     const handleSetDate = (date) => {
@@ -153,14 +152,12 @@ const EventMaker = (props) => {
 
         if (days.includes(value)) {
             let newDays = days.filter(day => day !== value)
-            console.log(newDays)
             setDays(newDays.sort())
         } else {
             let newDays = days
             newDays.push(value)
             setDays(newDays.sort())
         }
-        console.log(days)
 
     }
 
@@ -182,19 +179,19 @@ const EventMaker = (props) => {
             })
     }
 
-    const getCompanies = () => {
-        client.query({
-            query: getCompaniesQuery
-        })
-            .then(({data}) => {
-                const {companies} = data
-                setCompanies(companies)
-                return null
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
+    // const getCompanies = () => {
+    //     client.query({
+    //         query: getCompaniesQuery
+    //     })
+    //         .then(({data}) => {
+    //             const {companies} = data
+    //             setCompanies(companies)
+    //             return null
+    //         })
+    //         .catch((error) => {
+    //             console.log(error)
+    //         })
+    // }
 
     let {
         title, instructor, location, totalSpotsString, coinsString, description, image, date, company
@@ -205,7 +202,15 @@ const EventMaker = (props) => {
     let coins = parseInt(coinsString)
 
     const formData = {
-        title, instructor, location, totalSpots, coins, description, image, date, company: company._id
+        title,
+        instructor,
+        location,
+        totalSpots,
+        coins,
+        description,
+        image,
+        date,
+        company: !!currentCompany && currentCompany._id
     }
 
 
@@ -217,7 +222,6 @@ const EventMaker = (props) => {
     array = !!event.cron && event.cron.split(' ')
     let separated = !!array ? array[array.length - 1].split(',') : []
     let test = !!event.cron && event.cron.split(' ')[4].split(',').includes('3')
-    console.log(test)
 
     return (
         <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -277,27 +281,27 @@ const EventMaker = (props) => {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={6}>
-                                <FormControl variant="outlined" className={classes.selectInput}>
-                                    <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
-                                        Company
-                                    </InputLabel>
-                                    <Select
-                                        MenuProps={{classes: {list: classes.test}}}
-                                        value={values.company._id}
-                                        onChange={handleCompanyChange('company')}
-                                        input={<OutlinedInput labelWidth={60} name="company"
-                                                              id="outlined-age-simple"/>}
-                                    >
-                                        {companies.length > 0 ? companies.map((company) => (
-                                                <MenuItem key={company._id} value={company._id}>{company.name}</MenuItem>
-                                            )) :
-                                            <MenuItem key={1} value={""}>No Available Companies</MenuItem>
-                                        }
+                            {/*<Grid item xs={6}>*/}
+                            {/*    <FormControl variant="outlined" className={classes.selectInput}>*/}
+                            {/*        <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">*/}
+                            {/*            Company*/}
+                            {/*        </InputLabel>*/}
+                            {/*        <Select*/}
+                            {/*            MenuProps={{classes: {list: classes.test}}}*/}
+                            {/*            value={values.company._id}*/}
+                            {/*            onChange={handleCompanyChange('company')}*/}
+                            {/*            input={<OutlinedInput labelWidth={60} name="company"*/}
+                            {/*                                  id="outlined-age-simple"/>}*/}
+                            {/*        >*/}
+                            {/*            {companies.length > 0 ? companies.map((company) => (*/}
+                            {/*                    <MenuItem key={company._id} value={company._id}>{company.name}</MenuItem>*/}
+                            {/*                )) :*/}
+                            {/*                <MenuItem key={1} value={""}>No Available Companies</MenuItem>*/}
+                            {/*            }*/}
 
-                                    </Select>
-                                </FormControl>
-                            </Grid>
+                            {/*        </Select>*/}
+                            {/*    </FormControl>*/}
+                            {/*</Grid>*/}
                             <Grid item md={6} xs={6}>
                                 <TextField
                                     id="location"
@@ -480,7 +484,6 @@ const EventMaker = (props) => {
                                 let minutes = moment(values.date).format('mm')
                                 let cron = `${minutes} ${hours} * * ${selectedDays}`
                                 let temp = {...variables, cron}
-                                console.log(temp)
                                 return variables.title === "" ||
                                 variables.instructor === "" ||
                                 variables.date === "" ||

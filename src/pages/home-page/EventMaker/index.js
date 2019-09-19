@@ -7,6 +7,7 @@ import logo from '../../../Assets/logo.png'
 import eventMakersQuery from '../../../graphql/event-maker/query/event-maker'
 import moment from 'moment'
 import {useApolloClient} from "@apollo/react-hooks";
+import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
 
 const styles = theme => ({
     root: {
@@ -45,15 +46,19 @@ const EventMaker = ({classes}) => {
 
     const client = useApolloClient()
 
+    const {currentCompany} = React.useContext(CurrentCompanyContext)
+
+
     const [eventMakers, setEventMakers] = React.useState([])
 
     const getEventMakers = () => {
+        !!currentCompany &&
         client.watchQuery({
             query: eventMakersQuery
         })
             .subscribe(({data}) => {
                 const {eventMakers} = data
-                setEventMakers(eventMakers)
+                setEventMakers(eventMakers.filter(event => event.company._id === currentCompany._id))
             }, (error) => {
                 console.log(error)
             })
@@ -62,7 +67,7 @@ const EventMaker = ({classes}) => {
 
     React.useEffect(() => {
         getEventMakers()
-    }, [])
+    }, [currentCompany])
 
     return (
         <div className={classes.grid}>
