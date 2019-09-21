@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(1),
     },
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: theme.spacing(2, 0, 0),
     },
 }));
 
@@ -218,6 +218,16 @@ const CreateUserDialog = (props) => {
                         }}
                     >
                         Create
+                    </Button>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={handleClose}
+                    >
+                        Cancel
                     </Button>
                 </DialogContent>
 
