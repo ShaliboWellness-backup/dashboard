@@ -124,7 +124,6 @@ function UserDialog(props) {
     const handleCompanyChange = name => (event) => {
         let newCompany = {_id: event.target.value}
         setValues({...values, company: newCompany});
-        console.log(values)
     };
 
     const handleRoleChange = (role) => {
@@ -205,6 +204,8 @@ function UserDialog(props) {
                                     )) :
                                     <MenuItem key={1} value={""}>No Available Companies</MenuItem>
                                 }
+                                {values.companies.length > 0 &&
+                                <MenuItem key="none" value={'none'}>No Company</MenuItem>}
 
                             </Select>
                         </FormControl>
@@ -268,11 +269,11 @@ function UserDialog(props) {
                                     roles,
                                     verified
                                 }
+                                console.log(values)
                                 console.log(variables)
                                 return firstName === "" ||
                                 lastName === "" ||
                                 email === "" ||
-                                company === "" ||
                                 roles.length === 0 ?
                                     value.openSnackbar('error', 'Please make sure there are no empty fields')
                                     :
@@ -282,9 +283,11 @@ function UserDialog(props) {
                                     })
                                         .then(() => {
                                             handleClose()
+                                            value.openSnackbar('success', 'User information updated successfully')
                                             //window.location.reload()
                                         })
                                         .catch((error) => {
+                                            value.openSnackbar('error', `${!!error && error.message && error.message}`)
                                             console.log(error)
                                         })
                             }} color="primary">
