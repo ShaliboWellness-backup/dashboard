@@ -9,7 +9,9 @@ import {
     DialogTitle,
     IconButton,
     MenuItem,
-    TextField, useTheme
+    TextField,
+    useTheme,
+    Grid, FormHelperText
 } from "@material-ui/core";
 import CreateCompanyMutation from "../../../graphql/companies/mutation/create-company"
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -22,6 +24,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import {CSVLink} from "react-csv";
+import updateAvailableCodes from "../../../graphql/companies/mutation/update-available-codes";
+import RefreshButton from "../RefreshButton";
 
 
 const styles = () => ({
@@ -32,6 +37,10 @@ const styles = () => ({
 
     },
     textField: {
+        marginLeft: 8,
+        marginRight: 8,
+    },
+    textFieldDense: {
         marginLeft: 8,
         marginRight: 8,
     },
@@ -52,6 +61,8 @@ function EditCompany({classes, company}) {
 
     const [open, setOpen] = React.useState(false);
 
+    const {openSnackbar} = React.useContext(SnackbarContext)
+
     function handleClickOpen() {
         setOpen(true);
     }
@@ -64,7 +75,9 @@ function EditCompany({classes, company}) {
         name: "",
         emailSuffix: "",
         logo: "",
-        isPublic: true
+        codes: [],
+        isPublic: true,
+        quantity: 0
     });
 
     const theme = useTheme();
@@ -76,6 +89,8 @@ function EditCompany({classes, company}) {
                 name: company.name,
                 emailSuffix: company.emailSuffix,
                 logo: company.logo,
+                codes: company.codes,
+                masterCode: !!company.masterCode ? company.masterCode : 'No Valid Code',
                 isPublic: company.isPublic
             })
         }, [company]
@@ -87,6 +102,7 @@ function EditCompany({classes, company}) {
     const handleChange = name => (event) => {
         setValues({...values, [name]: event.target.value});
     };
+
 
     return (
         <Fragment>
@@ -145,8 +161,68 @@ function EditCompany({classes, company}) {
                                 <MenuItem key={2} value={false}>False</MenuItem>
                             </Select>
                         </FormControl>
+                        <div style={{marginTop: 16}}>
+                            <InputLabel>
+                                Code Generator
+                            </InputLabel>
+                            <Grid container spacing={2} alignItems={"center"}>
+                                <Grid item xs>
+                                    <TextField
+                                        id="quantity"
+                                        label="Quantity"
+                                        className={classes.textFieldDense}
+                                        value={values.quantity}
+                                        onChange={handleChange('quantity')}
+                                        margin="normal"
+                                        type={'number'}
+                                        variant={"outlined"}
+                                        fullWidth={true}
+                                        margin={'dense'}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} md={4}>
+                                    <Button style={{height: '100%'}} fullWidth color={'primary'} variant={"contained"}
+                                            onClick={() => {
+                                                !values.quantity > 0 ?
+                                                    openSnackbar('error', 'Quantity must be 1 or larger')
+                                                    :
+                                                    client.mutate({
+                                                        mutation: updateAvailableCodes,
+                                                        variables: {
+                                                            companyId: company._id,
+                                                            count: parseInt(values.quantity)
+                                                        }
+                                                    })
+                                                        .then(() => {
+                                                                return
+                                                            }, error => {
+                                                                console.log(error.graphQLErrors)
+                                                            }
+                                                        )
+                                            }}>
+                                        Generate
+                                    </Button>
+
+                                </Grid>
+                                <Grid item xs={6} md={4}>
+                                    <Button color={'primary'} variant={"contained"}
+                                            disabled={!!values.codes && values.codes.length > 0 ? false : true}>
+                                        <CSVLink style={{textDecoration: 'none', color: 'white'}}
+                                                 filename={`user-codes-${values.name}.csv`}
+                                                 data={!!values.codes && values.codes.map((code) => [code])}>Download</CSVLink>
+                                    </Button>
+                                </Grid>
+
+                            </Grid>
+                            <FormHelperText style={{display: 'flex', alignItems: 'center', minHeight: 25}}
+                                            error={!!values.codes && values.codes.length > 0 ? false : true}>
+                                Available Codes: {!!values.codes && values.codes.length} | Master: {values.masterCode}
+                                <RefreshButton _id={company._id}/>
+                            </FormHelperText>
+                        </div>
 
                     </form>
+
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">

@@ -5,6 +5,8 @@ const getCompaniesQuery = gql`
   companies{
     name
     _id
+    codes
+    masterCode
     events{
       title
     }
