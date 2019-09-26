@@ -62,6 +62,12 @@ function AdminMenu({companies}) {
 
     const list = () => (
         <div className={classes.root}>
+            <Button classes={{root: classes.usersButton}} component={Link} to={"/all-promotions"}
+                    onClick={() => setTop(false)}>
+                <Typography variant="caption" color="textSecondary">
+                    Promotions
+                </Typography>
+            </Button>
             <Button classes={{root: classes.usersButton}} component={Link} to={"/all-users"}
                     onClick={() => setTop(false)}>
                 <Typography variant="caption" color="textSecondary">

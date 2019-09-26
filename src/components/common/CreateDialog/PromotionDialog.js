@@ -184,25 +184,9 @@ const PromotionDialog = (props) => {
                                                 variables,
                                             })
                                                 .then(async ({data, error}) => {
-                                                    props.action === 'edit' &&
                                                     props.handleClose()
-                                                    //window.location.reload()
-                                                    props.action === 'create' &&
-                                                    client.mutate({
-                                                        mutation: updateCompanyMutation,
-                                                        variables: {
-                                                            _id: currentCompany._id,
-                                                            promotionsIds: data.createPromotion._id
-                                                        }
-                                                    })
-                                                        .then(({data, error}) => {
-                                                            console.log("updated company with promotion")
-                                                            props.handleClose()
-                                                            // window.location.reload()
-                                                        })
-                                                        .catch((error) => {
-                                                            console.log(error)
-                                                        })
+                                                    value.openSnackbar('success', 'Promotion created Successfully.')
+
                                                 })
                                                 .catch((error) => {
                                                     console.log(error)

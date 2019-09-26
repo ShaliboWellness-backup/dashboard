@@ -10,6 +10,17 @@ const getCompaniesQuery = gql`
     events{
       title
     }
+     promotions{
+    _id
+    title
+    subtitle
+    price
+    tag
+    image
+    codes{
+    value
+    }
+  }
     users {
       _id
       firstName

@@ -45,7 +45,7 @@ const styles = theme => ({
     }
 });
 
-const Sidebar = ({classes}) => {
+const Sidebar = ({classes, currentPath}) => {
 
     const [selectedIndex, setIndex] = React.useState(null)
 
@@ -56,6 +56,7 @@ const Sidebar = ({classes}) => {
     }
     const currentCompany = R.pathOr({name: "", emailSuffix: "", logo: ""}, ["currentCompany"])(value)
 
+    console.log(currentPath)
     return (
         <Paper elevation={18} className={classes.root}>
 
@@ -83,7 +84,7 @@ const Sidebar = ({classes}) => {
                     component={Link}
                     to="/members"
                     button
-                    selected={selectedIndex === 1}
+                    selected={currentPath === '/members'}
                     onClick={event => handleListItemClick(event, 1)}
                 >
                     <ListItemIcon>
@@ -96,7 +97,7 @@ const Sidebar = ({classes}) => {
 
                 <ListItem
                     button
-                    selected={selectedIndex === 2}
+                    selected={currentPath === '/events'}
                     onClick={event => handleListItemClick(event, 2)}
                     component={Link}
                     to="/events"
@@ -111,7 +112,7 @@ const Sidebar = ({classes}) => {
 
                 <ListItem
                     button
-                    selected={selectedIndex === 3}
+                    selected={currentPath === '/promotions'}
                     onClick={event => handleListItemClick(event, 3)}
                     component={Link}
                     to="/promotions"
@@ -125,7 +126,7 @@ const Sidebar = ({classes}) => {
 
                 <ListItem
                     button
-                    selected={selectedIndex === 4}
+                    selected={currentPath === '/event-maker'}
                     onClick={event => handleListItemClick(event, 4)}
                     component={Link}
                     to="/event-maker"

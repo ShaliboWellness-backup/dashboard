@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import {IconButton, Paper, Typography, useTheme} from '@material-ui/core';
+import {Fab, IconButton, Paper, Typography, useTheme} from '@material-ui/core';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import PromotionDialog from './PromotionDialog';
@@ -30,22 +30,20 @@ export default function CreateDialog(props) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
+
     return (
         <Fragment>
             {props.action === 'create' ? (
-                <Paper style={{
-                    height: "100%",
-                    minHeight: 300, display: "flex", justifyContent: "center", alignItems: "center"
-                }}>
-                    <div style={{textAlign: "center"}}>
-                        <IconButton style={{width: 100, height: 100,}} color="primary" onClick={handleClickOpen}>
-                            <Add style={{width: 50, height: 50,}}/>
-                        </IconButton>
-                        <Typography variant={"h5"}>
-                            Create {props.type === 'event' ? 'Event' : 'Promotion'}
-                        </Typography>
-                    </div>
-                </Paper>
+                <Fab style={{
+                    position: !fullScreen ? "absolute" : 'relative',
+                    left: 0,
+                    padding: fullScreen ? null : "0px 24px",
+                    marginRight: 24
+                }} size={"small"} variant={fullScreen ? 'round' : "extended"} color={'primary'}
+                     onClick={handleClickOpen}>
+                    <Add/> {fullScreen ? null : `Create ${props.type === 'event' ? 'Event' : 'Promotion'}`}
+                </Fab>
+
             ) : (
                 <MenuItem onClick={handleClickOpen}>
                     <Typography variant={"body1"} color={"textSecondary"}>

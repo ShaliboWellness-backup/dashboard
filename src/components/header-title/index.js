@@ -39,7 +39,7 @@ const styles = theme => ({
 });
 
 
-const HeaderTitle = ({classes}) => {
+const HeaderTitle = ({classes, currentPath}) => {
 
     const value = React.useContext(CurrentCompanyContext)
 
@@ -81,7 +81,7 @@ const HeaderTitle = ({classes}) => {
     return (
         <div className={classes.root}>
             <Toolbar className={classes.toolbar}>
-                <Sidebar companies={companies}/>
+                <Sidebar companies={companies} currentPath={currentPath}/>
                 <div className={classes.title}>
                     <Button classes={{root: classes.usersButton}} component={Link} to={"/"}>
                         <Typography variant="h6" className={classes.title}>

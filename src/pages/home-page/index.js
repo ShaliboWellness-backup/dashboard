@@ -18,6 +18,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useTheme from '@material-ui/styles/useTheme'
 import CurrentUserContext from "../../containers/CurrentUser/CurrentUserContext";
 import EventMaker from './EventMaker'
+import getPromotionsQuery from "../../graphql/promotion/query/promotion";
 
 const R = require("ramda")
 
@@ -34,11 +35,9 @@ const HomePage = (props) => {
     React.useEffect(() => {
         userContext.handleSetUser(props.user)
     }, [props.user])
-
-
     return (
         <React.Fragment>
-            <HeaderTitle/>
+            <HeaderTitle currentPath={props.location.pathname}/>
             <div style={{marginBottom: 30}}>
                 <div style={{
                     marginLeft: isMobile ? theme.spacing(1) : 280,
@@ -73,8 +72,7 @@ const HomePage = (props) => {
                                render={props => <Members {...props} company={currentCompany}/>}/>
                         <Route path="/promotions"
                                render={props => (
-                                   <Query query={getCompanyPromotionsQuery}
-                                          variables={currentCompany ? {_id: currentCompany._id} : {_id: "null"}}
+                                   <Query query={getPromotionsQuery}
                                           pollInterval={500}>
                                        {({loading, error, data}) => {
                                            let promotions = []
@@ -87,12 +85,34 @@ const HomePage = (props) => {
                                                console.log(error)
                                                return null
                                            }
-                                           if (!loading && data.company.promotions) {
-                                               let {promotions} = data.company
-                                               if (data) {
-                                                   console.log(promotions)
-                                                   return <Promotions {...props} promotions={promotions}/>
-                                               }
+                                           if (!loading && !!data && !!data.promotions) {
+                                               let {promotions} = data
+                                               return <Promotions {...props} promotions={promotions}/>
+
+                                           }
+                                       }
+                                       }
+                                   </Query>
+                               )}
+                        />
+                        <Route path="/all-promotions"
+                               render={props => (
+                                   <Query query={getPromotionsQuery}
+                                          pollInterval={500}>
+                                       {({loading, error, data}) => {
+                                           let promotions = []
+                                           if (loading) {
+                                               return <div style={{width: "100%", textAlign: "center"}}>
+                                                   <CircularProgress/>
+                                               </div>
+                                           }
+                                           if (error) {
+                                               console.log(error)
+                                               return null
+                                           }
+                                           if (!loading && !!data && !!data.promotions) {
+                                               let {promotions} = data
+                                               return <Promotions {...props} promotions={promotions} edit={true}/>
 
                                            }
                                        }

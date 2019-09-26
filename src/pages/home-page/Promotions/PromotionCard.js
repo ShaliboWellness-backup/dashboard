@@ -3,10 +3,14 @@ import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
 import CardMedia from "@material-ui/core/CardMedia"
 import Typography from "@material-ui/core/Typography"
-import {CardHeader} from "@material-ui/core"
+import {CardHeader, Switch} from "@material-ui/core"
 import ActionMenu from "../../../components/common/ActionMenu";
 import {withStyles} from "@material-ui/styles"
 import CardActions from "@material-ui/core/CardActions";
+import updateCompanyMutation from "../../../graphql/companies/mutation/update-company";
+import {useApolloClient} from "@apollo/react-hooks";
+import removePromotionMutation from "../../../graphql/companies/mutation/remove-promotion";
+import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
 
 
 const styles = theme => ({
@@ -27,6 +31,7 @@ const styles = theme => ({
         height: "100%",
         display: "flex",
         flexDirection: "column",
+        transition: 'filter 1s'
 
 
     },
@@ -56,10 +61,40 @@ const styles = theme => ({
 
 
 const PromotionCard = (props) => {
-    const {promotion, title, subtitle, price, tag, image,} = props
+    const {promotion, title, subtitle, price, tag, image, companyPromotions, edit} = props
+    const [active, setActive] = React.useState(props.active)
     const {classes} = props
+    const {currentCompany} = React.useContext(CurrentCompanyContext)
+
+    const client = useApolloClient()
+
+    console.log(props.active)
+    const handleSwitch = () => {
+        setActive(!active)
+        client.mutate({
+            mutation: active ? removePromotionMutation : updateCompanyMutation,
+            variables: active ? {
+                companyId: currentCompany._id,
+                promotionId: promotion._id
+            } : {
+                _id: currentCompany._id,
+                promotionsIds: promotion._id
+            }
+        })
+            .then(() => {
+                return
+            })
+            .catch((error) => console.log(error))
+    }
+
+    React.useEffect(() => {
+        edit ? setActive(true) : setActive(companyPromotions.filter((item) => item._id == promotion._id).length > 0)
+    }, [props])
+
+
     return (
-        <Card className={classes.card}>
+        <Card className={classes.card}
+              style={{filter: active ? 'grayscale(0%)' : 'grayscale(100%)'}}>
 
             <CardMedia
                 className={classes.cardMedia}
@@ -85,9 +120,14 @@ const PromotionCard = (props) => {
             <CardContent className={classes.cardContent}>
                 <Typography> {subtitle}</Typography>
             </CardContent>
-            <CardActions>
-                <div style={{textAlign: "center", width: "100%"}}>
-                    <Typography color={'primary'} variant={'caption'}>
+            <CardActions style={{padding: 8}}>
+                {!edit && <Switch onChange={handleSwitch} color={"primary"} checked={active ? true : false}/>}
+                {!edit && <Typography color={'primary'} variant={'caption'}>
+                    {active ? 'Active' : 'Inactive'}
+                </Typography>}
+                <div style={{textAlign: "right", width: "100%"}}>
+                    <Typography color={!!promotion.codes && promotion.codes.length > 1 ? 'primary' : 'secondary'}
+                                variant={'caption'}>
                         {!!promotion.codes && promotion.codes.length > 1 ? `${promotion.codes.length} codes left` : 'No available codes'}
                     </Typography>
                 </div>

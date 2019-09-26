@@ -91,7 +91,8 @@ function EditCompany({classes, company}) {
                 logo: company.logo,
                 codes: company.codes,
                 masterCode: !!company.masterCode ? company.masterCode : 'No Valid Code',
-                isPublic: company.isPublic
+                isPublic: company.isPublic,
+                quantity: !!company.codes ? company.codes.length : 0
             })
         }, [company]
     )

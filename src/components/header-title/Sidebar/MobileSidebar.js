@@ -43,7 +43,7 @@ const useStyles = makeStyles({
     }
 });
 
-export default function MobileSidebar() {
+export default function MobileSidebar(props) {
     const classes = useStyles();
     const [state, setState] = React.useState(false);
 
@@ -91,7 +91,7 @@ export default function MobileSidebar() {
                     component={Link}
                     to="/members"
                     button
-                    selected={selectedIndex === 1}
+                    selected={props.currentPath === '/members'}
                     onClick={event => handleListItemClick(event, 1)}
                 >
                     <ListItemIcon>
@@ -104,7 +104,7 @@ export default function MobileSidebar() {
 
                 <ListItem
                     button
-                    selected={selectedIndex === 2}
+                    selected={props.currentPath === '/events'}
                     onClick={event => handleListItemClick(event, 2)}
                     component={Link}
                     to="/events"
@@ -119,7 +119,7 @@ export default function MobileSidebar() {
 
                 <ListItem
                     button
-                    selected={selectedIndex === 3}
+                    selected={props.currentPath === '/promotions'}
                     onClick={event => handleListItemClick(event, 3)}
                     component={Link}
                     to="/promotions"
@@ -133,7 +133,7 @@ export default function MobileSidebar() {
 
                 <ListItem
                     button
-                    selected={selectedIndex === 4}
+                    selected={props.currentPath === '/event-maker'}
                     onClick={event => handleListItemClick(event, 4)}
                     component={Link}
                     to="/event-maker"

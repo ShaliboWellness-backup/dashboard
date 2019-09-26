@@ -5,6 +5,7 @@ import EventCard from './EventCard';
 import CreateDialog from '../../../components/common/CreateDialog';
 import logo from '../../../Assets/logo.png'
 import moment from 'moment'
+import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
 
 const styles = theme => ({
     root: {
@@ -19,7 +20,7 @@ const styles = theme => ({
         justifyContent: 'center',
         alignItems: 'center',
         margin: "8px 8px",
-        height: 450,
+        height: 400,
         flex: 1,
 
     },
@@ -27,11 +28,22 @@ const styles = theme => ({
         fontWeight: 400,
         color: '#75D6B2',
         marginTop: 16
-    }
+    },
+    header: {
+        display: "flex",
+        textAlign: "center",
+        width: "100%",
+        marginBottom: 32,
+        justifyContent: "center",
+        position: "relative"
+    },
 
 });
 
 const Events = ({disableCreateEvent, classes, events}) => {
+
+    const {currentCompany} = React.useContext(CurrentCompanyContext)
+
     let futureEvents = events.filter(event => moment(event.date).isAfter(moment()))
     let sortedEvents = [
         {
@@ -75,6 +87,12 @@ const Events = ({disableCreateEvent, classes, events}) => {
 
     return (
         <div className={classes.grid}>
+            {!disableCreateEvent && <div className={classes.header}>
+                <CreateDialog type="event" action={"create"}/>
+                <Typography gutterBottom variant={"h4"}>
+                    {`${!!currentCompany && currentCompany.name} Events`}
+                </Typography>
+            </div>}
             {sortedByDate[0].events.length > 0 && <Typography gutterBottom variant={"h5"}
                                                               style={{
                                                                   paddingLeft: 8,
@@ -82,14 +100,18 @@ const Events = ({disableCreateEvent, classes, events}) => {
                                                                   borderColor: '#00f2c3'
                                                               }}>
                 This Week
-            </Typography>}
+            </Typography>
+            }
             <Grid container spacing={2} style={{marginBottom: 24, marginTop: 8}}>
-                {disableCreateEvent ? null : (
-                    <Grid item xs={12} sm={6} md={4} lg={4}>
-                        <CreateDialog type="event" action="create"/>
-                    </Grid>
-                )
-                }
+                {futureEvents.length < 1 && !disableCreateEvent &&
+                <Paper className={classes.empty}>
+                    <div style={{textAlign: 'center '}}>
+                        <CardMedia style={{width: 200, height: 200, margin: 'auto'}} image={logo}/>
+                        <Typography variant={"h4"} className={classes.emptyText}>
+                            There are no events for this company
+                        </Typography>
+                    </div>
+                </Paper>}
                 {futureEvents.length < 1 && disableCreateEvent ?
                     <Paper className={classes.empty}>
                         <div style={{textAlign: 'center '}}>

@@ -38,7 +38,7 @@ const LoggedInRoute = (props) => {
                         }
                         if (!loading && !!data.user) {
                             if (data.user.roles.includes('admin')) {
-                                return <HomePage user={data.user}/>
+                                return <HomePage {...ownProps} user={data.user}/>
                             }
                             if (data.user.roles.includes('trainer')) {
                                 return <TrainersPage user={data.user}/>
