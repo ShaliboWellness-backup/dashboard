@@ -185,37 +185,39 @@ const SignupPage = (props) => {
                                 />
                             </Grid>
                         </Grid>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            onClick={(e) => {
+                                e.preventDefault()
+                                const {firstName, lastName, phone, email, password} = values
+                                let variables = {firstName, lastName, phone, email, password,}
+                                if (handleValidate()) {
+                                    client.mutate({mutation: signupMutation, variables})
+                                        .then(({data}) => {
+                                            console.log(data)
+                                            if (!!data) {
+                                                const {token} = data.signup
+                                                console.log(token)
+                                                localStorage.setItem('x-auth-token', token);
+                                                props.client.resetStore()
+                                                props.history.push('/')
+                                            }
+                                        })
+                                        .catch((error) => {
+                                            snackbar.openSnackbar('error', 'Something went wrong. Please try again later.')
+                                        })
+                                }
+                            }}
+                        >
+                            Sign Up
+                        </Button>
                     </form>
 
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        onClick={() => {
-                            const {firstName, lastName, phone, email, password} = values
-                            let variables = {firstName, lastName, phone, email, password,}
-                            if (handleValidate()) {
-                                client.mutate({mutation: signupMutation, variables})
-                                    .then(({data}) => {
-                                        console.log(data)
-                                        if (!!data) {
-                                            const {token} = data.signup
-                                            console.log(token)
-                                            localStorage.setItem('x-auth-token', token);
-                                            props.client.resetStore()
-                                            props.history.push('/')
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        snackbar.openSnackbar('error', 'Something went wrong. Please try again later.')
-                                    })
-                            }
-                        }}
-                    >
-                        Sign Up
-                    </Button>
+
                     <Grid container justify="center">
                         <Grid item>
                             <Typography style={{textDecoration: 'none'}} color={'primary'} component={Link}

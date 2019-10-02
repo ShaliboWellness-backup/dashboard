@@ -139,53 +139,55 @@ const LoginPage = (props) => {
                             control={<Checkbox value="remember" color="primary"/>}
                             label="Remember me"
                         />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            onClick={(e) => {
+                                e.preventDefault()
+                                values.email === '' ||
+                                values.password === '' ?
+                                    snackbar.openSnackbar('error', 'Please make sure to enter your email and password.')
+                                    :
+                                    client.mutate({
+                                        mutation: loginMutation,
+                                        variables: {email: values.email, password: values.password}
+                                    })
+                                        .then(async ({data, error}) => {
+                                            const token = data.login.token;
+                                            localStorage.setItem('x-auth-token', token);
+                                            await props.client.resetStore();
+
+                                            client.query({query: userQuery})
+                                                .then(({data, error}) => {
+                                                    props.history.push('/')
+                                                })
+                                                .catch((error) => {
+                                                    console.log('error in userQuery')
+                                                    snackbar.openSnackbar('error', 'Something went wrong. Please try again later.')
+                                                    const code = R.path(['graphQLErrors', 0, "extensions", "exception", "code"])(error);
+
+                                                    if (code === 2) props.history.push('/unverified');
+                                                    if (code === 1) props.history.push('/login');
+
+                                                });
+                                        })
+                                        .catch((error) => {
+                                            console.log('error in login mutation')
+                                            snackbar.openSnackbar('error', 'Something went wrong. Please try again later.')
+                                            const apolloCode = R.path(['graphQLErrors', 0, "extensions", "code"])(error);
+                                            if (apolloCode === "BAD_USER_INPUT") {
+                                                snackbar.openSnackbar('error', "Wrong email or password")
+                                            }
+                                        })
+                            }}>
+                            Sign In
+                        </Button>
                     </form>
 
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        onClick={() => {
-                            values.email === '' ||
-                            values.password === '' ?
-                                snackbar.openSnackbar('error', 'Please make sure to enter your email and password.')
-                                :
-                                client.mutate({
-                                    mutation: loginMutation,
-                                    variables: {email: values.email, password: values.password}
-                                })
-                                    .then(async ({data, error}) => {
-                                        const token = data.login.token;
-                                        localStorage.setItem('x-auth-token', token);
-                                        await props.client.resetStore();
 
-                                        client.query({query: userQuery})
-                                            .then(({data, error}) => {
-                                                props.history.push('/')
-                                            })
-                                            .catch((error) => {
-                                                console.log('error in userQuery')
-                                                snackbar.openSnackbar('error', 'Something went wrong. Please try again later.')
-                                                const code = R.path(['graphQLErrors', 0, "extensions", "exception", "code"])(error);
-
-                                                if (code === 2) props.history.push('/unverified');
-                                                if (code === 1) props.history.push('/login');
-
-                                            });
-                                    })
-                                    .catch((error) => {
-                                        console.log('error in login mutation')
-                                        snackbar.openSnackbar('error', 'Something went wrong. Please try again later.')
-                                        const apolloCode = R.path(['graphQLErrors', 0, "extensions", "code"])(error);
-                                        if (apolloCode === "BAD_USER_INPUT") {
-                                            snackbar.openSnackbar('error', "Wrong email or password")
-                                        }
-                                    })
-                        }}>
-                        Sign In
-                    </Button>
                     <Grid container style={{width: '100%'}} justify='space-between'>
                         <Grid item>
                             <ForgotPasswordDialog/>

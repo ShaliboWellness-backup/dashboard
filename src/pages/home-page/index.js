@@ -48,7 +48,7 @@ const HomePage = (props) => {
                                render={props => <WelcomePage {...props} user={user}
                                                              company={currentCompany}/>}/>
                         <Route exact path="/trainers"
-                               render={props => <Query query={usersQuery}>
+                               render={props => <Query query={usersQuery} pollInterval={500}>
                                    {({loading, error, data}) => {
                                        let users = []
                                        if (loading) {

@@ -47,7 +47,18 @@ const styles = theme => ({
 
 const Members = ({classes, company}) => {
 
+    const [refetch, setRefetch] = React.useState(0)
+
+    React.useEffect(() => {
+        return undefined
+    }, [refetch])
+
+    const handleRefetch = async () => {
+        return
+    }
+
     return <Query query={getCompanyUsersQuery}
+                  pollInterval={500}
                   variables={company ? {_id: company._id} : {_id: "null"}}
     >
         {({loading, error, data}) => {
@@ -94,7 +105,7 @@ const Members = ({classes, company}) => {
                                             {user.phone}
                                         </TableCell>
                                         <TableCell>
-                                            <UserActionMenu user={user}/>
+                                            <UserActionMenu user={user} refetch={handleRefetch}/>
                                         </TableCell>
                                     </TableRow>
                                 ))}

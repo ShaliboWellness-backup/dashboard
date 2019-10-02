@@ -44,7 +44,7 @@ const Events = ({disableCreateEvent, classes, events}) => {
 
     const {currentCompany} = React.useContext(CurrentCompanyContext)
 
-    let futureEvents = events.filter(event => moment(event.date).isAfter(moment()))
+    let futureEvents = events.filter(event => moment(event.date).isAfter(moment().startOf("day")))
     let sortedEvents = [
         {
             startOfWeek: moment().startOf('week'),

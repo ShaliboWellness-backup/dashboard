@@ -34,6 +34,8 @@ const UserActionMenu = ({user, refetch}) => {
                 onClose={handleClose}
                 anchorOrigin={{horizontal: "right", vertical: "bottom"}}
                 transformOrigin={{horizontal: "right", vertical: "top"}}
+                MenuListProps={{style: {border: '1px solid #c7c7c7', borderRadius: 5}}}
+
             >
 
                 <UserDialog user={user} closeMenu={handleClose}/>
