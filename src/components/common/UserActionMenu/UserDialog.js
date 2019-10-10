@@ -265,10 +265,11 @@ function UserDialog(props) {
                                     firstName,
                                     lastName,
                                     email,
-                                    company: company._id,
+                                    company: (company._id !== "") ? company._id : null,
                                     roles,
                                     verified
                                 }
+
                                 console.log(values)
                                 console.log(variables)
                                 return firstName === "" ||
