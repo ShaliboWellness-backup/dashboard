@@ -9,7 +9,10 @@ const getPromotionsQuery = gql`{
                 tag
                 image
                 codes{
-                value
+         
+                consumedBy{
+                     _id
+                  }
                 }
                 }
                 }

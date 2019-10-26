@@ -11,6 +11,8 @@ import updateCompanyMutation from "../../../graphql/companies/mutation/update-co
 import {useApolloClient} from "@apollo/react-hooks";
 import removePromotionMutation from "../../../graphql/companies/mutation/remove-promotion";
 import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
+import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext";
+import checkPromotionAvailabilityMutation from "../../../graphql/promotion/mutation/check-promotion-availability";
 
 
 const styles = theme => ({
@@ -65,30 +67,59 @@ const PromotionCard = (props) => {
     const [active, setActive] = React.useState(props.active)
     const {classes} = props
     const {currentCompany} = React.useContext(CurrentCompanyContext)
+    const {openSnackbar} = React.useContext(SnackbarContext)
 
     const client = useApolloClient()
 
+    const [hasAvailableCodes, setHasAvailableCodes] = React.useState(false)
+
+    const unusedCodes = promotion.codes.filter(item => item.consumedBy === null)
+
     console.log(props.active)
     const handleSwitch = () => {
-        setActive(!active)
-        client.mutate({
-            mutation: active ? removePromotionMutation : updateCompanyMutation,
-            variables: active ? {
-                companyId: currentCompany._id,
-                promotionId: promotion._id
-            } : {
-                _id: currentCompany._id,
-                promotionsIds: promotion._id
-            }
-        })
-            .then(() => {
-                return
+        if (hasAvailableCodes) {
+            setActive(!active)
+            client.mutate({
+                mutation: active ? removePromotionMutation : updateCompanyMutation,
+                variables: active ? {
+                    companyId: currentCompany._id,
+                    promotionId: promotion._id
+                } : {
+                    _id: currentCompany._id,
+                    promotionsIds: promotion._id
+                }
             })
-            .catch((error) => console.log(error))
+                .then(() => {
+                    return
+                })
+                .catch((error) => console.log(error))
+        } else {
+            openSnackbar('error', "Please enter additional codes before activating.")
+        }
+    }
+
+    const handleCheckCodes = () => {
+        client.mutate({
+            mutation: checkPromotionAvailabilityMutation,
+            variables: {_id: promotion._id}
+        })
+            .then(({data}) => {
+                const {checkPromotionAvailability} = data
+                setHasAvailableCodes(checkPromotionAvailability)
+                edit ? setActive(true)
+                    :
+                    checkPromotionAvailability ?
+                        setActive(companyPromotions.filter((item) => item._id == promotion._id).length > 0)
+                        :
+                        setActive(false)
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     React.useEffect(() => {
-        edit ? setActive(true) : setActive(companyPromotions.filter((item) => item._id == promotion._id).length > 0)
+        handleCheckCodes()
     }, [props])
 
 
@@ -126,9 +157,9 @@ const PromotionCard = (props) => {
                     {active ? 'Active' : 'Inactive'}
                 </Typography>}
                 <div style={{textAlign: "right", width: "100%"}}>
-                    <Typography color={!!promotion.codes && promotion.codes.length > 1 ? 'primary' : 'secondary'}
+                    <Typography color={!!unusedCodes && unusedCodes.length > 0 ? 'primary' : 'secondary'}
                                 variant={'caption'}>
-                        {!!promotion.codes && promotion.codes.length > 1 ? `${promotion.codes.length} codes left` : 'No available codes'}
+                        {!!unusedCodes && unusedCodes.length > 0 ? `${unusedCodes.length} codes left` : 'No available codes'}
                     </Typography>
                 </div>
             </CardActions>
