@@ -98,6 +98,21 @@ const PromotionCard = (props) => {
         }
     }
 
+    const onCodesEmpty = () => {
+        setActive(false)
+        client.mutate({
+            mutation: removePromotionMutation,
+            variables: {
+                companyId: currentCompany._id,
+                promotionId: promotion._id
+            }
+        })
+            .then(() => {
+                return
+            })
+            .catch((error) => console.log(error))
+    }
+
     const handleCheckCodes = () => {
         client.mutate({
             mutation: checkPromotionAvailabilityMutation,
@@ -111,7 +126,7 @@ const PromotionCard = (props) => {
                     checkPromotionAvailability ?
                         setActive(companyPromotions.filter((item) => item._id == promotion._id).length > 0)
                         :
-                        setActive(false)
+                        onCodesEmpty()
             })
             .catch(error => {
                 console.log(error)
