@@ -91,6 +91,8 @@ const PromotionDialog = (props) => {
         setValues({...values, codes: newCodes})
     };
 
+    const unusedCodes = promotion.codes.filter(item => item.consumedBy === null)
+
     const variables = props.action === 'create' ? {...formData} : {...formData, _id: promotion._id}
     const mutation = props.action === 'create' ? createPromotionMutation : updatePromotionMutation
 
@@ -162,7 +164,7 @@ const PromotionDialog = (props) => {
                                     />
                                     <InputLabel style={{marginLeft: 8}}>Upload Codes
                                         CSV
-                                        ({!!promotion.codes && promotion.codes.length > 1 ? `${promotion.codes.length} codes left` : 'No available codes'})</InputLabel>
+                                        ({!!promotion.codes && promotion.codes.length > 0 ? `${unusedCodes.length} codes left` : 'No available codes'})</InputLabel>
                                 </div>
 
 
