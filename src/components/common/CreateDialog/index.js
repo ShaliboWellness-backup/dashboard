@@ -8,6 +8,10 @@ import EventDialog from './EventDialog';
 import Add from '@material-ui/icons/Add';
 import MenuItem from '@material-ui/core/MenuItem';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import moment from 'moment-timezone/builds/moment-timezone-with-data';
+
+moment.tz.setDefault("Asia/Jerusalem");
+
 
 const R = require("ramda");
 
@@ -52,7 +56,7 @@ export default function CreateDialog(props) {
                 </MenuItem>
             )}
 
-            <MuiPickersUtilsProvider utils={MomentUtils}>
+            <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
                 <Dialog maxWidth={"sm"} scroll={"body"} fullScreen={fullScreen} open={open} onClose={handleClose}
                         aria-labelledby="form-dialog-title">
                     {props.type === 'event' ?

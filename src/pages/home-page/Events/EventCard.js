@@ -7,13 +7,15 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
 import {CardHeader, Divider} from '@material-ui/core';
-import moment from 'moment';
+import moment from 'moment-timezone/builds/moment-timezone-with-data';
 import ActionMenu from "../../../components/common/ActionMenu";
 import EventModal from "./EventModal"
 import CurrentUserContext from "../../../containers/CurrentUser/CurrentUserContext";
 import logo from '../../../Assets/logo-white.png'
 
 const R = require("ramda");
+
+moment.tz.setDefault("Asia/Jerusalem");
 
 
 const styles = theme => ({

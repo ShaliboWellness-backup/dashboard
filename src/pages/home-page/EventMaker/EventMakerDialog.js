@@ -8,7 +8,7 @@ import usersQuery from "../../../graphql/user/query/users";
 import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
 import MomentUtils from "@date-io/moment";
 import Add from '@material-ui/icons/Add';
-import moment from 'moment'
+import moment from 'moment-timezone/builds/moment-timezone-with-data';
 import {
     Avatar,
     Button,
@@ -36,6 +36,9 @@ import getCompaniesQuery from "../../../graphql/companies/query/companies";
 import eventMakersQuery from "../../../graphql/event-maker/query/event-maker";
 
 const R = require("ramda");
+
+moment.tz.setDefault("Asia/Jerusalem");
+
 
 const DEFAULT = {
     title: '',
@@ -224,7 +227,7 @@ const EventMaker = (props) => {
     let test = !!event.cron && event.cron.split(' ')[4].split(',').includes('3')
 
     return (
-        <MuiPickersUtilsProvider utils={MomentUtils}>
+        <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
             {props.action === 'create' ? <Fab style={{
                     position: "absolute",
                     left: 0,

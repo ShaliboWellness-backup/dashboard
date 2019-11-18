@@ -19,6 +19,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import usersQuery from "../../../graphql/user/query/users";
 import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
+import moment from 'moment-timezone/builds/moment-timezone-with-data';
+
 
 const R = require("ramda");
 
