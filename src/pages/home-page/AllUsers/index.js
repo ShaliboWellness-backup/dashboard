@@ -29,6 +29,7 @@ const styles = theme => ({
     root: {
         width: '100%',
         overflowX: 'auto',
+        overflowY: 'visible',
         padding: 15,
         height: 'calc(100vh - 100px)',
     },
@@ -200,7 +201,7 @@ const AllUsers = ({classes}) => {
             <Scrollbars
                 autoHeight
                 autoHeightMin={300}
-                autoHeightMax={340}
+                autoHeightMax={'calc(59vh)'}
                 autoHide
                 style={{width: '100%'}}>
                 <Table className={classes.table}>
