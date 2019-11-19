@@ -2,11 +2,10 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import {Avatar, ButtonBase, ListItemAvatar} from "@material-ui/core";
 import {withApollo} from "react-apollo";
+import logo from '../../../Assets/shalibo-app-icon.png'
 
 
 const StyledMenu = withStyles({
@@ -61,7 +60,7 @@ const DropdownMenuProfile = (props) => {
             >
                 <ListItemAvatar>
                     <Avatar style={{width: 30, height: 30, marginBottom: 5}} alt={"ShaliboLogo"}
-                            src={"https://scontent.fhfa1-1.fna.fbcdn.net/v/t1.0-9/1471112_942030945860301_2736404039396499273_n.png?_nc_cat=106&_nc_oc=AQlXrpgkHydn-yxT76PO2KIIgCnda5AcvsWyTOZVYj35Y9ryLTcPe-KU7WqqJhnkMoU&_nc_ht=scontent.fhfa1-1.fna&oh=6f2c1ca63d7078412c9c356518350d1d&oe=5DA6ECE7"}/>
+                            src={logo}/>
                 </ListItemAvatar>
             </ButtonBase>
             <StyledMenu
