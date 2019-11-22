@@ -65,7 +65,7 @@ const EventDialog = (props) => {
         description: !!event.description ? event.description : '',
         image: !!event.image ? event.image : '',
         date: !!event.date ? event.date : new Date(),
-        coinsString: !!event.coins ? event.coins : "100",
+        coinsString: !!event.coins ? event.coins : "15",
         trainers: []
     });
 
