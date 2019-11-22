@@ -9,6 +9,7 @@ import NotFoundPage from './pages/not-found-page';
 import LoginPage from "./pages/login-page";
 import SignupPage from "./pages/signup-page";
 import UnverifiedPage from "./pages/unverified-page";
+import VerifiedPage from "./pages/verified-page";
 import SupportPage from "./pages/support-page";
 import ForgotPasswordPage from './pages/forgot-password-page'
 
@@ -18,6 +19,7 @@ const Routes = props => (
             <Route exact path="/login" component={LoginPage}/>
             <Route exact path="/signup" component={SignupPage}/>
             <Route exact path="/unverified" component={UnverifiedPage}/>
+            <Route exact path="/verified" component={VerifiedPage}/>
             <Route exact path="/support" component={SupportPage}/>
             <Route path="/reset-password/:forgotToken" component={ForgotPasswordPage}/>
             <LoggedInRoute path="/" component={HomePage} {...props} />
