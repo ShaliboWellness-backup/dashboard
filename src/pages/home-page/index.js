@@ -19,6 +19,7 @@ import useTheme from '@material-ui/styles/useTheme'
 import CurrentUserContext from "../../containers/CurrentUser/CurrentUserContext";
 import EventMaker from './EventMaker'
 import getPromotionsQuery from "../../graphql/promotion/query/promotion";
+import EventsCompleted from "./EventsCompleted";
 
 const R = require("ramda")
 
@@ -142,6 +143,31 @@ const HomePage = (props) => {
                                                    return <Events {...props} events={events}/>
                                                }
 
+                                           }
+                                       }
+                                       }
+                                   </Query>}
+                        />
+                        <Route path="/events-completed"
+                               render={props =>
+                                   <Query query={getCompanyEventsQuery}
+                                          variables={currentCompany ? {_id: currentCompany._id} : {_id: "null"}}
+                                          pollInterval={500}>
+                                       {({loading, error, data}) => {
+                                           if (loading) {
+                                               return <div style={{width: "100%", textAlign: "center"}}>
+                                                   <CircularProgress/>
+                                               </div>
+                                           }
+                                           if (error) {
+                                               console.log(error)
+                                               return null
+                                           }
+                                           if (!loading && data && data.company && data.company.events) {
+                                               let events = R.pathOr([], ['events'])(data.company)
+                                               if (data) {
+                                                   return <EventsCompleted {...props} disableCreateEvent={true} events={events}/>
+                                               }
                                            }
                                        }
                                        }

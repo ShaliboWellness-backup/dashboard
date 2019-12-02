@@ -109,18 +109,17 @@ const Sidebar = ({classes, currentPath}) => {
                                   primaryTypographyProps={{variant: 'body2'}}/>
                 </ListItem>
 
-
                 <ListItem
                     button
-                    selected={currentPath === '/promotions'}
-                    onClick={event => handleListItemClick(event, 3)}
+                    selected={currentPath === '/events-completed'}
+                    onClick={event => handleListItemClick(event, 2)}
                     component={Link}
-                    to="/promotions"
+                    to="/events-completed"
                 >
                     <ListItemIcon>
-                        <ShoppingBasket fontSize={"small"} style={{color: '#fff'}}/>
+                        <FitnessCenter fontSize={"small"} style={{color: '#fff'}}/>
                     </ListItemIcon>
-                    <ListItemText classes={{primary: classes.text}} primary="Promotions"
+                    <ListItemText classes={{primary: classes.text}} primary="Completed Events"
                                   primaryTypographyProps={{variant: 'body2'}}/>
                 </ListItem>
 
@@ -135,6 +134,20 @@ const Sidebar = ({classes, currentPath}) => {
                         <Timer fontSize={"small"} style={{color: '#fff'}}/>
                     </ListItemIcon>
                     <ListItemText classes={{primary: classes.text}} primary="Event Maker"
+                                  primaryTypographyProps={{variant: 'body2'}}/>
+                </ListItem>
+
+                <ListItem
+                    button
+                    selected={currentPath === '/promotions'}
+                    onClick={event => handleListItemClick(event, 3)}
+                    component={Link}
+                    to="/promotions"
+                >
+                    <ListItemIcon>
+                        <ShoppingBasket fontSize={"small"} style={{color: '#fff'}}/>
+                    </ListItemIcon>
+                    <ListItemText classes={{primary: classes.text}} primary="Promotions"
                                   primaryTypographyProps={{variant: 'body2'}}/>
                 </ListItem>
 

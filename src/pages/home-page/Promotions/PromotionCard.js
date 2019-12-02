@@ -73,7 +73,7 @@ const PromotionCard = (props) => {
 
     const [hasAvailableCodes, setHasAvailableCodes] = React.useState(false)
 
-    const unusedCodes = promotion.codes.filter(item => item.consumedBy === null)
+    const unusedCodes = (promotion && promotion.codes) ? promotion.codes.filter(item => item.consumedBy === null) : []
 
     console.log(props.active)
     const handleSwitch = () => {

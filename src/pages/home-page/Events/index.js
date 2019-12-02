@@ -40,50 +40,62 @@ const styles = theme => ({
 
 });
 
-const Events = ({disableCreateEvent, classes, events}) => {
+const Events = ({showLatestPastEvents, disableCreateEvent, classes, events}) => {
 
     const {currentCompany} = React.useContext(CurrentCompanyContext)
 
-    let futureEvents = events.filter(event => moment(event.date).isAfter(moment().startOf("day")))
-    let sortedEvents = [
-        {
-            startOfWeek: moment().startOf('week'),
-            endOfWeek: moment().endOf('week'),
-            events: []
-        }]
-    futureEvents.map((event) => {
-        // check if event belongs to existing week
-        //If so, add event to week
-        let i
-        let addedToWeek = false
-        for (i = 0; i < sortedEvents.length; i++) {
-            const {startOfWeek, endOfWeek} = sortedEvents[i]
-            if (moment(event.date).isBetween(startOfWeek, endOfWeek)) {
-                sortedEvents[i].events.push(event)
-                addedToWeek = true
-            } else {
+    let futureEvents;
 
+    if (showLatestPastEvents) {
+        futureEvents = events.filter(event => moment(event.date).isAfter(moment().subtract(7,'d').startOf("day")))
+    } else {
+        futureEvents = events.filter(event => moment(event.date).isAfter(moment().startOf("day")))
+    }
+
+    let sortedEvents = []
+
+    futureEvents.forEach((event) => {
+        let weekFoundForEvent = false
+        sortedEvents.forEach((week) => {
+
+            //Add event to week if the week exist
+            if (moment(event.date).isBetween(week.startOfWeek, week.endOfWeek)) {
+                week.events.push(event)
+                weekFoundForEvent = true
             }
-        }
-        //if event was not added to any week, create new week and add current event to it
-        if (addedToWeek === true) {
-            return null
-        } else {
-            let startOfWeek = moment(event.date).startOf('week')
-            let endOfWeek = moment(event.date).endOf('week')
-            let newWeek = {startOfWeek, endOfWeek, events: [event]}
+        })
+
+        //Create new week if the week does not exist
+        if(!weekFoundForEvent) {
+            let newWeek = {
+                startOfWeek: moment(event.date).startOf('week'),
+                endOfWeek: moment(event.date).endOf('week'),
+                events: []
+            }
+            newWeek.events.push(event)
             sortedEvents.push(newWeek)
         }
-
     })
+
     //sort the events by date within week
     let sortedByDate = sortedEvents.map((weeklyEventsArray) => {
         let sortedEvents = weeklyEventsArray.events.sort(function (a, b) {
             return moment(b.date).isAfter(a.date) ? -1 : moment(a.date).isAfter(b.date) ? 1 : 0
         });
         return {...weeklyEventsArray, events: sortedEvents}
-
     })
+
+    sortedByDate = sortedByDate.sort((a, b) => {
+        return a.startOfWeek.isBefore(b.startOfWeek) ? -1 : 1
+    })
+
+    const getTextForWeekHeader = (startOfWeek) => {
+        let diff = moment().startOf('week').diff(startOfWeek, 'weeks')
+        if (diff === 0) { return 'This Week' }
+        if (diff === -1) { return 'Next Week' }
+        if (diff < 0) { return `${-diff} Weeks From Now` }
+        if (diff > 0) { return `${diff} Weeks Ago` }
+    }
 
     return (
         <div className={classes.grid}>
@@ -93,15 +105,7 @@ const Events = ({disableCreateEvent, classes, events}) => {
                     {`${!!currentCompany && currentCompany.name} Events`}
                 </Typography>
             </div>}
-            {sortedByDate[0].events.length > 0 && <Typography gutterBottom variant={"h5"}
-                                                              style={{
-                                                                  paddingLeft: 8,
-                                                                  borderBottom: '1px solid black',
-                                                                  borderColor: '#00f2c3'
-                                                              }}>
-                This Week
-            </Typography>
-            }
+
             <Grid container spacing={2} style={{marginBottom: 24, marginTop: 8}}>
                 {futureEvents.length < 1 && !disableCreateEvent &&
                 <Paper className={classes.empty}>
@@ -120,25 +124,10 @@ const Events = ({disableCreateEvent, classes, events}) => {
                                 No events are assigned to you at this time
                             </Typography>
                         </div>
-                    </Paper> :
-                    sortedByDate[0].events.map((event, index) => (
-                        <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
-                            <EventCard
-                                event={event}
-                                title={event.title}
-                                instructor={event.instructor}
-                                location={event.location}
-                                date={event.date}
-                                totalSpots={event.totalSpots}
-                                takenSpots={event.users.length}
-                                description={event.description}
-                                image={event.image}
-                                id={event.id}
-                            />
-                        </Grid>
-                    ))}
+                    </Paper> : <div />
+                    }
             </Grid>
-            {sortedByDate.slice(1).map((week, index) => (
+            {sortedByDate.slice(0).map((week, index) => (
                 <div style={{marginBottom: 24}}>
                     <Typography gutterBottom variant={"h5"}
                                 style={{
@@ -146,7 +135,7 @@ const Events = ({disableCreateEvent, classes, events}) => {
                                     borderBottom: '1px solid black',
                                     borderColor: '#00f2c3'
                                 }}>
-                        {moment().diff(week.startOfWeek, 'weeks') === 0 ? 'Next Week' : `${-moment().diff(week.startOfWeek, 'weeks') + 1} Weeks From Now`}
+                        {getTextForWeekHeader(week.startOfWeek)}
                     </Typography>
                     <Grid container spacing={2} style={{
                         marginTop: 8,
@@ -170,8 +159,6 @@ const Events = ({disableCreateEvent, classes, events}) => {
                     </Grid>
                 </div>
             ))}
-
-
         </div>
     );
 

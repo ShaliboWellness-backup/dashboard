@@ -40,18 +40,18 @@ const styles = theme => ({
 
 });
 
-const Events = ({disableCreateEvent, classes, events}) => {
+const EventsCompleted = ({disableCreateEvent, classes, events}) => {
 
     const {currentCompany} = React.useContext(CurrentCompanyContext)
 
-    let futureEvents = events.filter(event => moment(event.date).isAfter(moment().startOf("day")))
+    let pastEvents = events.filter(event => moment(event.date).isBefore(moment().startOf("day")))
     let sortedEvents = [
         {
             startOfWeek: moment().startOf('week'),
             endOfWeek: moment().endOf('week'),
             events: []
         }]
-    futureEvents.map((event) => {
+    pastEvents.map((event) => {
         // check if event belongs to existing week
         //If so, add event to week
         let i
@@ -75,7 +75,12 @@ const Events = ({disableCreateEvent, classes, events}) => {
             sortedEvents.push(newWeek)
         }
 
-    })
+    });
+
+    sortedEvents = sortedEvents.sort(function (weekA, weekB) {
+        return moment(weekA.startOfWeek).isBefore(weekB.startOfWeek) ? 1 : -1
+    });
+
     //sort the events by date within week
     let sortedByDate = sortedEvents.map((weeklyEventsArray) => {
         let sortedEvents = weeklyEventsArray.events.sort(function (a, b) {
@@ -83,6 +88,8 @@ const Events = ({disableCreateEvent, classes, events}) => {
         });
         return {...weeklyEventsArray, events: sortedEvents}
     })
+
+    console.log(JSON.stringify(sortedEvents))
 
     return (
         <div className={classes.grid}>
@@ -101,8 +108,8 @@ const Events = ({disableCreateEvent, classes, events}) => {
                 This Week
             </Typography>
             }
-            <Grid container spacing={2} style={{marginBottom: 24, marginTop: 8}}>
-                {futureEvents.length < 1 && !disableCreateEvent &&
+            <Grid container spacing={2} style={{marginBottom: 0, marginTop: 0}}>
+                {pastEvents.length < 1 && !disableCreateEvent &&
                 <Paper className={classes.empty}>
                     <div style={{textAlign: 'center '}}>
                         <CardMedia style={{width: 200, height: 200, margin: 'auto'}} image={logo}/>
@@ -111,7 +118,7 @@ const Events = ({disableCreateEvent, classes, events}) => {
                         </Typography>
                     </div>
                 </Paper>}
-                {futureEvents.length < 1 && disableCreateEvent ?
+                {pastEvents.length < 1 && disableCreateEvent ?
                     <Paper className={classes.empty}>
                         <div style={{textAlign: 'center '}}>
                             <CardMedia style={{width: 200, height: 200, margin: 'auto'}} image={logo}/>
@@ -145,7 +152,7 @@ const Events = ({disableCreateEvent, classes, events}) => {
                                     borderBottom: '1px solid black',
                                     borderColor: '#00f2c3'
                                 }}>
-                        {moment().diff(week.startOfWeek, 'weeks') === 0 ? 'Next Week' : `${-moment().diff(week.startOfWeek, 'weeks') + 1} Weeks From Now`}
+                        {moment().diff(week.endOfWeek, 'weeks') === -1 ? 'Last Week' : `${moment().diff(week.startOfWeek, 'weeks')} Weeks ago`}
                     </Typography>
                     <Grid container spacing={2} style={{
                         marginTop: 8,
@@ -176,4 +183,4 @@ const Events = ({disableCreateEvent, classes, events}) => {
 
 }
 
-export default withStyles(styles)(Events);
+export default withStyles(styles)(EventsCompleted);

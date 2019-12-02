@@ -91,7 +91,7 @@ const PromotionDialog = (props) => {
         setValues({...values, codes: newCodes})
     };
 
-    const unusedCodes = promotion.codes.filter(item => item.consumedBy === null)
+    const unusedCodes = (promotion && promotion.codes) ? promotion.codes.filter(item => item.consumedBy === null) : []
 
     const variables = props.action === 'create' ? {...formData} : {...formData, _id: promotion._id}
     const mutation = props.action === 'create' ? createPromotionMutation : updatePromotionMutation
