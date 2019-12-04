@@ -72,8 +72,8 @@ export default function AttendingUsers({event, users, children}) {
                         <TableHead>
                             <TableRow>
                                 <TableCell className={classes.tableHead}>Name</TableCell>
-                                <TableCell className={classes.tableHead}>Email</TableCell>
                                 <TableCell className={classes.tableHead}>Attended</TableCell>
+                                <TableCell className={classes.tableHead}>Email</TableCell>
                                 <TableCell className={classes.tableHead}>Remove</TableCell>
 
                                 {/*<TableCell className={classes.tableHead}>Company</TableCell>*/}
@@ -89,7 +89,6 @@ export default function AttendingUsers({event, users, children}) {
                                     <TableRow key={user._id}>
                                         <TableCell
                                             className={classes.tableBody}>{user.firstName} {user.lastName}</TableCell>
-                                        <TableCell className={classes.tableBody}>{user.email}</TableCell>
                                         <TableCell className={classes.tableBody}>
                                             <Checkbox
                                                 color={"primary"}
@@ -123,6 +122,7 @@ export default function AttendingUsers({event, users, children}) {
                                                 }}
                                             />
                                         </TableCell>
+                                        <TableCell className={classes.tableBody}>{user.email}</TableCell>
                                         <TableCell className={classes.tableBody}>
                                             <Button onClick={() => {
                                                 const updatedUsers = event.users.filter((value) => value._id !== user._id);
