@@ -89,8 +89,6 @@ const EventsCompleted = ({disableCreateEvent, classes, events}) => {
         return {...weeklyEventsArray, events: sortedEvents}
     })
 
-    console.log(JSON.stringify(sortedEvents))
-
     return (
         <div className={classes.grid}>
             {!disableCreateEvent && <div className={classes.header}>

@@ -72,7 +72,7 @@ function EventCard(props) {
     const time = moment(date).format('llll');
 
     let userContext = React.useContext(CurrentUserContext)
-    console.log(event)
+    // console.log(event)
 
     const coins = R.pathOr('0', ['coins'])(event)
 
