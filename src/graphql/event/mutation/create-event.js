@@ -16,6 +16,7 @@ mutation createEvent(
 ) {
   createEvent(
     title: $title
+    style: $style
     instructor: $instructor
     location: $location
     date: $date
@@ -27,6 +28,7 @@ mutation createEvent(
   ) {
     _id
     title
+    style
     instructor {
       firstName
       lastName
