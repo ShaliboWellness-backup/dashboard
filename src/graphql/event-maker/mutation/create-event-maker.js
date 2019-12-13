@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 const createEventMakerMutation = gql`
 mutation createEventMaker(
   $title: String!
+  $style: Style!
   $instructor: String!
   $location: String!
   $totalSpots: Int!
@@ -16,6 +17,7 @@ mutation createEventMaker(
 ) {
   createEventMaker(
     title: $title
+    style: $style
     instructor: $instructor
     location: $location
     date: $date

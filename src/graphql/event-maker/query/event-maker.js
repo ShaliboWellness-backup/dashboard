@@ -5,6 +5,7 @@ const EventMakersQuery = gql`
   eventMakers{
     _id
     title
+    style
     instructor{
       firstName
       lastName

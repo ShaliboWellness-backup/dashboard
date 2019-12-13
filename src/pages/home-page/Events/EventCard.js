@@ -89,14 +89,13 @@ function EventCard(props) {
                 </CardMedia>
 
             </EventModal>
+
             <CardHeader
                 action={userContext.currentUser.roles.includes('admin') ? <ActionMenu card={event}/> : null}
                 title={title}
                 titleTypographyProps={{style: {textTransform: 'capitalize'}}}
                 subheader={moment(date).format(" MMMM Do, HH:mm")}
-
             />
-
 
             <CardContent className={classes.cardContent}>
                 <div className={classes.timeCaption}>
@@ -111,11 +110,13 @@ function EventCard(props) {
             </CardContent>
             <Divider variant="fullWidth"/>
             <CardActions>
+                {/*<img style={{height: 20, width: 20}} src={require('../../../Assets/shalibo-app-icon.png')} />*/}
                 <div style={{textAlign: "center", width: "100%"}}>
                     <Typography color={'primary'} variant={'caption'}>
                         {location} | {R.pathOr("Unknown", ["firstName"])(instructor)} {R.pathOr("", ["lastName"])(instructor)}
                     </Typography>
                 </div>
+                {/*<img style={{height: 20, width: 20}} src={require('../../../Assets/shalibo-app-icon.png')} />*/}
             </CardActions>
         </Card>
     );

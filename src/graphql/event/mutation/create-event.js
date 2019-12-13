@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 const createEventMutation = gql`
 mutation createEvent(
   $title: String!
+  $style: Style!
   $instructor: String!
   $location: String!
   $totalSpots: Int!

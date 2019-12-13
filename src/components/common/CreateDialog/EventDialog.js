@@ -59,6 +59,7 @@ const EventDialog = (props) => {
 
     const [values, setValues] = React.useState({
         title: !!event.title ? event.title : '',
+        style: event.style ? event.style : '',
         instructor: !!event.instructor ? event.instructor._id : '',
         location: !!event.location ? event.location : '',
         totalSpotsString: !!event.totalSpots ? event.totalSpots : '',
@@ -110,15 +111,16 @@ const EventDialog = (props) => {
     const {classes} = props;
     const inputLabel = React.useRef(null);
 
+    const availableStyles = ['pilates', 'strength', 'wellness', 'yoga']
 
     let {
-        title, instructor, location, totalSpotsString, coinsString, description, image, date,
+        title, style, instructor, location, totalSpotsString, coinsString, description, image, date,
     } = values;
 
     let totalSpots = parseInt(totalSpotsString)
     let coins = parseInt(coinsString)
     const formData = {
-        title, instructor, location, totalSpots, coins, description, image, date,
+        title, style, instructor, location, totalSpots, coins, description, image, date,
     };
 
     const takenSpots = props.action === 'create' ? 0 : event.takenSpots
@@ -170,6 +172,28 @@ const EventDialog = (props) => {
 
                                 </Select>
                             </FormControl>
+
+                            <FormControl variant="outlined" className={classes.selectInput}>
+                                <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
+                                    Style
+                                </InputLabel>
+                                <Select
+                                    MenuProps={{classes: {list: classes.test}}}
+                                    value={style}
+                                    onChange={handleChange('style')}
+                                    input={<OutlinedInput labelWidth={labelWidth} name="Style"
+                                                          id="outlined-age-simple"/>}
+                                >
+                                    {availableStyles.length > 0 ? availableStyles.map((style) => (
+                                            <MenuItem key={style}
+                                                      value={style}>{style}</MenuItem>
+                                        )) :
+                                        <MenuItem key={1} value={""}>No Available Styles</MenuItem>
+                                    }
+
+                                </Select>
+                            </FormControl>
+
                             <TextField
                                 id="location"
                                 label="Location"
@@ -245,6 +269,7 @@ const EventDialog = (props) => {
                                 return <Button onClick={() => {
                                     return variables.title === "" ||
                                     variables.instructor === "" ||
+                                    variables.style === "" ||
                                     variables.date === "" ||
                                     variables.location === "" ||
                                     variables.totalSpotsString === "" ||

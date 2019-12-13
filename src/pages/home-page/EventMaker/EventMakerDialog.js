@@ -108,6 +108,7 @@ const EventMaker = (props) => {
 
     const [values, setValues] = React.useState({
         title: !!event.title ? event.title : '',
+        style: event.style ? event.style : '',
         instructor: !!event.instructor ? event.instructor._id : '',
         location: !!event.location ? event.location : '',
         totalSpotsString: !!event.totalSpots ? event.totalSpots : '',
@@ -196,8 +197,10 @@ const EventMaker = (props) => {
     //         })
     // }
 
+    const availableStyles = ['pilates', 'strength', 'wellness', 'yoga']
+
     let {
-        title, instructor, location, totalSpotsString, coinsString, description, image, date, company
+        title, style, instructor, location, totalSpotsString, coinsString, description, image, date, company
     } = values;
 
     let totalSpots = parseInt(totalSpotsString)
@@ -206,6 +209,7 @@ const EventMaker = (props) => {
 
     const formData = {
         title,
+        style,
         instructor,
         location,
         totalSpots,
@@ -284,6 +288,30 @@ const EventMaker = (props) => {
                                     </Select>
                                 </FormControl>
                             </Grid>
+
+                            <Grid item md={6} xs={6}>
+                                <FormControl variant="outlined" className={classes.selectInput}>
+                                    <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
+                                        Style
+                                    </InputLabel>
+                                    <Select
+                                        MenuProps={{classes: {list: classes.test}}}
+                                        value={style}
+                                        onChange={handleChange('style')}
+                                        input={<OutlinedInput labelWidth={labelWidth} name="Style"
+                                                              id="outlined-age-simple"/>}
+                                    >
+                                        {availableStyles.length > 0 ? availableStyles.map((style) => (
+                                                <MenuItem key={style}
+                                                          value={style}>{style}</MenuItem>
+                                            )) :
+                                            <MenuItem key={1} value={""}>No Available Styles</MenuItem>
+                                        }
+
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+
                             {/*<Grid item xs={6}>*/}
                             {/*    <FormControl variant="outlined" className={classes.selectInput}>*/}
                             {/*        <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">*/}
@@ -488,6 +516,7 @@ const EventMaker = (props) => {
                                 let cron = `${minutes} ${hours} * * ${selectedDays}`
                                 let temp = {...variables, cron}
                                 return variables.title === "" ||
+                                variables.style === "" ||
                                 variables.instructor === "" ||
                                 variables.date === "" ||
                                 variables.location === "" ||

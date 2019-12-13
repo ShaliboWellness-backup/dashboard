@@ -5,6 +5,7 @@ const updateEventMutation = gql`
 mutation updateEvent(
   $_id: String!
   $title: String
+  $style: Style
   $instructor: String
   $location: String
   $totalSpots: Int
@@ -17,6 +18,7 @@ mutation updateEvent(
   updateEvent(
     _id: $_id
     title: $title
+    style: $style
     instructor: $instructor
     location: $location
     totalSpots: $totalSpots
@@ -27,6 +29,7 @@ mutation updateEvent(
     coins: $coins
   ) {
     title
+    style
     instructor {
       _id
       firstName

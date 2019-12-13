@@ -6,6 +6,7 @@ const updateEventMakerMutation = gql`
 mutation updateEventMakerMaker(
   $_id: String!
   $title: String
+  $style: Style
   $instructor: String
   $location: String
   $totalSpots: Int
@@ -19,6 +20,7 @@ mutation updateEventMakerMaker(
   updateEventMaker(
     _id: $_id
     title: $title
+    style: $style
     instructor: $instructor
     location: $location
     date: $date
