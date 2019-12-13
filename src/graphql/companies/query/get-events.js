@@ -24,6 +24,7 @@ query getCompanyEvents($_id: String!){
     description
     image
     coins
+    enablePush
     verifiedUsers{
       _id
     }

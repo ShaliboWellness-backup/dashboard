@@ -11,6 +11,7 @@ const EventMakersQuery = gql`
       lastName
       _id
     }
+    enablePush
     users{
     _id
       firstName

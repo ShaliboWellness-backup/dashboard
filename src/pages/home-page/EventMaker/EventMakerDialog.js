@@ -34,6 +34,7 @@ import createEventMakerMutation from "../../../graphql/event-maker/mutation/crea
 import updateEventMakerMutation from "../../../graphql/event-maker/mutation/update-event-maker";
 import getCompaniesQuery from "../../../graphql/companies/query/companies";
 import eventMakersQuery from "../../../graphql/event-maker/query/event-maker";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const R = require("ramda");
 
@@ -48,6 +49,7 @@ const DEFAULT = {
     description: '',
     image: '',
     date: new Date(),
+    enablePush: true
 }
 
 
@@ -117,7 +119,8 @@ const EventMaker = (props) => {
         date: !!event.date ? event.date : new Date(),
         coinsString: !!event.coins ? event.coins : "15",
         company: "",
-        trainers: []
+        trainers: [],
+        enablePush: props.action === 'create' ? true : event.enablePush,
     });
 
 
@@ -141,6 +144,10 @@ const EventMaker = (props) => {
 
     const handleChange = name => (event) => {
         setValues({...values, [name]: event.target.value});
+    };
+
+    const handlePushChange = name => (event) => {
+        setValues({...values, ['enablePush']: event.target.checked});
     };
 
     const handleCompanyChange = name => (event) => {
@@ -200,7 +207,7 @@ const EventMaker = (props) => {
     const availableStyles = ['pilates', 'strength', 'wellness', 'yoga']
 
     let {
-        title, style, instructor, location, totalSpotsString, coinsString, description, image, date, company
+        title, style, instructor, location, totalSpotsString, coinsString, description, image, date, company, enablePush
     } = values;
 
     let totalSpots = parseInt(totalSpotsString)
@@ -217,7 +224,8 @@ const EventMaker = (props) => {
         description,
         image,
         date,
-        company: !!currentCompany && currentCompany._id
+        company: !!currentCompany && currentCompany._id,
+        enablePush
     }
 
 
@@ -402,6 +410,15 @@ const EventMaker = (props) => {
                                     onChange={handleChange('description')}
                                     margin="normal"
                                     variant={"outlined"}
+                                />
+                            </Grid>
+                            <Grid item md={6} xs={6}>
+                                <FormControlLabel
+                                    style={{width: '100%', height: '100%', margin: 0}}
+                                    control={
+                                        <Checkbox color={'primary'} checked={values.enablePush} onChange={handlePushChange('enablePush')} />
+                                    }
+                                    label="Send Push Reminder"
                                 />
                             </Grid>
                             <Grid item xs={8}>

@@ -20,6 +20,8 @@ import Select from '@material-ui/core/Select';
 import usersQuery from "../../../graphql/user/query/users";
 import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 
 const R = require("ramda");
@@ -55,6 +57,7 @@ const EventDialog = (props) => {
     const client = useApolloClient()
 
     const {event} = props;
+
     console.log(event)
 
     const [values, setValues] = React.useState({
@@ -67,6 +70,7 @@ const EventDialog = (props) => {
         image: !!event.image ? event.image : '',
         date: !!event.date ? event.date : new Date(),
         coinsString: !!event.coins ? event.coins : "15",
+        enablePush: props.action === 'create' ? true : event.enablePush,
         trainers: []
     });
 
@@ -80,7 +84,10 @@ const EventDialog = (props) => {
 
     const handleChange = name => (event) => {
         setValues({...values, [name]: event.target.value});
-        console.log(formData);
+    };
+
+    const handleCheckboxChange = name => (event) => {
+        setValues({...values, ['enablePush']: event.target.checked});
     };
 
     const handleSetDate = (date) => {
@@ -114,13 +121,13 @@ const EventDialog = (props) => {
     const availableStyles = ['pilates', 'strength', 'wellness', 'yoga']
 
     let {
-        title, style, instructor, location, totalSpotsString, coinsString, description, image, date,
+        title, style, instructor, location, totalSpotsString, coinsString, description, image, date, enablePush,
     } = values;
 
     let totalSpots = parseInt(totalSpotsString)
     let coins = parseInt(coinsString)
     const formData = {
-        title, style, instructor, location, totalSpots, coins, description, image, date,
+        title, style, instructor, location, totalSpots, coins, description, image, date, enablePush,
     };
 
     const takenSpots = props.action === 'create' ? 0 : event.takenSpots
@@ -254,6 +261,14 @@ const EventDialog = (props) => {
                                 onChange={handleChange('description')}
                                 margin="normal"
                                 variant={"outlined"}
+                            />
+
+                            <FormControlLabel
+                                style={{ margin: 0 }}
+                                control={
+                                    <Checkbox color={'primary'} checked={values.enablePush} onChange={handleCheckboxChange('enablePush')} />
+                                }
+                                label="Send Push Reminder"
                             />
 
                         </form>

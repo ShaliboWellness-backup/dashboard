@@ -23,6 +23,7 @@ const getEventsQuery = gql`
     description
     image
     coins
+    enablePush
     verifiedUsers{
       _id
     }

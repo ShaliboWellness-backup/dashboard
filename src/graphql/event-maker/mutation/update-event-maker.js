@@ -16,6 +16,7 @@ mutation updateEventMakerMaker(
   $coins: Int
   $company: String
   $cron: String
+  $enablePush: Boolean
 ) {
   updateEventMaker(
     _id: $_id
@@ -30,6 +31,7 @@ mutation updateEventMakerMaker(
     coins: $coins
     company: $company
     cron: $cron
+    enablePush: $enablePush
   ) {
     _id
     title
@@ -47,6 +49,7 @@ mutation updateEventMakerMaker(
       _id
     }
     coins
+    enablePush
   }
 }
 

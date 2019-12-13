@@ -14,6 +14,7 @@ mutation updateEvent(
   $image: String
   $date: String
   $coins: Int
+  $enablePush: Boolean
 ) {
   updateEvent(
     _id: $_id
@@ -27,6 +28,7 @@ mutation updateEvent(
     image: $image
     date: $date
     coins: $coins
+    enablePush: $enablePush
   ) {
     title
     style
@@ -46,6 +48,7 @@ mutation updateEvent(
     totalSpots
     description
     coins
+    enablePush
   }
 }
 
