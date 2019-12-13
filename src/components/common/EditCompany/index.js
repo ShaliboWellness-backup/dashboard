@@ -240,7 +240,7 @@ function EditCompany({classes, company}) {
                                     :
                                     client.mutate({
                                         mutation: updateCompanyMutation,
-                                        variables: {_id: company._id, name, emailSuffix, logo, isPublic}
+                                        variables: {_id: company._id, name, emailSuffix: emailSuffix.trim().toLowerCase(), logo, isPublic}
                                     }).then(() => {
                                         handleClose()
                                         window.location.reload()

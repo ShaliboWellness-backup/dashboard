@@ -153,7 +153,7 @@ const LoginPage = (props) => {
                                     :
                                     client.mutate({
                                         mutation: loginMutation,
-                                        variables: {email: values.email, password: values.password}
+                                        variables: {email: values.email.trim().toLowerCase(), password: values.password.trim()}
                                     })
                                         .then(async ({data, error}) => {
                                             const token = data.login.token;

@@ -117,7 +117,7 @@ function NewCompany({classes, closeMenu}) {
                         {value => (
                             <Button onClick={() => {
                                 const {name, emailSuffix, logo} = values
-                                const variables = {name, emailSuffix, logo}
+                                const variables = {name, emailSuffix: emailSuffix.trim().toLowerCase(), logo}
                                 return name === "" ||
                                 emailSuffix === "" ||
                                 logo === "" ?

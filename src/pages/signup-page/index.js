@@ -194,7 +194,7 @@ const SignupPage = (props) => {
                             onClick={(e) => {
                                 e.preventDefault()
                                 const {firstName, lastName, phone, email, password} = values
-                                let variables = {firstName, lastName, phone, email, password,}
+                                let variables = {firstName, lastName, phone, email: email.trim().toLowerCase(), password: password.trim(),}
                                 if (handleValidate()) {
                                     client.mutate({mutation: signupMutation, variables})
                                         .then(({data}) => {
