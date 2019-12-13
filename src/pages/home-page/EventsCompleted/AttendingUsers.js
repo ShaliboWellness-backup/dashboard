@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -16,6 +16,7 @@ import Button from '@material-ui/core/Button';
 import {useApolloClient} from "@apollo/react-hooks";
 import updateEventMutation from '../../../graphql/event/mutation/update-event';
 import verifyEventUsersMutation from "../../../graphql/event/mutation/verify-event-users";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -52,9 +53,11 @@ export default function AttendingUsers({event, users, children}) {
     const classes = useStyles();
 
     const client = useApolloClient()
+
+    const [verifying, setVerifying] = useState(false);
     
     return (
-        <ExpansionPanel classes={{root: classes.root}}>
+        <ExpansionPanel style={verifying ? {pointerEvents: "none", opacity: "0.4", transition: 'opacity 0.4s ease'} : {transition: 'opacity 0.4s ease'}} classes={{root: classes.root}}>
             <ExpansionPanelSummary
                 expandIcon={<ExpandMoreIcon/>}
                 aria-controls="panel1a-content"
@@ -94,6 +97,7 @@ export default function AttendingUsers({event, users, children}) {
                                                 color={"primary"}
                                                 defaultChecked={oldVerifiedUsers.includes(_id)}
                                                 onChange={() => {
+                                                    setVerifying(true)
                                                     let newVerifiedUsers = oldVerifiedUsers.includes(_id) ?
                                                         oldVerifiedUsers.filter((userId) => userId !== _id)
                                                         :
@@ -109,10 +113,11 @@ export default function AttendingUsers({event, users, children}) {
                                                     })
                                                         .then((data) => {
                                                             console.log(data)
-
+                                                            setVerifying(false)
                                                         })
                                                         .catch((error) => {
                                                             console.log(error)
+                                                            setVerifying(false)
                                                         })
 
                                                 }}

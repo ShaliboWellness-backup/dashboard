@@ -84,7 +84,7 @@ const EventsCompleted = ({disableCreateEvent, classes, events}) => {
     //sort the events by date within week
     let sortedByDate = sortedEvents.map((weeklyEventsArray) => {
         let sortedEvents = weeklyEventsArray.events.sort(function (a, b) {
-            return moment(b.date).isAfter(a.date) ? -1 : moment(a.date).isAfter(b.date) ? 1 : 0
+            return moment(a.date).isAfter(b.date) ? -1 : moment(a.date).isAfter(b.date) ? 1 : 0
         });
         return {...weeklyEventsArray, events: sortedEvents}
     })
