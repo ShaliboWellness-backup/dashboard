@@ -18,6 +18,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Zoom from "@material-ui/core/Zoom";
 import Tooltip from "@material-ui/core/Tooltip";
 import updateCompanyMutation from "../../../graphql/companies/mutation/update-company";
+import deleteCompanyMutation from "../../../graphql/companies/mutation/delete-company";
 import SnackbarContext from "../../../containers/CustomSnackbar/SnackbarContext"
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -27,6 +28,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {CSVLink} from "react-csv";
 import updateAvailableCodes from "../../../graphql/companies/mutation/update-available-codes";
 import RefreshButton from "../RefreshButton";
+import Typography from "@material-ui/core/Typography";
 
 
 const styles = () => ({
@@ -61,7 +63,11 @@ function EditCompany({classes, company}) {
 
     const [open, setOpen] = React.useState(false);
 
+    const [confirmationDialog, setConfirmationDialog] = React.useState(false);
+
     const {openSnackbar} = React.useContext(SnackbarContext)
+
+    let deleteText = ''
 
     function handleClickOpen() {
         setOpen(true);
@@ -225,6 +231,18 @@ function EditCompany({classes, company}) {
                     </form>
 
                 </DialogContent>
+                <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', marginTop: 10, marginBottom: 10, marginRight: 24, marginLeft: 24 }}>
+                    <SnackbarContext.Consumer>
+                        {value => {
+                            return <Button onClick={() => {setConfirmationDialog(true)}}
+                                           style={{backgroundColor: '#e37045', color: '#fff', flex: 1}} variant={"contained"}>
+                                DELETE COMPANY
+                            </Button>
+
+                        }}
+
+                    </SnackbarContext.Consumer>
+                </div>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
@@ -256,6 +274,61 @@ function EditCompany({classes, company}) {
                         }}
 
                     </SnackbarContext.Consumer>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                disableBackdropClick
+                disableEscapeKeyDown
+                maxWidth="xs"
+                aria-labelledby="confirmation-dialog-title"
+                open={confirmationDialog}
+            >
+                <DialogTitle id="confirmation-dialog-title">Beware!</DialogTitle>
+                <DialogContent>
+                    <Typography>This Operation Cannot Be Undone<br/><br/></Typography>
+                    <Typography>Type 'DELETE' in the field below and click Yes to permanently delete this company<br/></Typography>
+                    <TextField
+                        id="delete"
+                        label="DELETE"
+                        inputProps={{
+                            style: { textTransform: 'uppercase' },
+                        }}
+                        // inputProps={{ 'textTransform': 'uppercase', 'backgroundColor': '#000' }}
+                        onChange={(value) => {
+                            deleteText = value.target.value
+                        }}
+                        margin="normal"
+                        type={'text'}
+                        variant={"outlined"}
+                        fullWidth={false}
+                        margin={'dense'}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button autoFocus onClick={() => {
+                        setConfirmationDialog(false)
+                        deleteText = ''
+                    }} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={() => {
+                        if (deleteText.toUpperCase() === 'DELETE')
+                            client.mutate({
+                                mutation: deleteCompanyMutation,
+                                variables: { _id: company._id }
+                            }).then(() => {
+                                deleteText = ''
+                                setConfirmationDialog(false)
+                                handleClose()
+                                window.location.reload()
+                            })
+                                .catch((error) => {
+                                    deleteText = ''
+                                    console.log(error)
+                                })
+                    }} color="primary">
+                        Yes
+                    </Button>
                 </DialogActions>
             </Dialog>
         </Fragment>
