@@ -24,6 +24,8 @@ const getEventsQuery = gql`
     image
     coins
     enablePush
+    isLive
+    zoomUrl
     verifiedUsers{
       _id
     }

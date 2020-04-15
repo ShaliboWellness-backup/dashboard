@@ -15,6 +15,8 @@ mutation updateEvent(
   $date: String
   $coins: Int
   $enablePush: Boolean
+  $isLive: Boolean
+  $zoomUrl: String
 ) {
   updateEvent(
     _id: $_id
@@ -29,6 +31,8 @@ mutation updateEvent(
     date: $date
     coins: $coins
     enablePush: $enablePush
+    isLive: $isLive
+    zoomUrl: $zoomUrl
   ) {
     title
     style
@@ -49,6 +53,8 @@ mutation updateEvent(
     description
     coins
     enablePush
+    isLive
+    zoomUrl
   }
 }
 

@@ -71,6 +71,8 @@ const EventDialog = (props) => {
         date: !!event.date ? event.date : new Date(),
         coinsString: !!event.coins ? event.coins : "15",
         enablePush: props.action === 'create' ? true : event.enablePush,
+        isLive: props.action === 'create' ? false : event.isLive,
+        zoomUrl: props.action === 'create' ? null : event.zoomUrl,
         trainers: []
     });
 
@@ -84,10 +86,11 @@ const EventDialog = (props) => {
 
     const handleChange = name => (event) => {
         setValues({...values, [name]: event.target.value});
+        console.log(values)
     };
 
     const handleCheckboxChange = name => (event) => {
-        setValues({...values, ['enablePush']: event.target.checked});
+        setValues({...values, [name]: event.target.checked});
     };
 
     const handleSetDate = (date) => {
@@ -121,13 +124,13 @@ const EventDialog = (props) => {
     const availableStyles = ['pilates', 'strength', 'wellness', 'yoga']
 
     let {
-        title, style, instructor, location, totalSpotsString, coinsString, description, image, date, enablePush,
+        title, style, instructor, location, totalSpotsString, coinsString, description, image, date, enablePush, isLive, zoomUrl
     } = values;
 
     let totalSpots = parseInt(totalSpotsString)
     let coins = parseInt(coinsString)
     const formData = {
-        title, style, instructor, location, totalSpots, coins, description, image, date, enablePush,
+        title, style, instructor, location, totalSpots, coins, description, image, date, enablePush, isLive, zoomUrl
     };
 
     const takenSpots = props.action === 'create' ? 0 : event.takenSpots
@@ -264,11 +267,33 @@ const EventDialog = (props) => {
                             />
 
                             <FormControlLabel
+                                id="enablePush"
                                 style={{ margin: 0 }}
                                 control={
                                     <Checkbox color={'primary'} checked={values.enablePush} onChange={handleCheckboxChange('enablePush')} />
                                 }
                                 label="Send Push Reminder"
+                            />
+
+                            <TextField
+                                id="zoomUrl"
+                                label="Zoom Meeting URL"
+                                multiline
+                                fullWidth
+                                className={classes.textField}
+                                value={values.zoomUrl}
+                                onChange={handleChange('zoomUrl')}
+                                margin="normal"
+                                variant={"outlined"}
+                            />
+
+                            <FormControlLabel
+                                id="isLive"
+                                style={{ margin: 0 }}
+                                control={
+                                    <Checkbox color={'primary'} checked={values.isLive} onChange={handleCheckboxChange('isLive')} />
+                                }
+                                label="Live Workout"
                             />
 
                         </form>

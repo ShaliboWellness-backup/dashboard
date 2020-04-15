@@ -25,6 +25,8 @@ query getCompanyEvents($_id: String!){
     image
     coins
     enablePush
+    isLive
+    zoomUrl
     verifiedUsers{
       _id
     }
