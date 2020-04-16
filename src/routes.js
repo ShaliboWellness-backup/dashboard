@@ -11,6 +11,7 @@ import SignupPage from "./pages/signup-page";
 import UnverifiedPage from "./pages/unverified-page";
 import VerifiedPage from "./pages/verified-page";
 import SupportPage from "./pages/support-page";
+import TermsAndConditions from "./pages/terms-and-conditions";
 import ForgotPasswordPage from './pages/forgot-password-page'
 
 const Routes = props => (
@@ -21,6 +22,7 @@ const Routes = props => (
             <Route exact path="/unverified" component={UnverifiedPage}/>
             <Route exact path="/verified" component={VerifiedPage}/>
             <Route exact path="/support" component={SupportPage}/>
+            <Route exact path="/privacy-policy" component={TermsAndConditions}/>
             <Route path="/reset-password/:forgotToken" component={ForgotPasswordPage}/>
             <LoggedInRoute path="/" component={HomePage} {...props} />
             <LoggedInRoute path="" component={HomePage} {...props} />
