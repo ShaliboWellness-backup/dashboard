@@ -109,18 +109,20 @@ const EventMaker = (props) => {
     const [companies, setCompanies] = React.useState([])
 
     const [values, setValues] = React.useState({
-        title: !!event.title ? event.title : '',
+        title: event.title ? event.title : '',
         style: event.style ? event.style : '',
-        instructor: !!event.instructor ? event.instructor._id : '',
-        location: !!event.location ? event.location : '',
-        totalSpotsString: !!event.totalSpots ? event.totalSpots : '',
-        description: !!event.description ? event.description : '',
-        image: !!event.image ? event.image : '',
-        date: !!event.date ? event.date : new Date(),
-        coinsString: !!event.coins ? event.coins : "15",
+        instructor: event.instructor ? event.instructor._id : '',
+        location: event.location ? event.location : '',
+        totalSpotsString: event.totalSpots ? event.totalSpots : '',
+        description: event.description ? event.description : '',
+        image: event.image ? event.image : '',
+        date: event.date ? event.date : new Date(),
+        coinsString: event.coins ? event.coins : "15",
         company: "",
         trainers: [],
         enablePush: props.action === 'create' ? true : event.enablePush,
+        isLive: event.isLive ? event.isLive : false,
+        zoomUrl: event.zoomUrl ? event.zoomUrl : null
     });
 
 
@@ -157,6 +159,10 @@ const EventMaker = (props) => {
 
     const handleSetDate = (date) => {
         setValues({...values, date});
+    };
+
+    const handleCheckboxChange = name => (event) => {
+        setValues({...values, [name]: event.target.checked});
     };
 
     const handleSetDays = (value) => {
@@ -207,7 +213,7 @@ const EventMaker = (props) => {
     const availableStyles = ['pilates', 'strength', 'wellness', 'yoga']
 
     let {
-        title, style, instructor, location, totalSpotsString, coinsString, description, image, date, company, enablePush
+        title, style, instructor, location, totalSpotsString, coinsString, description, image, date, company, enablePush, isLive, zoomUrl
     } = values;
 
     let totalSpots = parseInt(totalSpotsString)
@@ -225,7 +231,9 @@ const EventMaker = (props) => {
         image,
         date,
         company: !!currentCompany && currentCompany._id,
-        enablePush
+        enablePush,
+        isLive,
+        zoomUrl
     }
 
 
@@ -421,6 +429,29 @@ const EventMaker = (props) => {
                                     label="Send Push Reminder"
                                 />
                             </Grid>
+                            <Grid item md={6} xs={6}>
+                                <TextField
+                                    id="zoomUrl"
+                                    label="Zoom Meeting URL"
+                                    multiline
+                                    fullWidth
+                                    className={classes.textField}
+                                    value={values.zoomUrl}
+                                    onChange={handleChange('zoomUrl')}
+                                    margin="normal"
+                                    variant={"outlined"}
+                                />
+                            </Grid>
+                            <Grid item md={6} xs={6}>
+                                <FormControlLabel
+                                    id="isLive"
+                                    style={{width: '100%', height: '100%', margin: 0}}
+                                    control={
+                                        <Checkbox color={'primary'} checked={values.isLive} onChange={handleCheckboxChange('isLive')} />
+                                    }
+                                    label="Live Workout"
+                                />
+                            </Grid>
                             <Grid item xs={8}>
                                 <div>
                                     <Typography gutterBottom>
@@ -526,6 +557,7 @@ const EventMaker = (props) => {
                     </Button>
                     <SnackbarContext.Consumer>
                         {value => {
+                            console.log(values)
                             return <Button onClick={() => {
                                 let selectedDays = days.join(',')
                                 let hours = moment(values.date).format('HH')

@@ -25,6 +25,8 @@ const EventMakersQuery = gql`
     image
     coins
     cron
+    isLive
+    zoomUrl
     company{
     _id
     

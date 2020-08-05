@@ -75,7 +75,6 @@ function EventMakerCard(props) {
 
     return (
         <Card className={classes.card}>
-
             <CardMedia
                 className={classes.cardMedia}
                 image={image}
