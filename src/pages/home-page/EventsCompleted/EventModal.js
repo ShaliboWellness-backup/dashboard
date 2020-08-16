@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useCallback} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -10,13 +10,13 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
 import moment from 'moment';
 import {CardHeader} from "@material-ui/core";
-import AttendingUsers from "./AttendingUsers";
+import AttendingUsers from "../Events/AttendingUsers";
 import UserPicker from "../../../components/common/AutoSuggest";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
 import {useApolloClient} from "@apollo/react-hooks";
 import updateEventMutation from '../../../graphql/event/mutation/update-event';
-import {Scrollbars} from 'react-custom-scrollbars';
+import verifyEventUsersMutation from "../../../graphql/event/mutation/verify-event-users";
+
 
 const R = require("ramda");
 
@@ -73,6 +73,7 @@ function EventModal(props) {
 
     function handleClose() {
         setOpen(false);
+        handleVerifyUsers()
     }
 
     const {event, classes} = props
@@ -85,6 +86,21 @@ function EventModal(props) {
         setVerifiedUsers(event.verifiedUsers.map((user) => user._id));
     }, [event]);
 
+   const handleVerifyUsers = useCallback(async () => {
+       try{
+           await client.mutate({
+               mutation: verifyEventUsersMutation,
+               variables:
+                   {
+                       _id: event._id,
+                       usersIds: verifiedUsers
+                   }
+           })
+       } catch (e) {
+           console.log(e)
+       }
+
+   }, [verifiedUsers, event])
 
     return (
         <div>

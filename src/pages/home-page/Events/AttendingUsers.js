@@ -15,8 +15,7 @@ import {ExpansionPanelActions, Switch} from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import {useApolloClient} from "@apollo/react-hooks";
 import updateEventMutation from '../../../graphql/event/mutation/update-event';
-import verifyEventUsersMutation from "../../../graphql/event/mutation/verify-event-users";
-import Snackbar from "@material-ui/core/Snackbar";
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -56,9 +55,15 @@ export default function AttendingUsers({event, users, children, setVerifiedUsers
 
     const [verifying, setVerifying] = useState(false);
 
-    useEffect(() => {
-        console.log('effect')
-    });
+    function handleToggleUser(_id){
+        if(verifiedUsers.includes(_id)){
+            const tempVerified = verifiedUsers.filter(userId => userId !== _id)
+            console.log(tempVerified)
+            setVerifiedUsers(tempVerified);
+        } else {
+            setVerifiedUsers((prevState)=> ([...prevState, _id]))
+        }
+    }
 
     return (
         <ExpansionPanel style={verifying ?
@@ -94,7 +99,6 @@ export default function AttendingUsers({event, users, children, setVerifiedUsers
 
                             users.map(user => {
                                 const {_id} = user
-                                let oldVerifiedUsers = event.verifiedUsers.map((user) => user._id)
                                 return (
                                     <TableRow key={user._id}>
                                         <TableCell
@@ -102,30 +106,8 @@ export default function AttendingUsers({event, users, children, setVerifiedUsers
                                         <TableCell className={classes.tableBody}>
                                             <Checkbox
                                                 color={"primary"}
-                                                defaultChecked={oldVerifiedUsers.includes(_id)}
-                                                onChange={() => {
-                                                    setVerifying(true)
-                                                    let newVerifiedUsers = oldVerifiedUsers.includes(_id) ?
-                                                        oldVerifiedUsers.filter((userId) => userId !== _id)
-                                                        :
-                                                        [...oldVerifiedUsers, _id]
-                                                    client.mutate({
-                                                        mutation: verifyEventUsersMutation,
-                                                        variables:
-                                                            {
-                                                                _id: event._id,
-                                                                usersIds: newVerifiedUsers
-                                                            }
-                                                    })
-                                                        .then(() => {
-                                                                setVerifying(false)
-                                                        })
-                                                        .catch((error) => {
-                                                            console.log(error)
-                                                                setVerifying(false)
-                                                        })
-
-                                                }}
+                                                checked={verifiedUsers.includes(_id)}
+                                                onChange={() => handleToggleUser(_id)}
                                                 value="checkedA"
                                                 inputProps={{
                                                     'aria-label': 'primary checkbox',
