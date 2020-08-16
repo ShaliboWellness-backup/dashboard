@@ -119,19 +119,11 @@ export default function AttendingUsers({event, users, children}) {
                                                                 usersIds: newVerifiedUsers
                                                             }
                                                     })
-                                                        .then((data) => {
-                                                            // console.log(JSON.stringify(newVerifiedUsers))
-                                                            // console.log(data)
-                                                            setTimeout(function() { //Start the timer
-                                                                setVerifying(false)
-                                                            }.bind(this), 2000)
+                                                        .then(() => {
 
                                                         })
                                                         .catch((error) => {
-                                                            // console.log(error)
-                                                            setTimeout(function() { //Start the timer
-                                                                setVerifying(false)
-                                                            }.bind(this), 3000)
+                                                             console.log(error)
                                                         })
 
                                                 }}
