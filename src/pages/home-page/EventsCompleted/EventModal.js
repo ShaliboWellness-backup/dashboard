@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -79,6 +79,13 @@ function EventModal(props) {
     const client = useApolloClient()
 
     const userPickerRef = useRef();
+    const [verifiedUsers, setVerifiedUsers] = useState([]);
+
+    useEffect(() => {
+        setVerifiedUsers(event.verifiedUsers.map((user) => user._id));
+    }, [event]);
+
+
     return (
         <div>
             <div style={{cursor: "pointer"}} onClick={handleClickOpen}>
@@ -115,7 +122,7 @@ function EventModal(props) {
                 <DialogContent className={classes.cardContent}>
                     <Typography>{event.description}</Typography>
 
-                    <AttendingUsers event={event} users={event.users} style={{marginBottom: 20}}>
+                    <AttendingUsers event={event} users={event.users} verifiedUsers={verifiedUsers} setVerifiedUsers={setVerifiedUsers} style={{marginBottom: 20}}>
                         <div style={{
                             marginLeft: 26,
                             display: 'flex',

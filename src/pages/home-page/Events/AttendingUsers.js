@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function AttendingUsers({event, users, children}) {
+export default function AttendingUsers({event, users, children, setVerifiedUsers, verifiedUsers}) {
     const classes = useStyles();
 
     const client = useApolloClient()
@@ -109,8 +109,6 @@ export default function AttendingUsers({event, users, children}) {
                                                         oldVerifiedUsers.filter((userId) => userId !== _id)
                                                         :
                                                         [...oldVerifiedUsers, _id]
-
-                                                    console.log(newVerifiedUsers.length)
                                                     client.mutate({
                                                         mutation: verifyEventUsersMutation,
                                                         variables:
