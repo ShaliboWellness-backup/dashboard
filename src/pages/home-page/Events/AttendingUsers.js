@@ -120,10 +120,11 @@ export default function AttendingUsers({event, users, children}) {
                                                             }
                                                     })
                                                         .then(() => {
-
+                                                                setVerifying(false)
                                                         })
                                                         .catch((error) => {
-                                                             console.log(error)
+                                                            console.log(error)
+                                                                setVerifying(false)
                                                         })
 
                                                 }}
