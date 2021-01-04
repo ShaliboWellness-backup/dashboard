@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useCallback} from 'react';
+import React, {useRef} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -10,13 +10,13 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
 import moment from 'moment';
 import {CardHeader} from "@material-ui/core";
-import AttendingUsers from "../Events/AttendingUsers";
+import AttendingUsers from "./AttendingUsers";
 import UserPicker from "../../../components/common/AutoSuggest";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
 import {useApolloClient} from "@apollo/react-hooks";
 import updateEventMutation from '../../../graphql/event/mutation/update-event';
-import verifyEventUsersMutation from "../../../graphql/event/mutation/verify-event-users";
-
+import {Scrollbars} from 'react-custom-scrollbars';
 
 const R = require("ramda");
 
@@ -73,35 +73,12 @@ function EventModal(props) {
 
     function handleClose() {
         setOpen(false);
-        handleVerifyUsers()
     }
 
     const {event, classes} = props
     const client = useApolloClient()
 
     const userPickerRef = useRef();
-    const [verifiedUsers, setVerifiedUsers] = useState([]);
-
-    useEffect(() => {
-        setVerifiedUsers(event.verifiedUsers.map((user) => user._id));
-    }, [event]);
-
-   const handleVerifyUsers = useCallback(async () => {
-       try{
-           await client.mutate({
-               mutation: verifyEventUsersMutation,
-               variables:
-                   {
-                       _id: event._id,
-                       usersIds: verifiedUsers
-                   }
-           })
-       } catch (e) {
-           console.log(e)
-       }
-
-   }, [verifiedUsers, event])
-
     return (
         <div>
             <div style={{cursor: "pointer"}} onClick={handleClickOpen}>
@@ -138,7 +115,7 @@ function EventModal(props) {
                 <DialogContent className={classes.cardContent}>
                     <Typography>{event.description}</Typography>
 
-                    <AttendingUsers event={event} users={event.users} verifiedUsers={verifiedUsers} setVerifiedUsers={setVerifiedUsers} style={{marginBottom: 20}}>
+                    <AttendingUsers event={event} users={event.users} style={{marginBottom: 20}}>
                         <div style={{
                             marginLeft: 26,
                             display: 'flex',

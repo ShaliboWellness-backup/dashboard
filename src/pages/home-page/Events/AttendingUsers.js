@@ -15,7 +15,8 @@ import {ExpansionPanelActions, Switch} from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import {useApolloClient} from "@apollo/react-hooks";
 import updateEventMutation from '../../../graphql/event/mutation/update-event';
-
+import verifyEventUsersMutation from "../../../graphql/event/mutation/verify-event-users";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -48,22 +49,16 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function AttendingUsers({event, users, children, setVerifiedUsers, verifiedUsers}) {
+export default function AttendingUsers({event, users, children}) {
     const classes = useStyles();
 
     const client = useApolloClient()
 
     const [verifying, setVerifying] = useState(false);
 
-    function handleToggleUser(_id){
-        if(verifiedUsers.includes(_id)){
-            const tempVerified = verifiedUsers.filter(userId => userId !== _id)
-            console.log(tempVerified)
-            setVerifiedUsers(tempVerified);
-        } else {
-            setVerifiedUsers((prevState)=> ([...prevState, _id]))
-        }
-    }
+    useEffect(() => {
+        console.log('effect')
+    });
 
     return (
         <ExpansionPanel style={verifying ?
@@ -99,6 +94,7 @@ export default function AttendingUsers({event, users, children, setVerifiedUsers
 
                             users.map(user => {
                                 const {_id} = user
+                                let oldVerifiedUsers = event.verifiedUsers.map((user) => user._id)
                                 return (
                                     <TableRow key={user._id}>
                                         <TableCell
@@ -106,8 +102,39 @@ export default function AttendingUsers({event, users, children, setVerifiedUsers
                                         <TableCell className={classes.tableBody}>
                                             <Checkbox
                                                 color={"primary"}
-                                                checked={verifiedUsers.includes(_id)}
-                                                onChange={() => handleToggleUser(_id)}
+                                                defaultChecked={oldVerifiedUsers.includes(_id)}
+                                                onChange={() => {
+                                                    setVerifying(true)
+                                                    let newVerifiedUsers = oldVerifiedUsers.includes(_id) ?
+                                                        oldVerifiedUsers.filter((userId) => userId !== _id)
+                                                        :
+                                                        [...oldVerifiedUsers, _id]
+
+                                                    console.log(newVerifiedUsers.length)
+                                                    client.mutate({
+                                                        mutation: verifyEventUsersMutation,
+                                                        variables:
+                                                            {
+                                                                _id: event._id,
+                                                                usersIds: newVerifiedUsers
+                                                            }
+                                                    })
+                                                        .then((data) => {
+                                                            // console.log(JSON.stringify(newVerifiedUsers))
+                                                            // console.log(data)
+                                                            setTimeout(function() { //Start the timer
+                                                                setVerifying(false)
+                                                            }.bind(this), 2000)
+
+                                                        })
+                                                        .catch((error) => {
+                                                            // console.log(error)
+                                                            setTimeout(function() { //Start the timer
+                                                                setVerifying(false)
+                                                            }.bind(this), 3000)
+                                                        })
+
+                                                }}
                                                 value="checkedA"
                                                 inputProps={{
                                                     'aria-label': 'primary checkbox',
