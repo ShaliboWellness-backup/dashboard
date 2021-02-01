@@ -58,7 +58,7 @@ const Members = ({classes, company}) => {
     }
 
     return <Query query={getCompanyUsersQuery}
-                  pollInterval={500}
+                  pollInterval={1000}
                   variables={company ? {_id: company._id} : {_id: "null"}}
     >
         {({loading, error, data}) => {
