@@ -20,6 +20,7 @@ query getCompanyEvents($_id: String!){
     }
     location
     date
+    dateEnd
     totalSpots
     description
     image

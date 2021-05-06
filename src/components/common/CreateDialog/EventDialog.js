@@ -67,6 +67,7 @@ const EventDialog = (props) => {
     description: event.description ? event.description : '',
     image: event.image ? event.image : '',
     date: event.date ? event.date : new Date(),
+    dateEnd: event.dateEnd ? event.dateEnd : new Date(),
     coinsString: event.coins ? event.coins : '15',
     enablePush: props.action === 'create' ? true : event.enablePush,
     isLive: props.action === 'create' ? false : event.isLive,
@@ -94,6 +95,10 @@ const EventDialog = (props) => {
     setValues({ ...values, date });
   };
 
+  const handleSetDateEnd = (date) => {
+    setValues({ ...values, dateEnd: date });
+  };
+
   const getTrainers = () => {
     client.query({
       query: trainersQuery,
@@ -119,13 +124,13 @@ const EventDialog = (props) => {
   const availableStyles = ['pilates', 'strength', 'wellness', 'yoga'];
 
   const {
-    title, style, instructor, location, totalSpotsString, coinsString, description, image, date, enablePush, isLive, zoomUrl,
+    title, style, instructor, location, totalSpotsString, coinsString, description, image, date, enablePush, isLive, zoomUrl, dateEnd
   } = values;
 
   const totalSpots = parseInt(totalSpotsString);
   const coins = parseInt(coinsString);
   const formData = {
-    title, style, instructor, location, totalSpots, coins, description, image, date, enablePush, isLive, zoomUrl,
+    title, style, instructor, location, totalSpots, coins, description, image, date, enablePush, isLive, zoomUrl, dateEnd
   };
 
   const takenSpots = props.action === 'create' ? 0 : event.takenSpots;
@@ -133,7 +138,7 @@ const EventDialog = (props) => {
   const variables = props.action === 'create' ? { ...formData, takenSpots } : { ...formData, _id: event._id };
   const mutation = props.action === 'create' ? createEventMutation : updateEventMutation;
 
-  console.log(variables);
+  console.log({ formData, values, variables });
   return (
     <CurrentCompanyContext.Consumer>
       {(value) => {
@@ -147,8 +152,8 @@ const EventDialog = (props) => {
             </DialogTitle>
             <DialogContent>
               <DialogContentText>
-                            Here you can change the details of a specific event.
-                            Please note that changes will be visible to all relevant users once submitted.
+                Here you can change the details of a specific event.
+                Please note that changes will be visible to all relevant users once submitted.
               </DialogContentText>
               <form className={classes.container} noValidate autoComplete="off">
                 <TextField
@@ -162,7 +167,7 @@ const EventDialog = (props) => {
                 />
                 <FormControl variant="outlined" className={classes.selectInput}>
                   <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
-                                    Instructor
+                    Instructor
                   </InputLabel>
                   <Select
                     MenuProps={{ classes: { list: classes.test } }}
@@ -191,7 +196,7 @@ const EventDialog = (props) => {
 
                 <FormControl variant="outlined" className={classes.selectInput}>
                   <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
-                                    Style
+                    Style
                   </InputLabel>
                   <Select
                     MenuProps={{ classes: { list: classes.test } }}
@@ -259,6 +264,17 @@ const EventDialog = (props) => {
                   inputVariant="outlined"
 
                 />
+                <DateTimePicker
+                  autoOk
+                  ampm={false}
+                  value={values.dateEnd}
+                  onChange={date => handleSetDateEnd(date)}
+                  label="End Date & Time"
+                  className={classes.textField}
+                  style={{ marginTop: 16 }}
+                  inputVariant="outlined"
+
+                />
                 <TextField
                   id="image"
                   label="Image"
@@ -317,49 +333,51 @@ const EventDialog = (props) => {
                 onClick={props.handleClose}
                 color="primary"
               >
-                            Cancel
+                Cancel
               </Button>
               <SnackbarContext.Consumer>
                 {value => (
                   <Button
-                    onClick={() => (variables.title === ''
-                                    || variables.instructor === ''
-                                    || variables.style === ''
-                                    || variables.date === ''
-                                    || variables.location === ''
-                                    || variables.totalSpotsString === ''
-                                    || variables.description === ''
-                                    || variables.image === ''
-                      ? value.openSnackbar('error', 'Please make sure there are no empty fields')
-                      : client.mutate({
-                        mutation,
-                        variables,
-                      })
-                        .then(async ({ data, error }) => {
-                          props.action === 'edit'
-                                                && props.handleClose();
-                          props.action === 'create'
-                                                && client.mutate({
-                                                  mutation: updateCompanyMutation,
-                                                  variables: {
-                                                    _id: currentCompany._id,
-                                                    eventsIds: data.createEvent._id,
-                                                  },
-                                                })
-                                                  .then(({ data, error }) => {
-                                                    console.log('updated company with event');
-                                                    props.handleClose();
-                                                  })
-                                                  .catch((error) => {
-                                                    console.log(error);
-                                                  });
+                    onClick={() => {
+                      (variables.title === ''
+                        || variables.instructor === ''
+                        || variables.style === ''
+                        || variables.date === ''
+                        || variables.location === ''
+                        || variables.totalSpotsString === ''
+                        || variables.description === ''
+                        || variables.image === ''
+                        ? value.openSnackbar('error', 'Please make sure there are no empty fields')
+                        : client.mutate({
+                          mutation,
+                          variables,
                         })
-                        .catch((error) => {
-                          console.log(error);
-                        }))}
+                          .then(async ({ data, error }) => {
+                            props.action === 'edit'
+                              && props.handleClose();
+                            props.action === 'create'
+                              && client.mutate({
+                                mutation: updateCompanyMutation,
+                                variables: {
+                                  _id: currentCompany._id,
+                                  eventsIds: data.createEvent._id,
+                                },
+                              })
+                                .then(({ data, error }) => {
+                                  console.log('updated company with event');
+                                  props.handleClose();
+                                })
+                                .catch((error) => {
+                                  console.log(error);
+                                });
+                          })
+                          .catch((error) => {
+                            console.log(error);
+                          }))
+                    }}
                     color="primary"
                   >
-                                    OK
+                    OK
                   </Button>
                 )}
               </SnackbarContext.Consumer>

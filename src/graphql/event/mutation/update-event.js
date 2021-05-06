@@ -13,6 +13,7 @@ mutation updateEvent(
   $description: String
   $image: String
   $date: String
+  $dateEnd: String
   $coins: Int
   $enablePush: Boolean
   $isLive: Boolean
@@ -29,6 +30,7 @@ mutation updateEvent(
     description: $description
     image: $image
     date: $date
+    dateEnd: $dateEnd
     coins: $coins
     enablePush: $enablePush
     isLive: $isLive
@@ -43,6 +45,7 @@ mutation updateEvent(
     }
     location
     date
+    dateEnd
     image
     users {
       firstName
