@@ -1,5 +1,5 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -8,8 +8,9 @@ import Divider from '@material-ui/core/Divider';
 import PermIdentity from '@material-ui/icons/PermIdentity';
 import FitnessCenter from '@material-ui/icons/FitnessCenter';
 import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
-import {Avatar, ListItemAvatar, ListItemSecondaryAction, Paper} from '@material-ui/core';
-import {Link} from 'react-router-dom';
+import Group from '@material-ui/icons/Group';
+import { Avatar, ListItemAvatar, ListItemSecondaryAction, Paper } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
 import EditCompany from "../../common/EditCompany";
 import Timer from '@material-ui/icons/TimerOutlined'
@@ -45,7 +46,7 @@ const styles = theme => ({
     }
 });
 
-const Sidebar = ({classes, currentPath}) => {
+const Sidebar = ({ classes, currentPath }) => {
 
     const [selectedIndex, setIndex] = React.useState(null)
 
@@ -54,7 +55,7 @@ const Sidebar = ({classes, currentPath}) => {
     const handleListItemClick = (event, index) => {
         setIndex(index)
     }
-    const currentCompany = R.pathOr({name: "", emailSuffix: "", logo: ""}, ["currentCompany"])(value)
+    const currentCompany = R.pathOr({ name: "", emailSuffix: "", logo: "" }, ["currentCompany"])(value)
 
     console.log(currentPath)
     return (
@@ -65,20 +66,20 @@ const Sidebar = ({classes, currentPath}) => {
                     onClick={event => handleListItemClick(event, null)}>
                     <ListItemAvatar>
                         <Avatar className={classes.logo}
-                                alt="ShaliboLogo"
-                                src={currentCompany.logo}
+                            alt="ShaliboLogo"
+                            src={currentCompany.logo}
                         />
                     </ListItemAvatar>
-                    <ListItemText classes={{primary: classes.text}} primary={currentCompany.name}
-                                  primaryTypographyProps={{color: 'textSecondary', variant: 'body1'}}/>
+                    <ListItemText classes={{ primary: classes.text }} primary={currentCompany.name}
+                        primaryTypographyProps={{ color: 'textSecondary', variant: 'body1' }} />
                     <ListItemSecondaryAction>
-                        <EditCompany company={currentCompany}/>
+                        <EditCompany company={currentCompany} />
                     </ListItemSecondaryAction>
 
 
                 </ListItem>
-                <Divider style={{opacity: 0.75, marginBottom: 15, background: "hsla(0,0%,100%,.5)"}}
-                         variant="middle"/>
+                <Divider style={{ opacity: 0.75, marginBottom: 15, background: "hsla(0,0%,100%,.5)" }}
+                    variant="middle" />
 
                 <ListItem
                     component={Link}
@@ -88,10 +89,10 @@ const Sidebar = ({classes, currentPath}) => {
                     onClick={event => handleListItemClick(event, 1)}
                 >
                     <ListItemIcon>
-                        <PermIdentity fontSize={"small"} style={{color: '#fff'}}/>
+                        <PermIdentity fontSize={"small"} style={{ color: '#fff' }} />
                     </ListItemIcon>
-                    <ListItemText classes={{primary: classes.text}} primary={'Members'}
-                                  primaryTypographyProps={{variant: 'body2'}}/>
+                    <ListItemText classes={{ primary: classes.text }} primary={'Members'}
+                        primaryTypographyProps={{ variant: 'body2' }} />
                 </ListItem>
 
 
@@ -103,10 +104,10 @@ const Sidebar = ({classes, currentPath}) => {
                     to="/events"
                 >
                     <ListItemIcon>
-                        <FitnessCenter fontSize={"small"} style={{color: '#fff'}}/>
+                        <FitnessCenter fontSize={"small"} style={{ color: '#fff' }} />
                     </ListItemIcon>
-                    <ListItemText classes={{primary: classes.text}} primary="Events"
-                                  primaryTypographyProps={{variant: 'body2'}}/>
+                    <ListItemText classes={{ primary: classes.text }} primary="Events"
+                        primaryTypographyProps={{ variant: 'body2' }} />
                 </ListItem>
 
                 <ListItem
@@ -117,10 +118,10 @@ const Sidebar = ({classes, currentPath}) => {
                     to="/events-completed"
                 >
                     <ListItemIcon>
-                        <FitnessCenter fontSize={"small"} style={{color: '#fff'}}/>
+                        <FitnessCenter fontSize={"small"} style={{ color: '#fff' }} />
                     </ListItemIcon>
-                    <ListItemText classes={{primary: classes.text}} primary="Completed Events"
-                                  primaryTypographyProps={{variant: 'body2'}}/>
+                    <ListItemText classes={{ primary: classes.text }} primary="Completed Events"
+                        primaryTypographyProps={{ variant: 'body2' }} />
                 </ListItem>
 
                 <ListItem
@@ -131,10 +132,10 @@ const Sidebar = ({classes, currentPath}) => {
                     to="/event-maker"
                 >
                     <ListItemIcon>
-                        <Timer fontSize={"small"} style={{color: '#fff'}}/>
+                        <Timer fontSize={"small"} style={{ color: '#fff' }} />
                     </ListItemIcon>
-                    <ListItemText classes={{primary: classes.text}} primary="Event Maker"
-                                  primaryTypographyProps={{variant: 'body2'}}/>
+                    <ListItemText classes={{ primary: classes.text }} primary="Event Maker"
+                        primaryTypographyProps={{ variant: 'body2' }} />
                 </ListItem>
 
                 <ListItem
@@ -145,10 +146,24 @@ const Sidebar = ({classes, currentPath}) => {
                     to="/promotions"
                 >
                     <ListItemIcon>
-                        <ShoppingBasket fontSize={"small"} style={{color: '#fff'}}/>
+                        <ShoppingBasket fontSize={"small"} style={{ color: '#fff' }} />
                     </ListItemIcon>
-                    <ListItemText classes={{primary: classes.text}} primary="Promotions"
-                                  primaryTypographyProps={{variant: 'body2'}}/>
+                    <ListItemText classes={{ primary: classes.text }} primary="Promotions"
+                        primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItem>
+
+                <ListItem
+                    button
+                    selected={currentPath === '/teams'}
+                    onClick={event => handleListItemClick(event, 3)}
+                    component={Link}
+                    to="/teams"
+                >
+                    <ListItemIcon>
+                        <Group fontSize={"small"} style={{ color: '#fff' }} />
+                    </ListItemIcon>
+                    <ListItemText classes={{ primary: classes.text }} primary="Teams"
+                        primaryTypographyProps={{ variant: 'body2' }} />
                 </ListItem>
 
             </List>

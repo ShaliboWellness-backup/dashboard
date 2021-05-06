@@ -8,6 +8,7 @@ import Sidebar from '../../components/header-title/Sidebar';
 import Members from './Members';
 import Promotions from './Promotions';
 import Events from './Events';
+import Teams from './Teams';
 import CurrentCompanyContext from '../../containers/CurrentCompany/CurrentCompanyContext';
 import WelcomePage from './WelcomePage';
 import HeaderTitle from '../../components/header-title';
@@ -19,6 +20,7 @@ import trainersQuery from '../../graphql/user/query/trainers';
 import CurrentUserContext from '../../containers/CurrentUser/CurrentUserContext';
 import EventMaker from './EventMaker';
 import getPromotionsQuery from '../../graphql/promotion/query/promotion';
+import companyTeamsQuery from '../../graphql/teams/query/companyTeam';
 import EventsCompleted from './EventsCompleted';
 
 const R = require('ramda');
@@ -210,6 +212,34 @@ const HomePage = (props) => {
               )}
             />
             <Route path="/event-maker" component={EventMaker} />
+            <Route path="/teams" render={props => (
+              <Query
+                query={companyTeamsQuery}
+                variables={currentCompany ? { companyId: currentCompany._id } : { companyId: 'null' }}
+                pollInterval={5000}
+              >
+                {({ loading, error, data }) => {
+                  if (loading) {
+                    return (
+                      <div style={{ width: '100%', textAlign: 'center' }}>
+                        <CircularProgress />
+                      </div>
+                    );
+                  }
+                  if (error) {
+                    console.log(error);
+                    return null;
+                  }
+                  if (!loading && data && data.companyTeams) {
+                    const teams = data.companyTeams;
+                    if (data) {
+                      return <Teams {...props} disableCreateEvent teams={teams} currentCompany={currentCompany} />;
+                    }
+                  }
+                }
+                }
+              </Query>
+            )} />
           </Switch>
         </div>
 
