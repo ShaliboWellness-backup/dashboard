@@ -1,6 +1,6 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
-import {Grid, Typography, Paper, CardMedia} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { Grid, Typography, Paper, CardMedia } from '@material-ui/core';
 import EventCard from './EventCard';
 import CreateDialog from '../../../components/common/CreateDialog';
 import logo from '../../../Assets/logo.png'
@@ -40,11 +40,14 @@ const styles = theme => ({
 
 });
 
-const EventsCompleted = ({disableCreateEvent, classes, events}) => {
+const EventsCompleted = ({ disableCreateEvent, classes, events }) => {
 
-    const {currentCompany} = React.useContext(CurrentCompanyContext)
+    const { currentCompany } = React.useContext(CurrentCompanyContext)
 
-    let pastEvents = events.filter(event => moment(event.date).isBefore(moment().startOf("day")))
+    let pastEvents = events.filter(event => event.dateEnd ? (
+        moment(event.date).isBefore(moment().startOf("day")) && moment(event.dateEnd).isBefore(moment().startOf("day"))
+    ) :
+        moment(event.date).isBefore(moment().startOf("day")));
     let sortedEvents = [
         {
             startOfWeek: moment().startOf('week'),
@@ -57,7 +60,7 @@ const EventsCompleted = ({disableCreateEvent, classes, events}) => {
         let i
         let addedToWeek = false
         for (i = 0; i < sortedEvents.length; i++) {
-            const {startOfWeek, endOfWeek} = sortedEvents[i]
+            const { startOfWeek, endOfWeek } = sortedEvents[i]
             if (moment(event.date).isBetween(startOfWeek, endOfWeek)) {
                 sortedEvents[i].events.push(event)
                 addedToWeek = true
@@ -71,7 +74,7 @@ const EventsCompleted = ({disableCreateEvent, classes, events}) => {
         } else {
             let startOfWeek = moment(event.date).startOf('week')
             let endOfWeek = moment(event.date).endOf('week')
-            let newWeek = {startOfWeek, endOfWeek, events: [event]}
+            let newWeek = { startOfWeek, endOfWeek, events: [event] }
             sortedEvents.push(newWeek)
         }
 
@@ -86,40 +89,40 @@ const EventsCompleted = ({disableCreateEvent, classes, events}) => {
         let sortedEvents = weeklyEventsArray.events.sort(function (a, b) {
             return moment(a.date).isAfter(b.date) ? -1 : moment(a.date).isAfter(b.date) ? 1 : 0
         });
-        return {...weeklyEventsArray, events: sortedEvents}
+        return { ...weeklyEventsArray, events: sortedEvents }
     })
 
     return (
         <div className={classes.grid}>
             {!disableCreateEvent && <div className={classes.header}>
-                <CreateDialog type="event" action={"create"}/>
+                <CreateDialog type="event" action={"create"} />
                 <Typography gutterBottom variant={"h4"}>
                     {`${!!currentCompany && currentCompany.name} Events`}
                 </Typography>
             </div>}
             {sortedByDate[0].events.length > 0 && <Typography gutterBottom variant={"h5"}
-                                                              style={{
-                                                                  paddingLeft: 8,
-                                                                  borderBottom: '1px solid black',
-                                                                  borderColor: '#00f2c3'
-                                                              }}>
+                style={{
+                    paddingLeft: 8,
+                    borderBottom: '1px solid black',
+                    borderColor: '#00f2c3'
+                }}>
                 This Week
             </Typography>
             }
-            <Grid container spacing={2} style={{marginBottom: 0, marginTop: 0}}>
+            <Grid container spacing={2} style={{ marginBottom: 0, marginTop: 0 }}>
                 {pastEvents.length < 1 && !disableCreateEvent &&
-                <Paper className={classes.empty}>
-                    <div style={{textAlign: 'center '}}>
-                        <CardMedia style={{width: 200, height: 200, margin: 'auto'}} image={logo}/>
-                        <Typography variant={"h4"} className={classes.emptyText}>
-                            There are no events for this company
+                    <Paper className={classes.empty}>
+                        <div style={{ textAlign: 'center ' }}>
+                            <CardMedia style={{ width: 200, height: 200, margin: 'auto' }} image={logo} />
+                            <Typography variant={"h4"} className={classes.emptyText}>
+                                There are no events for this company
                         </Typography>
-                    </div>
-                </Paper>}
+                        </div>
+                    </Paper>}
                 {pastEvents.length < 1 && disableCreateEvent ?
                     <Paper className={classes.empty}>
-                        <div style={{textAlign: 'center '}}>
-                            <CardMedia style={{width: 200, height: 200, margin: 'auto'}} image={logo}/>
+                        <div style={{ textAlign: 'center ' }}>
+                            <CardMedia style={{ width: 200, height: 200, margin: 'auto' }} image={logo} />
                             <Typography variant={"h4"} className={classes.emptyText}>
                                 No events are assigned to you at this time
                             </Typography>
@@ -143,13 +146,13 @@ const EventsCompleted = ({disableCreateEvent, classes, events}) => {
                     ))}
             </Grid>
             {sortedByDate.slice(1).map((week, index) => (
-                <div style={{marginBottom: 24}}>
+                <div style={{ marginBottom: 24 }}>
                     <Typography gutterBottom variant={"h5"}
-                                style={{
-                                    paddingLeft: 8,
-                                    borderBottom: '1px solid black',
-                                    borderColor: '#00f2c3'
-                                }}>
+                        style={{
+                            paddingLeft: 8,
+                            borderBottom: '1px solid black',
+                            borderColor: '#00f2c3'
+                        }}>
                         {moment().diff(week.endOfWeek, 'weeks') === -1 ? 'Last Week' : `${moment().diff(week.startOfWeek, 'weeks')} Weeks ago`}
                     </Typography>
                     <Grid container spacing={2} style={{
