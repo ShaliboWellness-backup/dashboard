@@ -84,6 +84,7 @@ function EditCompany({ classes, company }) {
     isPublic: true,
     quantity: 0,
     leaderboardAvailable: false,
+    isPhoneOptional: false
   });
 
   const theme = useTheme();
@@ -100,6 +101,7 @@ function EditCompany({ classes, company }) {
       isPublic: company.isPublic,
       quantity: !!company.codes ? company.codes.length : 0,
       leaderboardAvailable: company.leaderboardAvailable,
+      isPhoneOptional: company.isPhoneOptional || false
     });
   }, [company]);
 
@@ -210,21 +212,21 @@ function EditCompany({ classes, company }) {
                       !values.quantity > 0
                         ? openSnackbar("error", "Quantity must be 1 or larger")
                         : client
-                            .mutate({
-                              mutation: updateAvailableCodes,
-                              variables: {
-                                companyId: company._id,
-                                count: parseInt(values.quantity),
-                              },
-                            })
-                            .then(
-                              () => {
-                                return;
-                              },
-                              (error) => {
-                                console.log(error.graphQLErrors);
-                              }
-                            );
+                          .mutate({
+                            mutation: updateAvailableCodes,
+                            variables: {
+                              companyId: company._id,
+                              count: parseInt(values.quantity),
+                            },
+                          })
+                          .then(
+                            () => {
+                              return;
+                            },
+                            (error) => {
+                              console.log(error.graphQLErrors);
+                            }
+                          );
                     }}
                   >
                     Generate
@@ -247,6 +249,30 @@ function EditCompany({ classes, company }) {
                         setValues((prev) => ({
                           ...prev,
                           leaderboardAvailable: !prev.leaderboardAvailable,
+                        }))
+                      }
+                      name='checkedB'
+                      color='primary'
+                    />
+                  </Tooltip>
+                </div>
+                <div style={styles().toggler}>
+                  {values.isPhoneOptional
+                    ? "disable phone optional"
+                    : "enable phone optional"}
+                  <Tooltip
+                    title={
+                      values.isPhoneOptional
+                        ? "disable phone optional"
+                        : "enable phone optional"
+                    }
+                  >
+                    <Switch
+                      checked={values.isPhoneOptional}
+                      onChange={() =>
+                        setValues((prev) => ({
+                          ...prev,
+                          isPhoneOptional: !prev.isPhoneOptional,
                         }))
                       }
                       name='checkedB'
@@ -327,31 +353,33 @@ function EditCompany({ classes, company }) {
                       logo,
                       isPublic,
                       leaderboardAvailable,
+                      isPhoneOptional,
                     } = values;
                     return name === "" || emailSuffix === "" || logo === ""
                       ? value.openSnackbar(
-                          "error",
-                          "Please make sure there are no empty fields"
-                        )
+                        "error",
+                        "Please make sure there are no empty fields"
+                      )
                       : client
-                          .mutate({
-                            mutation: updateCompanyMutation,
-                            variables: {
-                              _id: company._id,
-                              name,
-                              emailSuffix: emailSuffix.trim().toLowerCase(),
-                              logo,
-                              leaderboardAvailable,
-                              isPublic,
-                            },
-                          })
-                          .then(() => {
-                            handleClose();
-                            window.location.reload();
-                          })
-                          .catch((error) => {
-                            console.log(error);
-                          });
+                        .mutate({
+                          mutation: updateCompanyMutation,
+                          variables: {
+                            _id: company._id,
+                            name,
+                            emailSuffix: emailSuffix.trim().toLowerCase(),
+                            logo,
+                            leaderboardAvailable,
+                            isPublic,
+                            isPhoneOptional
+                          },
+                        })
+                        .then(() => {
+                          handleClose();
+                          window.location.reload();
+                        })
+                        .catch((error) => {
+                          console.log(error);
+                        });
                   }}
                   color='primary'
                 >
