@@ -20,6 +20,7 @@ const EventMakersQuery = gql`
     }
     location
     date
+    dateEnd
     totalSpots
     description
     image

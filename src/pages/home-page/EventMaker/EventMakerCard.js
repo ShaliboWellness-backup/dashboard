@@ -5,8 +5,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import {withStyles} from '@material-ui/core/styles';
-import {CardHeader, Divider} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { CardHeader, Divider } from '@material-ui/core';
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
 import CardMenu from './CardMenu'
 import CurrentUserContext from "../../../containers/CurrentUser/CurrentUserContext";
@@ -60,12 +60,12 @@ const styles = theme => ({
 
 function EventMakerCard(props) {
     const {
-        event, title, instructor, date, location, totalSpots, takenSpots, description, image, id
+        event, title, instructor, date, dateEnd, location, totalSpots, takenSpots, description, image, id
     } = props;
     const productDetails = {
         title, instructor, date, location, totalSpots, takenSpots, description, image,
     };
-    const {classes} = props;
+    const { classes } = props;
     const time = moment(date).format('llll');
 
     let userContext = React.useContext(CurrentUserContext)
@@ -86,10 +86,10 @@ function EventMakerCard(props) {
 
 
             <CardHeader
-                action={userContext.currentUser.roles.includes('admin') ? <CardMenu card={event}/> : null}
+                action={userContext.currentUser.roles.includes('admin') ? <CardMenu card={event} /> : null}
                 title={title}
-                titleTypographyProps={{style: {textTransform: 'capitalize'}}}
-                subheader={moment(date).format(" MMMM Do, HH:mm")}
+                titleTypographyProps={{ style: { textTransform: 'capitalize' } }}
+                subheader={moment(date).format(" MMMM Do, HH:mm") + `${event.dateEnd ? ' - ' + moment(event.dateEnd).format(" MMMM Do, HH:mm") : ''}`}
 
             />
 
@@ -97,7 +97,7 @@ function EventMakerCard(props) {
             <CardContent className={classes.cardContent}>
                 <div className={classes.timeCaption}>
                     <Typography gutterBottom variant="body1"
-                                color="textSecondary">{moment(date).fromNow()}</Typography>
+                        color="textSecondary">{moment(date).fromNow()}</Typography>
                     <Typography variant="body1" color="textSecondary">
                         {`${takenSpots}/${totalSpots} spots `}
                     </Typography>
@@ -105,9 +105,9 @@ function EventMakerCard(props) {
                 </div>
                 <Typography>{description}</Typography>
             </CardContent>
-            <Divider variant="fullWidth"/>
+            <Divider variant="fullWidth" />
             <CardActions>
-                <div style={{textAlign: "center", width: "100%"}}>
+                <div style={{ textAlign: "center", width: "100%" }}>
                     <Typography color={'primary'} variant={'caption'}>
                         {location} | {R.pathOr("Unknown", ["firstName"])(instructor)} {R.pathOr("", ["lastName"])(instructor)}
                     </Typography>

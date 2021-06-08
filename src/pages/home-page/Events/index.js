@@ -1,6 +1,6 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
-import {Grid, Typography, Paper, CardMedia} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { Grid, Typography, Paper, CardMedia } from '@material-ui/core';
 import EventCard from './EventCard';
 import CreateDialog from '../../../components/common/CreateDialog';
 import logo from '../../../Assets/logo.png'
@@ -40,16 +40,17 @@ const styles = theme => ({
 
 });
 
-const Events = ({showLatestPastEvents, disableCreateEvent, classes, events}) => {
+const Events = ({ showLatestPastEvents, disableCreateEvent, classes, events }) => {
 
-    const {currentCompany} = React.useContext(CurrentCompanyContext)
+    const { currentCompany } = React.useContext(CurrentCompanyContext)
 
     let futureEvents;
 
+
     if (showLatestPastEvents) {
-        futureEvents = events.filter(event => moment(event.date).isAfter(moment().subtract(7,'d').startOf("day")))
+        futureEvents = events.filter(event => moment(event.date).isAfter(moment().subtract(7, 'd').startOf("day")))
     } else {
-        futureEvents = events.filter(event => moment(event.date).isAfter(moment().startOf("day")))
+        futureEvents = events.filter(event => moment(event.date).isAfter(moment().startOf("day")) || (event.dateEnd ? moment(event.dateEnd).isAfter(moment().startOf("day")) : false))
     }
 
     let sortedEvents = []
@@ -66,7 +67,7 @@ const Events = ({showLatestPastEvents, disableCreateEvent, classes, events}) => 
         })
 
         //Create new week if the week does not exist
-        if(!weekFoundForEvent) {
+        if (!weekFoundForEvent) {
             let newWeek = {
                 startOfWeek: moment(event.date).startOf('week'),
                 endOfWeek: moment(event.date).endOf('week'),
@@ -82,7 +83,7 @@ const Events = ({showLatestPastEvents, disableCreateEvent, classes, events}) => 
         let sortedEvents = weeklyEventsArray.events.sort(function (a, b) {
             return moment(b.date).isAfter(a.date) ? -1 : moment(a.date).isAfter(b.date) ? 1 : 0
         });
-        return {...weeklyEventsArray, events: sortedEvents}
+        return { ...weeklyEventsArray, events: sortedEvents }
     })
 
     sortedByDate = sortedByDate.sort((a, b) => {
@@ -100,41 +101,41 @@ const Events = ({showLatestPastEvents, disableCreateEvent, classes, events}) => 
     return (
         <div className={classes.grid}>
             {!disableCreateEvent && <div className={classes.header}>
-                <CreateDialog type="event" action={"create"}/>
+                <CreateDialog type="event" action={"create"} />
                 <Typography gutterBottom variant={"h4"}>
                     {`${!!currentCompany && currentCompany.name} Events`}
                 </Typography>
             </div>}
 
-            <Grid container spacing={2} style={{marginBottom: 24, marginTop: 8}}>
+            <Grid container spacing={2} style={{ marginBottom: 24, marginTop: 8 }}>
                 {futureEvents.length < 1 && !disableCreateEvent &&
-                <Paper className={classes.empty}>
-                    <div style={{textAlign: 'center '}}>
-                        <CardMedia style={{width: 200, height: 200, margin: 'auto'}} image={logo}/>
-                        <Typography variant={"h4"} className={classes.emptyText}>
-                            There are no events for this company
+                    <Paper className={classes.empty}>
+                        <div style={{ textAlign: 'center ' }}>
+                            <CardMedia style={{ width: 200, height: 200, margin: 'auto' }} image={logo} />
+                            <Typography variant={"h4"} className={classes.emptyText}>
+                                There are no events for this company
                         </Typography>
-                    </div>
-                </Paper>}
+                        </div>
+                    </Paper>}
                 {futureEvents.length < 1 && disableCreateEvent ?
                     <Paper className={classes.empty}>
-                        <div style={{textAlign: 'center '}}>
-                            <CardMedia style={{width: 200, height: 200, margin: 'auto'}} image={logo}/>
+                        <div style={{ textAlign: 'center ' }}>
+                            <CardMedia style={{ width: 200, height: 200, margin: 'auto' }} image={logo} />
                             <Typography variant={"h4"} className={classes.emptyText}>
                                 No events are assigned to you at this time
                             </Typography>
                         </div>
                     </Paper> : <div />
-                    }
+                }
             </Grid>
             {sortedByDate.slice(0).map((week, index) => (
-                <div style={{marginBottom: 24}}>
+                <div style={{ marginBottom: 24 }}>
                     <Typography gutterBottom variant={"h5"}
-                                style={{
-                                    paddingLeft: 8,
-                                    borderBottom: '1px solid black',
-                                    borderColor: '#00f2c3'
-                                }}>
+                        style={{
+                            paddingLeft: 8,
+                            borderBottom: '1px solid black',
+                            borderColor: '#00f2c3'
+                        }}>
                         {getTextForWeekHeader(week.startOfWeek)}
                     </Typography>
                     <Grid container spacing={2} style={{

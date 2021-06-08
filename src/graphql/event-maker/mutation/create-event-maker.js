@@ -11,6 +11,7 @@ mutation createEventMaker(
   $description: String!
   $image: String!
   $date: String!
+  $dateEnd: String!
   $coins: Int!
   $company: String!
   $cron: String!
@@ -24,6 +25,7 @@ mutation createEventMaker(
     instructor: $instructor
     location: $location
     date: $date
+    dateEnd: $dateEnd
     image: $image
     totalSpots: $totalSpots
     description: $description

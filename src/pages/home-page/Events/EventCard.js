@@ -63,7 +63,7 @@ const styles = theme => ({
 
 function EventCard(props) {
     const {
-        event, title, instructor, date, location, totalSpots, takenSpots, description, image, id
+        event, title, instructor, date, dateEnd, location, totalSpots, takenSpots, description, image, id
     } = props;
     const productDetails = {
         title, instructor, date, location, totalSpots, takenSpots, description, image,
@@ -96,7 +96,6 @@ function EventCard(props) {
                 titleTypographyProps={{ style: { textTransform: 'capitalize' } }}
                 subheader={moment(date).format(" MMMM Do, HH:mm") + `${event.dateEnd ? ' - ' + moment(event.dateEnd).format(" MMMM Do, HH:mm") : ''}`}
             />
-
             <CardContent className={classes.cardContent}>
                 <div className={classes.timeCaption}>
                     <Typography gutterBottom variant="body1"

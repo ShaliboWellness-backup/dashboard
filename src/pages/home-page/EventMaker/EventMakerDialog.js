@@ -116,6 +116,7 @@ const EventMaker = (props) => {
     description: event.description ? event.description : '',
     image: event.image ? event.image : '',
     date: event.date ? event.date : new Date(),
+    dateEnd: event.dateEnd ? event.dateEnd : moment(event.date || new Date()).add(1, 'hours').toDate(),
     coinsString: event.coins ? event.coins : '15',
     company: '',
     trainers: [],
@@ -157,6 +158,10 @@ const EventMaker = (props) => {
 
   const handleSetDate = (date) => {
     setValues({ ...values, date });
+  };
+
+  const handleSetDateEnd = (date) => {
+    setValues({ ...values, dateEnd: date });
   };
 
   const handleCheckboxChange = name => (event) => {
@@ -207,7 +212,7 @@ const EventMaker = (props) => {
   const availableStyles = ['pilates', 'strength', 'wellness', 'yoga'];
 
   const {
-    title, style, instructor, location, totalSpotsString, coinsString, description, image, date, company, enablePush, isLive, zoomUrl,
+    title, style, instructor, location, totalSpotsString, coinsString, description, image, date, dateEnd, company, enablePush, isLive, zoomUrl,
   } = values;
 
   const totalSpots = parseInt(totalSpotsString);
@@ -224,6 +229,7 @@ const EventMaker = (props) => {
     description,
     image,
     date,
+    dateEnd: typeof dateEnd === 'object' ? dateEnd.toISOString() : dateEnd,
     company: !!currentCompany && currentCompany._id,
     enablePush,
     isLive,
@@ -239,6 +245,8 @@ const EventMaker = (props) => {
   array = !!event.cron && event.cron.split(' ');
   const separated = array ? array[array.length - 1].split(',') : [];
   const test = !!event.cron && event.cron.split(' ')[4].split(',').includes('3');
+
+  console.log({ variables, formData, mutation });
 
   return (
     <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
@@ -258,7 +266,7 @@ const EventMaker = (props) => {
         : (
           <MenuItem onClick={handleOpen}>
             <Typography variant="body1" color="textSecondary">
-                        Edit
+              Edit
             </Typography>
           </MenuItem>
         )}
@@ -270,8 +278,8 @@ const EventMaker = (props) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-                        Here you can change the details of a specific recurring event.
-                        Please note that changes will be visible to all relevant users once submitted.
+            Here you can change the details of a specific recurring event.
+            Please note that changes will be visible to all relevant users once submitted.
           </DialogContentText>
           <form className={classes.container} noValidate autoComplete="off">
             <Grid container spacing={2}>
@@ -289,7 +297,7 @@ const EventMaker = (props) => {
               <Grid item md={6} xs={6}>
                 <FormControl variant="outlined" className={classes.selectInput}>
                   <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
-                                        Instructor
+                    Instructor
                   </InputLabel>
                   <Select
                     MenuProps={{ classes: { list: classes.test } }}
@@ -320,7 +328,7 @@ const EventMaker = (props) => {
               <Grid item md={6} xs={6}>
                 <FormControl variant="outlined" className={classes.selectInput}>
                   <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
-                                        Style
+                    Style
                   </InputLabel>
                   <Select
                     MenuProps={{ classes: { list: classes.test } }}
@@ -418,6 +426,19 @@ const EventMaker = (props) => {
                 />
               </Grid>
               <Grid item md={6} xs={6}>
+                <DateTimePicker
+                  autoOk
+                  ampm={false}
+                  value={values.dateEnd}
+                  onChange={date => handleSetDateEnd(date)}
+                  label="End Date & Time"
+                  className={classes.textField}
+                  style={{ marginTop: 16 }}
+                  inputVariant="outlined"
+
+                />
+              </Grid>
+              <Grid item md={6} xs={6}>
                 <TextField
                   id="image"
                   label="Image"
@@ -475,7 +496,7 @@ const EventMaker = (props) => {
               <Grid item xs={8}>
                 <div>
                   <Typography gutterBottom>
-                                        Repeat On
+                    Repeat On
                   </Typography>
                   <div className={classes.repeatContainer}>
                     <Checkbox
@@ -486,7 +507,7 @@ const EventMaker = (props) => {
                           className={classes.dayAvatar}
                           style={{ backgroundColor: theme.palette.primary.main }}
                         >
-                                                    S
+                          S
                         </Avatar>
                       )}
                       color="primary"
@@ -502,7 +523,7 @@ const EventMaker = (props) => {
                           className={classes.dayAvatar}
                           style={{ backgroundColor: theme.palette.primary.main }}
                         >
-                                                          M
+                          M
                         </Avatar>
                       )}
                       color="primary"
@@ -517,7 +538,7 @@ const EventMaker = (props) => {
                           className={classes.dayAvatar}
                           style={{ backgroundColor: theme.palette.primary.main }}
                         >
-                                                          T
+                          T
                         </Avatar>
                       )}
                       color="primary"
@@ -531,7 +552,7 @@ const EventMaker = (props) => {
                           className={classes.dayAvatar}
                           style={{ backgroundColor: theme.palette.primary.main }}
                         >
-                                                          W
+                          W
                         </Avatar>
                       )}
                       color="primary"
@@ -545,7 +566,7 @@ const EventMaker = (props) => {
                           className={classes.dayAvatar}
                           style={{ backgroundColor: theme.palette.primary.main }}
                         >
-                                                          T
+                          T
                         </Avatar>
                       )}
                       color="primary"
@@ -559,7 +580,7 @@ const EventMaker = (props) => {
                           className={classes.dayAvatar}
                           style={{ backgroundColor: theme.palette.primary.main }}
                         >
-                                                          F
+                          F
                         </Avatar>
                       )}
                       color="primary"
@@ -573,7 +594,7 @@ const EventMaker = (props) => {
                           className={classes.dayAvatar}
                           style={{ backgroundColor: theme.palette.primary.main }}
                         >
-                                                          S
+                          S
                         </Avatar>
                       )}
                       color="primary"
@@ -594,11 +615,11 @@ const EventMaker = (props) => {
             }}
             color="primary"
           >
-                        Clear
+            Clear
           </Button>
           <SnackbarContext.Consumer>
             {(value) => {
-              console.log(values);
+              console.log({ values });
               return (
                 <Button
                   onClick={() => {
@@ -607,15 +628,18 @@ const EventMaker = (props) => {
                     const minutes = moment(values.date).format('mm');
                     const cron = `${minutes} ${hours} * * ${selectedDays}`;
                     const temp = { ...variables, cron };
+
+                    console.log('query', { variables })
+
                     return variables.title === ''
-                                || variables.style === ''
-                                || variables.instructor === ''
-                                || variables.date === ''
-                                || variables.location === ''
-                                || variables.totalSpotsString === ''
-                                || variables.description === ''
-                                || variables.image === ''
-                                || days === []
+                      || variables.style === ''
+                      || variables.instructor === ''
+                      || variables.date === ''
+                      || variables.location === ''
+                      || variables.totalSpotsString === ''
+                      || variables.description === ''
+                      || variables.image === ''
+                      || days === []
                       ? value.openSnackbar('error', 'Please make sure there are no empty fields')
                       : client.mutate({
                         mutation,
@@ -633,7 +657,7 @@ const EventMaker = (props) => {
                   }}
                   color="primary"
                 >
-                                OK
+                  OK
                 </Button>
               );
             }}
@@ -657,5 +681,6 @@ EventMaker.defaultProps = {
     description: '',
     image: '',
     date: new Date(),
+    dateEnd: moment(new Date()).add(1, 'hours').toDate()
   },
 };
