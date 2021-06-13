@@ -56,7 +56,6 @@ const EventDialog = (props) => {
 
   const { event } = props;
 
-  console.log(event);
 
   const [values, setValues] = React.useState({
     title: event.title ? event.title : '',
@@ -80,7 +79,35 @@ const EventDialog = (props) => {
   React.useEffect(() => {
     setLabelWidth(inputLabel.current.offsetWidth);
     getTrainers();
+
   }, []);
+
+  const cloundinaryWidgetRef = React.useRef(undefined);
+
+  const cloudniaryBtnCallback = (e) => {
+    e.preventDefault();
+    if (!cloundinaryWidgetRef.current) return;
+    cloundinaryWidgetRef.current.open();
+  }
+
+  React.useEffect(() => {
+    if (!window.cloudinary || cloundinaryWidgetRef.current) return;
+
+    cloundinaryWidgetRef.current = window.cloudinary.createUploadWidget({
+      cloudName: 'djxrfd5tp',
+      uploadPreset: 'hsnb1qsi',
+      multiple: false,
+    }, (error, result) => {
+      if (error || !result || result.event !== 'success') return;
+      console.log('Done! Here is the image info: ', result.info);
+      setValues({
+        ...values,
+        image: result.info.secure_url
+      })
+    }
+    );
+  }, [window.cloudinary]);
+
 
   const handleChange = name => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -275,6 +302,14 @@ const EventDialog = (props) => {
                   inputVariant="outlined"
 
                 />
+                <FormControl style={{ marginTop: 16 }} className={classes.textField}>
+                  <button
+                    id="upload_widget"
+                    class="cloudinary-button"
+                    onClick={cloudniaryBtnCallback}>
+                    Upload image
+                </button>
+                </FormControl>
                 <TextField
                   id="image"
                   label="Image"

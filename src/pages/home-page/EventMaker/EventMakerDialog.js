@@ -107,6 +107,7 @@ const EventMaker = (props) => {
 
   const [companies, setCompanies] = React.useState([]);
 
+
   const [values, setValues] = React.useState({
     title: event.title ? event.title : '',
     style: event.style ? event.style : '',
@@ -133,6 +134,34 @@ const EventMaker = (props) => {
     !!currentCompany && setValues({ ...values, company: currentCompany._id });
     !!event.cron && setDays(event.cron.split(' ')[4].split(',').map(item => parseInt(item)));
   }, [event, currentCompany]);
+
+
+  const cloundinaryWidgetRef = React.useRef(undefined);
+
+  const cloudniaryBtnCallback = (e) => {
+    e.preventDefault();
+    if (!cloundinaryWidgetRef.current) return;
+    cloundinaryWidgetRef.current.open();
+  }
+
+  React.useEffect(() => {
+    if (!window.cloudinary || !open || cloundinaryWidgetRef.current) return;
+
+    cloundinaryWidgetRef.current = window.cloudinary.createUploadWidget({
+      cloudName: 'djxrfd5tp',
+      uploadPreset: 'hsnb1qsi',
+      multiple: false,
+    }, (error, result) => {
+      if (error || !result || result.event !== 'success') return;
+      console.log('Done! Here is the image info: ', result.info);
+      setValues({
+        ...values,
+        image: result.info.secure_url
+      })
+    }
+    );
+  }, [window.cloudinary, open]);
+
 
 
   function handleOpen() {
@@ -448,6 +477,7 @@ const EventMaker = (props) => {
                   margin="normal"
                   variant="outlined"
                 />
+
               </Grid>
               <Grid item md={6} xs={6}>
                 <TextField
@@ -461,6 +491,16 @@ const EventMaker = (props) => {
                   variant="outlined"
                 />
               </Grid>
+
+              <Grid item xs={6} className={classes.imageButton}>
+                <button
+                  id="upload_widget"
+                  class="cloudinary-button"
+                  onClick={cloudniaryBtnCallback}>
+                  Upload image
+                </button>
+              </Grid>
+
               <Grid item md={6} xs={6}>
                 <FormControlLabel
                   style={{ width: '100%', height: '100%', margin: 0 }}

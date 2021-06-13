@@ -34,6 +34,21 @@ const HomePage = (props) => {
   const { user } = props;
   const userContext = React.useContext(CurrentUserContext);
 
+
+  React.useEffect(() => {
+    const script = document.createElement('script');
+
+    script.src = "https://upload-widget.cloudinary.com/global/all.js";
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    }
+  }, []);
+
+
   React.useEffect(() => {
     userContext.handleSetUser(props.user);
   }, [props.user]);
