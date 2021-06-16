@@ -234,13 +234,13 @@ function EditCompany({ classes, company }) {
                 </Grid>
                 <div style={styles().toggler}>
                   {values.leaderboardAvailable
-                    ? "disable leaderboard"
-                    : "enable leaderboard"}
+                    ? "leaderboard"
+                    : "leaderboard"}
                   <Tooltip
                     title={
                       values.leaderboardAvailable
-                        ? "disable leaderboard"
-                        : "enable leaderboard"
+                        ? "leaderboard"
+                        : "leaderboard"
                     }
                   >
                     <Switch
@@ -258,13 +258,13 @@ function EditCompany({ classes, company }) {
                 </div>
                 <div style={styles().toggler}>
                   {values.isPhoneOptional
-                    ? "disable phone optional"
-                    : "enable phone optional"}
+                    ? "phone optional"
+                    : "phone optional"}
                   <Tooltip
                     title={
                       values.isPhoneOptional
-                        ? "disable phone optional"
-                        : "enable phone optional"
+                        ? "phone optional"
+                        : "phone optional"
                     }
                   >
                     <Switch
