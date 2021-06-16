@@ -8,6 +8,7 @@ mutation updateUser(
   $lastName: String
   $phone: String
   $email: String
+  $password: String
   $company: String
   $roles: [Role!]
   $verified: Boolean
@@ -18,6 +19,7 @@ mutation updateUser(
     lastName: $lastName
     phone: $phone
     email: $email
+    password: $password
     company: $company
     roles: $roles
     verified: $verified
