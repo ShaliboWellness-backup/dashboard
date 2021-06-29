@@ -154,12 +154,13 @@ const EventMaker = (props) => {
     }, (error, result) => {
       if (error || !result || result.event !== 'success') return;
       console.log('Done! Here is the image info: ', result.info);
-      setValues({
-        ...values,
-        image: result.info.secure_url
-      })
-    }
-    );
+      setValues(prevValues => {
+        return {
+          ...prevValues,
+          image: result.info.secure_url
+        }
+      });
+    });
   }, [window.cloudinary, open]);
 
 
