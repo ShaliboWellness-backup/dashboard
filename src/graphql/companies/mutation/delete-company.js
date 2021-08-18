@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const deleteCompanyMutation = gql`
 mutation deleteCompany($_id: String!){
@@ -9,6 +8,6 @@ mutation deleteCompany($_id: String!){
     name
   }
 }
-`
+`;
 
-export default deleteCompanyMutation
+export default deleteCompanyMutation;

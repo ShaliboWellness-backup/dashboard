@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const createPromotionMutation = gql`
 mutation createPromotion(
@@ -30,6 +29,6 @@ mutation createPromotion(
   }
 }
 
-`
+`;
 
-export default createPromotionMutation
+export default createPromotionMutation;

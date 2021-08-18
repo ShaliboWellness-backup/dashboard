@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 
-
 const trainersQuery = gql`
   query {
     trainers {

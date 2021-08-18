@@ -1,6 +1,5 @@
-import React from "react"
+import React from 'react';
 
+const CurrentCompanyContext = React.createContext({ currentCompany: '', handleSetCompany: () => {} });
 
-const CurrentCompanyContext = React.createContext({currentCompany:"", handleSetCompany: () => {}})
-
-export default CurrentCompanyContext
+export default CurrentCompanyContext;

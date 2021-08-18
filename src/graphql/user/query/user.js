@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 
-
 const userQuery = gql`
 {
   user {

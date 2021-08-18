@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const updateEventMutation = gql`
 mutation updateEvent(
@@ -62,6 +61,6 @@ mutation updateEvent(
 }
 
 
-`
+`;
 
-export default updateEventMutation
+export default updateEventMutation;

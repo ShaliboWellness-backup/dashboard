@@ -1,35 +1,34 @@
-import React, {Component} from "react"
-import CurrentCompanyContext from "./CurrentCompanyContext"
-import {companies} from "../../fakeData"
+import React, { Component } from 'react';
+import CurrentCompanyContext from './CurrentCompanyContext';
+import { companies } from '../../fakeData';
 
 class CurrentCompany extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            currentCompany: null,
-            handleSetCompany: this.handleSetCompany
-        }
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentCompany: null,
+      handleSetCompany: this.handleSetCompany,
+    };
+  }
 
-
-    handleSetCompany = company => {
-        if (company != null) {
-            this.setState({currentCompany: company});
-            localStorage.setItem('company_id', company._id);
-        }
+    handleSetCompany = (company) => {
+      if (company != null) {
+        this.setState({ currentCompany: company });
+        localStorage.setItem('company_id', company._id);
+      }
     }
 
     render() {
-        return (
-            <CurrentCompanyContext.Provider
-                value={
-                    this.state
-                }
-            >
-                {this.props.children}
-            </CurrentCompanyContext.Provider>
-        )
+      return (
+        <CurrentCompanyContext.Provider
+          value={
+            this.state
+          }
+        >
+          {this.props.children}
+        </CurrentCompanyContext.Provider>
+      );
     }
 }
 
-export default CurrentCompany
+export default CurrentCompany;

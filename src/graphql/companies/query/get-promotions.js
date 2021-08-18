@@ -19,7 +19,6 @@ query getCompanyPromotions($_id: String!){
   
 
 
-`
+`;
 
-
-export default getCompanyPromotionsQuery
+export default getCompanyPromotionsQuery;

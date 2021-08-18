@@ -15,7 +15,6 @@ query getCompanyUsers($_id: String!){
   
 }
 
-`
+`;
 
-
-export default getCompanyUsersQuery
+export default getCompanyUsersQuery;

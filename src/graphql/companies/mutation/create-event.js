@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const createEventMutation = gql`
 mutation createEvent($title: String!, $instructor: String!, $location: String!, $takenSpots: String!, $totalSpots: String!, $description: String!, $image: String!, $date: String!){
@@ -23,6 +22,6 @@ mutation createEvent($title: String!, $instructor: String!, $location: String!, 
     description
   }
 }
-`
+`;
 
-export default createEventMutation
+export default createEventMutation;

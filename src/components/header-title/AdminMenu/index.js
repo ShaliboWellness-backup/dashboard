@@ -1,113 +1,125 @@
 import React from 'react';
-import Button from "@material-ui/core/Button";
-import {Link} from "react-router-dom";
-import Typography from "@material-ui/core/Typography";
-import DropdownMenuCompanies from "./DropdownMenuCompanies";
-import DropdownMenuProfile from "./DropdownMenuProfile";
-import {IconButton, makeStyles} from "@material-ui/core";
-import CurrentCompanyContext from "../../../containers/CurrentCompany/CurrentCompanyContext";
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
+import { IconButton, makeStyles } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useTheme from '@material-ui/styles/useTheme'
-import MoreVertIcon from "@material-ui/icons/MoreVert"
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
-
+import useTheme from '@material-ui/styles/useTheme';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import CurrentCompanyContext from '../../../containers/CurrentCompany/CurrentCompanyContext';
+import DropdownMenuProfile from './DropdownMenuProfile';
+import DropdownMenuCompanies from './DropdownMenuCompanies';
 
 const useStyles = makeStyles({
-    root: {
-        display: "flex",
-        justifyContent: 'center',
-        alignItems: "center"
+  root: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
 
-    },
-    menuButton: {
-        marginRight: 16,
-    },
-    toolbar: {
-        alignItems: "center",
-        paddingTop: 0
-    },
-    title: {
-        //flexGrow: 1,
-        textTransform: "uppercase",
-        fontWeight: 300,
-        fontSize: "1rem"
-    },
-    usersButton: {
-        marginRight: 10,
-        textTransform: "none",
-        padding: "5px 10px"
-    },
-    topMenu: {
-        height: 80,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: "center"
-    }
+  },
+  menuButton: {
+    marginRight: 16,
+  },
+  toolbar: {
+    alignItems: 'center',
+    paddingTop: 0,
+  },
+  title: {
+    // flexGrow: 1,
+    textTransform: 'uppercase',
+    fontWeight: 300,
+    fontSize: '1rem',
+  },
+  usersButton: {
+    marginRight: 10,
+    textTransform: 'none',
+    padding: '5px 10px',
+  },
+  topMenu: {
+    height: 80,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
+function AdminMenu({ companies }) {
+  const classes = useStyles();
 
-function AdminMenu({companies}) {
+  const value = React.useContext(CurrentCompanyContext);
 
-    const classes = useStyles();
+  const { handleSetCompany, currentCompany } = value;
 
-    const value = React.useContext(CurrentCompanyContext)
+  const [top, setTop] = React.useState(false);
 
-    const {handleSetCompany, currentCompany} = value
+  const theme = useTheme();
 
-    const [top, setTop] = React.useState(false);
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const theme = useTheme()
+  const list = () => (
+    <div className={classes.root}>
+      <Button
+        classes={{ root: classes.usersButton }}
+        component={Link}
+        to="/all-promotions"
+        onClick={() => setTop(false)}
+      >
+        <Typography variant="caption" color="textSecondary">
+          Promotions
+        </Typography>
+      </Button>
+      <Button
+        classes={{ root: classes.usersButton }}
+        component={Link}
+        to="/all-users"
+        onClick={() => setTop(false)}
+      >
+        <Typography variant="caption" color="textSecondary">
+          All Users
+        </Typography>
+      </Button>
+      <Button
+        classes={{ root: classes.usersButton }}
+        component={Link}
+        to="/trainers"
+        onClick={() => setTop(false)}
+      >
+        <Typography variant="caption" color="textSecondary">
+          Trainers
+        </Typography>
+      </Button>
+      <DropdownMenuCompanies
+        companies={companies}
+        className={classes.menuButton}
+        handleSetCompany={handleSetCompany}
+      />
+      <DropdownMenuProfile
+        className={classes.menuButton}
+      />
+    </div>
+  );
 
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  return isMobile
+    ? (
+      <div>
+        <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={() => setTop(true)}>
+          <MoreVertIcon color="textPrimary" />
+        </IconButton>
+        <SwipeableDrawer
+          anchor="top"
+          open={top}
+          onClose={() => setTop(false)}
+          onOpen={() => setTop(true)}
 
-    const list = () => (
-        <div className={classes.root}>
-            <Button classes={{root: classes.usersButton}} component={Link} to={"/all-promotions"}
-                    onClick={() => setTop(false)}>
-                <Typography variant="caption" color="textSecondary">
-                    Promotions
-                </Typography>
-            </Button>
-            <Button classes={{root: classes.usersButton}} component={Link} to={"/all-users"}
-                    onClick={() => setTop(false)}>
-                <Typography variant="caption" color="textSecondary">
-                    All Users
-                </Typography>
-            </Button>
-            <Button classes={{root: classes.usersButton}} component={Link} to={"/trainers"}
-                    onClick={() => setTop(false)}>
-                <Typography variant="caption" color="textSecondary">
-                    Trainers
-                </Typography>
-            </Button>
-            <DropdownMenuCompanies companies={companies} className={classes.menuButton}
-                                   handleSetCompany={handleSetCompany}/>
-            <DropdownMenuProfile
-                className={classes.menuButton}
-            />
-        </div>
+        >
+          <div className={classes.topMenu}>
+            {list()}
+          </div>
+        </SwipeableDrawer>
+      </div>
     )
-
-    return isMobile ?
-        <div>
-            <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={() => setTop(true)}>
-                <MoreVertIcon color={"textPrimary"}/>
-            </IconButton>
-            <SwipeableDrawer
-                anchor={'top'}
-                open={top}
-                onClose={() => setTop(false)}
-                onOpen={() => setTop(true)}
-
-            >
-                <div className={classes.topMenu}>
-                    {list()}
-                </div>
-            </SwipeableDrawer>
-        </div>
-        :
-        list()
-
+    : list();
 }
 
 export default AdminMenu;

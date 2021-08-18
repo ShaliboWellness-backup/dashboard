@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const deleteEventMutation = gql`
 mutation deleteEvent($id: String!){
@@ -9,6 +8,6 @@ mutation deleteEvent($id: String!){
     title
   }
 }
-`
+`;
 
-export default deleteEventMutation
+export default deleteEventMutation;

@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 
-
 const searchUsersQuery = gql`
 query searchUsers(
   $firstName: String

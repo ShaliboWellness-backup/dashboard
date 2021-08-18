@@ -17,6 +17,6 @@ const companyTeamsQuery = gql`
     }
   }
 
-`
+`;
 
-export default companyTeamsQuery
+export default companyTeamsQuery;

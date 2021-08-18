@@ -14,6 +14,6 @@ const getCompanyTeams = gql`
     }
   }
 }
-`
+`;
 
-export default getCompanyTeams
+export default getCompanyTeams;

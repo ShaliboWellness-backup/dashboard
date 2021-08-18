@@ -1,9 +1,9 @@
-import React from "react"
-
+import React from 'react';
 
 const CurrentUserContext = React.createContext({
-    currentUser: {}, handleSetUser: () => {
-    }
-})
+  currentUser: {},
+  handleSetUser: () => {
+  },
+});
 
-export default CurrentUserContext
+export default CurrentUserContext;

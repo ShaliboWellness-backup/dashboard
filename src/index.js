@@ -8,8 +8,8 @@ import App from './app';
 import HeaderTitle from './components/header-title';
 import Routes from './routes';
 import registerServiceWorker from './register-sw';
-import Test from "./components/test-comp";
-import HomePage from "./pages/home-page";
+import Test from './components/test-comp';
+import HomePage from './pages/home-page';
 
 // ReactDOM.render(<App component={HeaderTitle} />, document.getElementById('header-title'));
 // ReactDOM.render(<App component={Routes} />, document.getElementById('main'));

@@ -1,66 +1,65 @@
-import {createMuiTheme} from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
 
 const theme = createMuiTheme({
-    shadows: ["none", "0 1px 15px 0 hsla(0,0%,48.2%,.1)"]
-       
-    ,
-    palette: {
-        type: 'light',
-        primary: {
-            main: '#419ef9',
-            contrastText: '#fff',
-        },
-        secondary: {
-            main: '#e66ad2',
-            contrastText: '#fff',
-        },
+  shadows: ['none', '0 1px 15px 0 hsla(0,0%,48.2%,.1)'],
 
-        error: {
-            main: '#BD0043',
-            contrastText: '#fff',
-        },
-        divider: '#D7D6D5',
-        background: {
-            paper: '#fefefe',
-            default: '#f5f6fa',
-        },
-
-        text: {
-            primary: "#1d253b",
-            secondary: '#6c757d',
-            white: '#fff',
-
-        },
+  palette: {
+    type: 'light',
+    primary: {
+      main: '#419ef9',
+      contrastText: '#fff',
     },
-    typography: {
-        fontFamily: [
-            'Poppins',
-            'sans-serif',
-        ].join(','),
+    secondary: {
+      main: '#e66ad2',
+      contrastText: '#fff',
+    },
 
-        body1: {
-            fontSize: "0.875rem",
-            fontWeight: 300
-        },
-        body2: {
-            fontSize: "0.62475rem",
-            fontWeight: 300
-        },
-        caption: {
-            fontWeight: 300
-        },
-        h5: {
-            fontWeight: 300
-        }
+    error: {
+      main: '#BD0043',
+      contrastText: '#fff',
     },
-    switch: {
-        colorPrimary: green[500],
-        trackOnColor: green[100],
-        thumbOffColor: red[700],
-        trackOffColor: red[100],
+    divider: '#D7D6D5',
+    background: {
+      paper: '#fefefe',
+      default: '#f5f6fa',
     },
+
+    text: {
+      primary: '#1d253b',
+      secondary: '#6c757d',
+      white: '#fff',
+
+    },
+  },
+  typography: {
+    fontFamily: [
+      'Poppins',
+      'sans-serif',
+    ].join(','),
+
+    body1: {
+      fontSize: '0.875rem',
+      fontWeight: 300,
+    },
+    body2: {
+      fontSize: '0.62475rem',
+      fontWeight: 300,
+    },
+    caption: {
+      fontWeight: 300,
+    },
+    h5: {
+      fontWeight: 300,
+    },
+  },
+  switch: {
+    colorPrimary: green[500],
+    trackOnColor: green[100],
+    thumbOffColor: red[700],
+    trackOffColor: red[100],
+  },
 });
 
 export default theme;

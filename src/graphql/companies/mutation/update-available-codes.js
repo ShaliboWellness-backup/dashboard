@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const updateAvailableCodes = gql`
 mutation UpdateAvailableCodes($companyId: String!, $count: Int!){
@@ -8,6 +7,6 @@ mutation UpdateAvailableCodes($companyId: String!, $count: Int!){
     }
 
 }
-`
+`;
 
-export default updateAvailableCodes
+export default updateAvailableCodes;

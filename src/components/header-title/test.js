@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import HeaderTitle from '.';
 
-const renderTitle = path => mount(
+const renderTitle = (path) => mount(
   <MemoryRouter initialEntries={[path]}>
     <HeaderTitle />
   </MemoryRouter>,

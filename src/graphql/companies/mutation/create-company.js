@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const createCompanyMutation = gql`
 mutation CreateCompany($name: String!, $emailSuffix: String!, $logo: String){
@@ -13,6 +12,6 @@ mutation CreateCompany($name: String!, $emailSuffix: String!, $logo: String){
     
   }
 }
-`
+`;
 
-export default createCompanyMutation
+export default createCompanyMutation;
