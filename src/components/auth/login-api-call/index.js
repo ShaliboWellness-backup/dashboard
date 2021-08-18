@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import loginMutation from '../../../graphql/user/mutation/login';
 
 //------------------------------------------------------------------------------
@@ -48,8 +48,8 @@ LoginApiCall.propTypes = {
 };
 
 LoginApiCall.defaultProps = {
-  onLoginError: () => {},
-  onLoginSuccess: () => {},
+  onLoginError: () => { },
+  onLoginSuccess: () => { },
 };
 
 // Apollo integration

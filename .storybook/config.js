@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from '@apollo/client';
 import { configure, addDecorator } from '@storybook/react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import requireContext from 'require-context.macro';

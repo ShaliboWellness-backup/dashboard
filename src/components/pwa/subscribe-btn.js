@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import Button from '@material-ui/core/Button';
 // import userQuery from '../../graphql/user/query/user';
 import saveSubscriptionMutation from '../../graphql/subscription/mutation/save-subscription';
@@ -139,11 +139,11 @@ SubscribeBtn.propTypes = {
 SubscribeBtn.defaultProps = {
   btnLabel: 'Enable Push Messages',
   disabled: false,
-  onBeforeHook: () => {},
-  onClientCancelHook: () => {},
-  onClientErrorHook: () => {},
-  onServerErrorHook: () => {},
-  onSuccessHook: () => {},
+  onBeforeHook: () => { },
+  onClientCancelHook: () => { },
+  onClientErrorHook: () => { },
+  onServerErrorHook: () => { },
+  onSuccessHook: () => { },
 };
 
 const withMutation = graphql(saveSubscriptionMutation, { name: 'saveSubscription' });

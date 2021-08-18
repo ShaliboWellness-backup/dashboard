@@ -1,7 +1,5 @@
-import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
-import { setContext } from 'apollo-link-context';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
 // REACT_APP_GRAPHQL_URI is defined in .env file. When the app is deployed to
 // heroku, the REACT_APP_GRAPHQL_URI env variable needs to be reset to point to
@@ -19,21 +17,21 @@ console.log('\nNODE_ENV', NODE_ENV, '\nGRAPHQL_URI', uri);
 const httpLink = createHttpLink({ uri });
 
 const authLink = setContext((_, { headers }) => {
-    // Get the authentication token from local storage if it exists
-    const token = localStorage.getItem('x-auth-token');
+  // Get the authentication token from local storage if it exists
+  const token = localStorage.getItem('x-auth-token');
 
-    // Return the headers to the context so httpLink can read them
-    return {
-        headers: {
-            ...headers,
-            'x-auth-token': token,
-        },
-    };
+  // Return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      'x-auth-token': token,
+    },
+  };
 });
 
 const client = new ApolloClient({
-    link: authLink.concat(httpLink),
-    cache: new InMemoryCache(),
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
 });
 
 export default client;

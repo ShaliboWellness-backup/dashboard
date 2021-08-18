@@ -1,21 +1,22 @@
 import { AccountsClient } from '@accounts/client';
 import { AccountsClientPassword } from '@accounts/client-password';
 import GraphQLClient from '@accounts/graphql-client';
-import ApolloClient from 'apollo-boost';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 const client = new ApolloClient({
-    request: async operation => {
+    request: async (operation) => {
         const tokens = await accountsClient.getTokens();
         if (tokens) {
             operation.setContext({
                 headers: {
-                    'accounts-access-token': tokens.accessToken
-                }
+                    'accounts-access-token': tokens.accessToken,
+                },
             });
         }
     },
     uri: 'http://localhost:3001/graphql',
-    onError: (e) => { console.log(e) },
+    cache: new InMemoryCache(),
+    onError: (e) => { console.log(e); },
 });
 
 const accountsGraphQL = new GraphQLClient({ graphQLClient: client });

@@ -1,6 +1,5 @@
-import { ApolloClient } from 'apollo-client';
-import { SchemaLink } from 'apollo-link-schema';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { SchemaLink } from '@apollo/client/link/schema';
 import { buildClientSchema } from 'graphql/utilities/buildClientSchema';
 import { addResolveFunctionsToSchema } from 'graphql-tools';
 import resolvers from './mocks';

@@ -8,13 +8,12 @@ import Paper from '@material-ui/core/Paper';
 import {
   Avatar, Switch, Typography, TextField, Button, CircularProgress,
 } from '@material-ui/core';
-import { Mutation } from 'react-apollo';
+import { Mutation } from '@apollo/client/react/components';
 import { withStyles } from '@material-ui/styles';
-import { useApolloClient } from '@apollo/react-hooks';
-import { useQuery } from '@apollo/react-hooks';
+import { useApolloClient, useQuery } from '@apollo/client';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useTheme from '@material-ui/styles/useTheme';
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbars } from 'react-custom-scrollbars-2';
 import searchUsersQuery from '../../../graphql/user/query/search-users';
 import { stringToColor } from '../../../utils/random-color';
 import UserActionMenu from '../../../components/common/UserActionMenu';
@@ -22,11 +21,9 @@ import updateRoleMutation from '../../../graphql/user/mutation/update-role';
 import PushNotification from '../../../components/common/PushNotification';
 import CreateUserDialog from '../../../components/common/CreateUserDialog';
 
-
 const R = require('ramda');
 
-
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     width: '100%',
     overflowX: 'auto',
@@ -104,29 +101,27 @@ const AllUsers = ({ classes }) => {
       });
   }, [filterValues.firstName, filterValues.lastName, filterValues.email, filterValues.phone, filterValues.limit]);
 
-
   React.useEffect(() => {
     filterValues.offset > 0
-        && client.watchQuery({
-          query: searchUsersQuery,
-          variables: filterValues,
+      && client.watchQuery({
+        query: searchUsersQuery,
+        variables: filterValues,
 
-        })
-          .subscribe(({ data }) => {
-            if (data.searchUsers) {
-              setUsers([...users, ...data.searchUsers]);
-              data.searchUsers.length < 50 ? setMoreToLoad(false) : setMoreToLoad(true);
-            } else {
-              return undefined;
-            }
-            setLoading(false);
-          }, (error) => {
-            console.log(error);
-          });
+      })
+        .subscribe(({ data }) => {
+          if (data.searchUsers) {
+            setUsers([...users, ...data.searchUsers]);
+            data.searchUsers.length < 50 ? setMoreToLoad(false) : setMoreToLoad(true);
+          } else {
+            return undefined;
+          }
+          setLoading(false);
+        }, (error) => {
+          console.log(error);
+        });
   }, [filterValues.offset]);
 
-
-  const handleFilterChange = name => (event) => {
+  const handleFilterChange = (name) => (event) => {
     setFilterValues({ ...filterValues, offset: 0, [name]: event.target.value });
     console.log(filterValues);
   };
@@ -145,11 +140,10 @@ const AllUsers = ({ classes }) => {
     setFilterValues({ ...filterValues, limit: 50 });
   };
 
-
   return (
     <Paper className={classes.root}>
       <Typography variant="h5" style={{ fontWeight: 100, marginLeft: 8 }}>
-                All Users
+        All Users
       </Typography>
       <div className={classes.searchbar}>
 
@@ -231,8 +225,7 @@ const AllUsers = ({ classes }) => {
                           style={{ backgroundColor: stringToColor(user.firstName) }}
                         > {user.firstName[0]}
                         </Avatar>
-                      )
-                    }
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableBody}
@@ -266,8 +259,7 @@ const AllUsers = ({ classes }) => {
                   </TableCell>
                 </TableRow>
               );
-            })
-            }
+            })}
           </TableBody>
         </Table>
 
@@ -290,7 +282,7 @@ const AllUsers = ({ classes }) => {
           (users.length === 0 && !loading) && (
             <div className={classes.message}>
               <Typography variant="h5">
-                            There are no active users for this company.
+                There are no active users for this company.
               </Typography>
             </div>
           )

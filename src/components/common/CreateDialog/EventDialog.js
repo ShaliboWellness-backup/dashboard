@@ -7,7 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/styles';
 import { DateTimePicker } from '@material-ui/pickers';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/client';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -23,9 +23,7 @@ import CurrentCompanyContext from '../../../containers/CurrentCompany/CurrentCom
 import updateEventMutation from '../../../graphql/event/mutation/update-event';
 import createEventMutation from '../../../graphql/event/mutation/create-event';
 
-
 const R = require('ramda');
-
 
 const styles = () => ({
   container: {
@@ -56,7 +54,6 @@ const EventDialog = (props) => {
 
   const { event } = props;
 
-
   const [values, setValues] = React.useState({
     title: event.title ? event.title : '',
     style: event.style ? event.style : '',
@@ -79,7 +76,6 @@ const EventDialog = (props) => {
   React.useEffect(() => {
     setLabelWidth(inputLabel.current.offsetWidth);
     getTrainers();
-
   }, []);
 
   const cloundinaryWidgetRef = React.useRef(undefined);
@@ -88,7 +84,7 @@ const EventDialog = (props) => {
     e.preventDefault();
     if (!cloundinaryWidgetRef.current) return;
     cloundinaryWidgetRef.current.open();
-  }
+  };
 
   React.useEffect(() => {
     if (!window.cloudinary || cloundinaryWidgetRef.current) return;
@@ -100,23 +96,19 @@ const EventDialog = (props) => {
     }, (error, result) => {
       if (error || !result || result.event !== 'success') return;
       console.log('Done! Here is the image info: ', result.info);
-      setValues(prevValues => {
-        return {
-          ...prevValues,
-          image: result.info.secure_url
-        }
-      });
-    }
-    );
+      setValues((prevValues) => ({
+        ...prevValues,
+        image: result.info.secure_url,
+      }));
+    });
   }, [window.cloudinary]);
 
-
-  const handleChange = name => (event) => {
+  const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
     console.log(values);
   };
 
-  const handleCheckboxChange = name => (event) => {
+  const handleCheckboxChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.checked });
   };
 
@@ -133,7 +125,7 @@ const EventDialog = (props) => {
       query: trainersQuery,
     })
       .then(({ data }) => {
-        const trainers = data.trainers.filter(user => user.roles.includes('trainer'));
+        const trainers = data.trainers.filter((user) => user.roles.includes('trainer'));
         setValues({ ...values, trainers });
         return null;
       })
@@ -153,13 +145,13 @@ const EventDialog = (props) => {
   const availableStyles = ['pilates', 'strength', 'wellness', 'yoga'];
 
   const {
-    title, style, instructor, location, totalSpotsString, coinsString, description, image, date, enablePush, isLive, zoomUrl, dateEnd
+    title, style, instructor, location, totalSpotsString, coinsString, description, image, date, enablePush, isLive, zoomUrl, dateEnd,
   } = values;
 
   const totalSpots = parseInt(totalSpotsString);
   const coins = parseInt(coinsString);
   const formData = {
-    title, style, instructor, location, totalSpots, coins, description, image, date, enablePush, isLive, zoomUrl, dateEnd
+    title, style, instructor, location, totalSpots, coins, description, image, date, enablePush, isLive, zoomUrl, dateEnd,
   };
 
   const takenSpots = props.action === 'create' ? 0 : event.takenSpots;
@@ -177,7 +169,7 @@ const EventDialog = (props) => {
             <DialogTitle
               id="form-dialog-title"
             > {props.action === 'create' ? 'Create ' : 'Edit '}
-                        Event
+              Event
             </DialogTitle>
             <DialogContent>
               <DialogContentText>
@@ -210,15 +202,14 @@ const EventDialog = (props) => {
                       />
                     )}
                   >
-                    {values.trainers.length > 0 ? values.trainers.map(trainer => (
+                    {values.trainers.length > 0 ? values.trainers.map((trainer) => (
                       <MenuItem
                         key={trainer._id}
                         value={trainer._id}
                       >{trainer.firstName} {trainer.lastName}
                       </MenuItem>
                     ))
-                      : <MenuItem key={1} value="">No Available Trainers</MenuItem>
-                    }
+                      : <MenuItem key={1} value="">No Available Trainers</MenuItem>}
 
                   </Select>
                 </FormControl>
@@ -239,15 +230,14 @@ const EventDialog = (props) => {
                       />
                     )}
                   >
-                    {availableStyles.length > 0 ? availableStyles.map(style => (
+                    {availableStyles.length > 0 ? availableStyles.map((style) => (
                       <MenuItem
                         key={style}
                         value={style}
                       >{style}
                       </MenuItem>
                     ))
-                      : <MenuItem key={1} value="">No Available Styles</MenuItem>
-                    }
+                      : <MenuItem key={1} value="">No Available Styles</MenuItem>}
 
                   </Select>
                 </FormControl>
@@ -286,7 +276,7 @@ const EventDialog = (props) => {
                   autoOk
                   ampm={false}
                   value={values.date}
-                  onChange={date => handleSetDate(date)}
+                  onChange={(date) => handleSetDate(date)}
                   label="Date & Time"
                   className={classes.textField}
                   style={{ marginTop: 16 }}
@@ -297,7 +287,7 @@ const EventDialog = (props) => {
                   autoOk
                   ampm={false}
                   value={values.dateEnd}
-                  onChange={date => handleSetDateEnd(date)}
+                  onChange={(date) => handleSetDateEnd(date)}
                   label="End Date & Time"
                   className={classes.textField}
                   style={{ marginTop: 16 }}
@@ -307,10 +297,11 @@ const EventDialog = (props) => {
                 <FormControl style={{ marginTop: 16 }} className={classes.textField}>
                   <button
                     id="upload_widget"
-                    class="cloudinary-button"
-                    onClick={cloudniaryBtnCallback}>
+                    className="cloudinary-button"
+                    onClick={cloudniaryBtnCallback}
+                  >
                     Upload image
-                </button>
+                  </button>
                 </FormControl>
                 <TextField
                   id="image"
@@ -373,7 +364,7 @@ const EventDialog = (props) => {
                 Cancel
               </Button>
               <SnackbarContext.Consumer>
-                {value => (
+                {(value) => (
                   <Button
                     onClick={() => {
                       (variables.title === ''
@@ -410,7 +401,7 @@ const EventDialog = (props) => {
                           })
                           .catch((error) => {
                             console.log(error);
-                          }))
+                          }));
                     }}
                     color="primary"
                   >

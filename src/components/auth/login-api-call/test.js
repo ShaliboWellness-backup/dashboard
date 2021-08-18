@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { mount } from 'enzyme';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from '@apollo/client';
 import wait from 'waait';
 import mockClient from '../../../graphql/apollo-mock-client';
 import LoginApiCall from '.';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/styles';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/client';
 import MomentUtils from '@date-io/moment';
 import Add from '@material-ui/icons/Add';
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
@@ -40,7 +40,6 @@ const R = require('ramda');
 
 moment.tz.setDefault('Asia/Jerusalem');
 
-
 const DEFAULT = {
   title: '',
   instructor: '',
@@ -51,7 +50,6 @@ const DEFAULT = {
   date: new Date(),
   enablePush: true,
 };
-
 
 const styles = () => ({
   container: {
@@ -107,7 +105,6 @@ const EventMaker = (props) => {
 
   const [companies, setCompanies] = React.useState([]);
 
-
   const [values, setValues] = React.useState({
     title: event.title ? event.title : '',
     style: event.style ? event.style : '',
@@ -126,15 +123,13 @@ const EventMaker = (props) => {
     zoomUrl: event.zoomUrl ? event.zoomUrl : null,
   });
 
-
   React.useEffect(() => {
     setLabelWidth(!!inputLabel.current && inputLabel.current.offsetWidth);
     getTrainers();
     // getCompanies()
     !!currentCompany && setValues({ ...values, company: currentCompany._id });
-    !!event.cron && setDays(event.cron.split(' ')[4].split(',').map(item => parseInt(item)));
+    !!event.cron && setDays(event.cron.split(' ')[4].split(',').map((item) => parseInt(item)));
   }, [event, currentCompany]);
-
 
   const cloundinaryWidgetRef = React.useRef(undefined);
 
@@ -142,7 +137,7 @@ const EventMaker = (props) => {
     e.preventDefault();
     if (!cloundinaryWidgetRef.current) return;
     cloundinaryWidgetRef.current.open();
-  }
+  };
 
   React.useEffect(() => {
     if (!window.cloudinary || !open || cloundinaryWidgetRef.current) return;
@@ -154,16 +149,12 @@ const EventMaker = (props) => {
     }, (error, result) => {
       if (error || !result || result.event !== 'success') return;
       console.log('Done! Here is the image info: ', result.info);
-      setValues(prevValues => {
-        return {
-          ...prevValues,
-          image: result.info.secure_url
-        }
-      });
+      setValues((prevValues) => ({
+        ...prevValues,
+        image: result.info.secure_url,
+      }));
     });
   }, [window.cloudinary, open]);
-
-
 
   function handleOpen() {
     setOpen(true);
@@ -173,15 +164,15 @@ const EventMaker = (props) => {
     setOpen(false);
   }
 
-  const handleChange = name => (event) => {
+  const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handlePushChange = name => (event) => {
+  const handlePushChange = (name) => (event) => {
     setValues({ ...values, enablePush: event.target.checked });
   };
 
-  const handleCompanyChange = name => (event) => {
+  const handleCompanyChange = (name) => (event) => {
     const newCompany = { _id: event.target.value };
     setValues({ ...values, company: newCompany });
   };
@@ -194,13 +185,13 @@ const EventMaker = (props) => {
     setValues({ ...values, dateEnd: date });
   };
 
-  const handleCheckboxChange = name => (event) => {
+  const handleCheckboxChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.checked });
   };
 
   const handleSetDays = (value) => {
     if (days.includes(value)) {
-      const newDays = days.filter(day => day !== value);
+      const newDays = days.filter((day) => day !== value);
       setDays(newDays.sort());
     } else {
       const newDays = days;
@@ -209,13 +200,12 @@ const EventMaker = (props) => {
     }
   };
 
-
   const getTrainers = () => {
     client.query({
       query: trainersQuery,
     })
       .then(({ data }) => {
-        const trainers = data.trainers.filter(user => user.roles.includes('trainer'));
+        const trainers = data.trainers.filter((user) => user.roles.includes('trainer'));
         setValues({ ...values, trainers });
 
         return null;
@@ -266,7 +256,6 @@ const EventMaker = (props) => {
     zoomUrl,
   };
 
-
   const variables = props.action === 'create' ? { ...formData } : { ...formData, _id: event._id };
 
   const mutation = props.action === 'create' ? createEventMakerMutation : updateEventMakerMutation;
@@ -304,7 +293,7 @@ const EventMaker = (props) => {
         <DialogTitle
           id="form-dialog-title"
         > {props.action === 'create' ? 'Create ' : 'Edit '}
-                    Recurring Event
+          Recurring Event
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -341,15 +330,14 @@ const EventMaker = (props) => {
                       />
                     )}
                   >
-                    {values.trainers.length > 0 ? values.trainers.map(trainer => (
+                    {values.trainers.length > 0 ? values.trainers.map((trainer) => (
                       <MenuItem
                         key={trainer._id}
                         value={trainer._id}
                       >{trainer.firstName} {trainer.lastName}
                       </MenuItem>
                     ))
-                      : <MenuItem key={1} value="">No Available Trainers</MenuItem>
-                    }
+                      : <MenuItem key={1} value="">No Available Trainers</MenuItem>}
 
                   </Select>
                 </FormControl>
@@ -372,15 +360,14 @@ const EventMaker = (props) => {
                       />
                     )}
                   >
-                    {availableStyles.length > 0 ? availableStyles.map(style => (
+                    {availableStyles.length > 0 ? availableStyles.map((style) => (
                       <MenuItem
                         key={style}
                         value={style}
                       >{style}
                       </MenuItem>
                     ))
-                      : <MenuItem key={1} value="">No Available Styles</MenuItem>
-                    }
+                      : <MenuItem key={1} value="">No Available Styles</MenuItem>}
 
                   </Select>
                 </FormControl>
@@ -447,7 +434,7 @@ const EventMaker = (props) => {
                   autoOk
                   ampm={false}
                   value={values.date}
-                  onChange={date => handleSetDate(date)}
+                  onChange={(date) => handleSetDate(date)}
                   label="Date & Time"
                   className={classes.textField}
                   style={{ marginTop: 16 }}
@@ -460,7 +447,7 @@ const EventMaker = (props) => {
                   autoOk
                   ampm={false}
                   value={values.dateEnd}
-                  onChange={date => handleSetDateEnd(date)}
+                  onChange={(date) => handleSetDateEnd(date)}
                   label="End Date & Time"
                   className={classes.textField}
                   style={{ marginTop: 16 }}
@@ -496,8 +483,9 @@ const EventMaker = (props) => {
               <Grid item xs={6} className={classes.imageButton}>
                 <button
                   id="upload_widget"
-                  class="cloudinary-button"
-                  onClick={cloudniaryBtnCallback}>
+                  className="cloudinary-button"
+                  onClick={cloudniaryBtnCallback}
+                >
                   Upload image
                 </button>
               </Grid>
@@ -670,7 +658,7 @@ const EventMaker = (props) => {
                     const cron = `${minutes} ${hours} * * ${selectedDays}`;
                     const temp = { ...variables, cron };
 
-                    console.log('query', { variables })
+                    console.log('query', { variables });
 
                     return variables.title === ''
                       || variables.style === ''
@@ -722,6 +710,6 @@ EventMaker.defaultProps = {
     description: '',
     image: '',
     date: new Date(),
-    dateEnd: moment(new Date()).add(1, 'hours').toDate()
+    dateEnd: moment(new Date()).add(1, 'hours').toDate(),
   },
 };

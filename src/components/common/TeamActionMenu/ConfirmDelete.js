@@ -7,11 +7,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/client';
 import MenuItem from '@material-ui/core/MenuItem';
 import SnackbarContext from '../../../containers/CustomSnackbar/SnackbarContext';
 import deleteTeamMutation from '../../../graphql/teams/mutation/delete-team';
-
 
 const ConfirmDelete = ({ _id, closeMenu, refetch }) => {
   const [open, setOpen] = React.useState(false);
@@ -51,7 +50,7 @@ const ConfirmDelete = ({ _id, closeMenu, refetch }) => {
             Cancel
           </Button>
           <SnackbarContext.Consumer>
-            {value => (
+            {(value) => (
               <Button
                 onClick={() => {
                   client.mutate({
@@ -62,7 +61,7 @@ const ConfirmDelete = ({ _id, closeMenu, refetch }) => {
                       value.openSnackbar('success', 'Team Deleted Successfully');
                       console.log('user deleted');
                       handleClose();
-                      //refetch();
+                      // refetch();
                     })
                     .catch((error) => {
                       console.log(error);

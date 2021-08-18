@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withApollo } from 'react-apollo';
+import { withApollo } from '@apollo/client/react/hoc';
 import Button from '@material-ui/core/Button';
 import ButtonLink from '../common/button-link';
 
@@ -52,7 +52,7 @@ LogoutBtn.defaultProps = {
   btnType: 'button',
   disabled: false,
   underline: 'underline',
-  onLogoutHook: () => {},
+  onLogoutHook: () => { },
 };
 
 export default withApollo(LogoutBtn);
