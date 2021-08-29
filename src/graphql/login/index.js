@@ -8,6 +8,6 @@ mutation login($email: String!, $password: String!) {
   }
 }
 
-`
+`;
 
-export default loginMutation
+export default loginMutation;

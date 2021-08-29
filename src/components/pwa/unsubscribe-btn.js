@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import Button from '@material-ui/core/Button';
 import userQuery from '../../graphql/user/query/user';
 import deleteSubscriptionMutation from '../../graphql/subscription/mutation/delete-subscription';
@@ -103,10 +103,10 @@ UnsubscribeBtn.propTypes = {
 UnsubscribeBtn.defaultProps = {
   btnLabel: 'Disable Push Messages',
   disabled: false,
-  onBeforeHook: () => {},
-  onClientCancelHook: () => {},
-  onServerErrorHook: () => {},
-  onSuccessHook: () => {},
+  onBeforeHook: () => { },
+  onClientCancelHook: () => { },
+  onServerErrorHook: () => { },
+  onSuccessHook: () => { },
 };
 
 const withMutation = graphql(deleteSubscriptionMutation, { name: 'deleteSubscription' });

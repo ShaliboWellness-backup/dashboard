@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const createEventMakerMutation = gql`
 mutation createEventMaker(
@@ -59,6 +58,6 @@ mutation createEventMaker(
   }
 }
 
-`
+`;
 
-export default createEventMakerMutation
+export default createEventMakerMutation;

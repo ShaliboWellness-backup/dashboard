@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const updateTeamMutation = gql`
 mutation updateTeam(
@@ -24,6 +23,6 @@ mutation updateTeam(
 }
 
 
-`
+`;
 
-export default updateTeamMutation
+export default updateTeamMutation;

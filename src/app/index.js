@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ApolloProvider} from 'react-apollo';
-import {Router} from 'react-router-dom';
-import createBrowserHistory from 'history/createBrowserHistory';
-import {ThemeProvider} from 'styled-components';
-import {MuiThemeProvider} from '@material-ui/core/styles';
+import { ApolloProvider } from '@apollo/client';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import { ThemeProvider } from 'styled-components';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import client from '../graphql/apollo-client';
 import scTheme from '../theme/sc';
 import theme from '../theme/mui';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Routes from '../routes'
-import CurrentCompany from "../containers/CurrentCompany";
-import CustomSnackbar from "../containers/CustomSnackbar";
-import CurrentUser from "../containers/CurrentUser";
+import Routes from '../routes';
+import CurrentCompany from '../containers/CurrentCompany';
+import CustomSnackbar from '../containers/CustomSnackbar';
+import CurrentUser from '../containers/CurrentUser';
 
 // Given that we are implementing App Shell Architecture and, therefore,
 // injecting (via reactDOM.render) the Header and Main components into
@@ -32,17 +32,17 @@ const App = () => (
         <Router history={history}>
             <ApolloProvider client={client}>
                 <MuiThemeProvider theme={theme}>
-                    <CssBaseline/>
+                    <CssBaseline />
                     <CurrentUser>
                         <CurrentCompany>
                             <CustomSnackbar>
-                                <Routes/>
+                                <Routes />
                             </CustomSnackbar>
                         </CurrentCompany>
                     </CurrentUser>
-                    {/*<GlobalDataProvider>*/}
+                    {/* <GlobalDataProvider> */}
                     {/**/}
-                    {/*</GlobalDataProvider>*/}
+                    {/* </GlobalDataProvider> */}
                 </MuiThemeProvider>
             </ApolloProvider>
         </Router>

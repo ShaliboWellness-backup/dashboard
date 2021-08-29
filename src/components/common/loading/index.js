@@ -28,7 +28,7 @@ const Dot = styled.div`
 //------------------------------------------------------------------------------
 // COMPONENT:
 //------------------------------------------------------------------------------
-const Loading = props => (
+const Loading = (props) => (
   <Outer className="flex justify-center items-center" {...props}>
     <Dot className="inline-block" delay={0} />
     <Dot className="inline-block" delay={1} />

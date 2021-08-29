@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import Button from '@material-ui/core/Button';
 import sendPushNotificationMutation from '../../graphql/subscription/mutation/send-push-notification';
 
@@ -62,10 +62,10 @@ PushBtn.propTypes = {
 PushBtn.defaultProps = {
   btnLabel: 'Send Push Notification',
   disabled: false,
-  onBeforeHook: () => {},
-  onClientCancelHook: () => {},
-  onServerErrorHook: () => {},
-  onSuccessHook: () => {},
+  onBeforeHook: () => { },
+  onClientCancelHook: () => { },
+  onServerErrorHook: () => { },
+  onSuccessHook: () => { },
 };
 
 // Apollo integration

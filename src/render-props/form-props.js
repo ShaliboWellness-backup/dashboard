@@ -9,9 +9,9 @@ import HookProps, { hookPropTypes } from './hook-props';
 //------------------------------------------------------------------------------
 const FormProps = ({ children }) => (
   <DisabledProps>
-    {disabledProps => (
+    {(disabledProps) => (
       <MessageProps>
-        {messageProps => (
+        {(messageProps) => (
           <HookProps
             disabledProps={disabledProps}
             messageProps={messageProps}

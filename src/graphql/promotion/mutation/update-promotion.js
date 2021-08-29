@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const updatePromotionMutation = gql`
 mutation updatePromotion(
@@ -31,6 +30,6 @@ $_id: String!
     }
   }
 }
-`
+`;
 
-export default updatePromotionMutation
+export default updatePromotionMutation;

@@ -37,7 +37,6 @@ query getCompanyEvents($_id: String!){
   
 
 
-`
+`;
 
-
-export default getCompanyEventsQuery
+export default getCompanyEventsQuery;

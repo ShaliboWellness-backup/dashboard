@@ -34,6 +34,6 @@ const EventMakersQuery = gql`
     }
   }
 }
-`
+`;
 
-export default EventMakersQuery
+export default EventMakersQuery;

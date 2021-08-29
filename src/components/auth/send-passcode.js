@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import sendPasscodeMutation from '../../graphql/user/mutation/send-passcode';
 
 //------------------------------------------------------------------------------
@@ -41,8 +41,8 @@ SendPasscode.propTypes = {
 };
 
 SendPasscode.defaultProps = {
-  onSendError: () => {},
-  onSendSuccess: () => {},
+  onSendError: () => { },
+  onSendSuccess: () => { },
 };
 
 // Apollo integration

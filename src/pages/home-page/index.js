@@ -1,7 +1,7 @@
 import React from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useTheme from '@material-ui/styles/useTheme';
 import Sidebar from '../../components/header-title/Sidebar';
@@ -25,7 +25,6 @@ import EventsCompleted from './EventsCompleted';
 
 const R = require('ramda');
 
-
 const HomePage = (props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -34,26 +33,24 @@ const HomePage = (props) => {
   const { user } = props;
   const userContext = React.useContext(CurrentUserContext);
 
-
   React.useEffect(() => {
     const script = document.createElement('script');
 
-    script.src = "https://upload-widget.cloudinary.com/global/all.js";
+    script.src = 'https://upload-widget.cloudinary.com/global/all.js';
     script.async = true;
 
     document.body.appendChild(script);
 
     return () => {
       document.body.removeChild(script);
-    }
+    };
   }, []);
-
 
   React.useEffect(() => {
     userContext.handleSetUser(props.user);
   }, [props.user]);
   return (
-    <React.Fragment>
+    <>
       <HeaderTitle currentPath={props.location.pathname} />
       <div style={{ marginBottom: 30 }}>
         <div style={{
@@ -65,7 +62,7 @@ const HomePage = (props) => {
             <Route
               exact
               path="/"
-              render={props => (
+              render={(props) => (
                 <WelcomePage
                   {...props}
                   user={user}
@@ -76,7 +73,7 @@ const HomePage = (props) => {
             <Route
               exact
               path="/trainers"
-              render={props => (
+              render={(props) => (
                 <Query query={trainersQuery} pollInterval={1000}>
                   {({ loading, error, data }) => {
                     const users = [];
@@ -95,20 +92,19 @@ const HomePage = (props) => {
                       const { trainers } = data;
                       return <Trainers {...props} users={trainers} />;
                     }
-                  }
-                  }
+                  }}
                 </Query>
               )}
             />
-            <Route exact path="/all-users" render={props => <AllUsers {...props} />} />
+            <Route exact path="/all-users" render={(props) => <AllUsers {...props} />} />
             <Route
               exact
               path="/members"
-              render={props => <Members {...props} company={currentCompany} />}
+              render={(props) => <Members {...props} company={currentCompany} />}
             />
             <Route
               path="/promotions"
-              render={props => (
+              render={(props) => (
                 <Query
                   query={getPromotionsQuery}
                   pollInterval={500}
@@ -130,14 +126,13 @@ const HomePage = (props) => {
                       const { promotions } = data;
                       return <Promotions {...props} promotions={promotions} />;
                     }
-                  }
-                  }
+                  }}
                 </Query>
               )}
             />
             <Route
               path="/all-promotions"
-              render={props => (
+              render={(props) => (
                 <Query
                   query={getPromotionsQuery}
                   pollInterval={500}
@@ -159,14 +154,13 @@ const HomePage = (props) => {
                       const { promotions } = data;
                       return <Promotions {...props} promotions={promotions} edit />;
                     }
-                  }
-                  }
+                  }}
                 </Query>
               )}
             />
             <Route
               path="/events"
-              render={props => (
+              render={(props) => (
                 <Query
                   query={getCompanyEventsQuery}
                   variables={currentCompany ? { _id: currentCompany._id } : { _id: 'null' }}
@@ -190,14 +184,13 @@ const HomePage = (props) => {
                         return <Events {...props} events={events} />;
                       }
                     }
-                  }
-                  }
+                  }}
                 </Query>
               )}
             />
             <Route
               path="/events-completed"
-              render={props => (
+              render={(props) => (
                 <Query
                   query={getCompanyEventsQuery}
                   variables={currentCompany ? { _id: currentCompany._id } : { _id: 'null' }}
@@ -221,45 +214,46 @@ const HomePage = (props) => {
                         return <EventsCompleted {...props} disableCreateEvent events={events} />;
                       }
                     }
-                  }
-                  }
+                  }}
                 </Query>
               )}
             />
             <Route path="/event-maker" component={EventMaker} />
-            <Route path="/teams" render={props => (
-              <Query
-                query={companyTeamsQuery}
-                variables={currentCompany ? { companyId: currentCompany._id } : { companyId: 'null' }}
-                pollInterval={5000}
-              >
-                {({ loading, error, data }) => {
-                  if (loading) {
-                    return (
-                      <div style={{ width: '100%', textAlign: 'center' }}>
-                        <CircularProgress />
-                      </div>
-                    );
-                  }
-                  if (error) {
-                    console.log(error);
-                    return null;
-                  }
-                  if (!loading && data && data.companyTeams) {
-                    const teams = data.companyTeams;
-                    if (data) {
-                      return <Teams {...props} disableCreateEvent teams={teams} currentCompany={currentCompany} />;
+            <Route
+              path="/teams"
+              render={(props) => (
+                <Query
+                  query={companyTeamsQuery}
+                  variables={currentCompany ? { companyId: currentCompany._id } : { companyId: 'null' }}
+                  pollInterval={5000}
+                >
+                  {({ loading, error, data }) => {
+                    if (loading) {
+                      return (
+                        <div style={{ width: '100%', textAlign: 'center' }}>
+                          <CircularProgress />
+                        </div>
+                      );
                     }
-                  }
-                }
-                }
-              </Query>
-            )} />
+                    if (error) {
+                      console.log(error);
+                      return null;
+                    }
+                    if (!loading && data && data.companyTeams) {
+                      const teams = data.companyTeams;
+                      if (data) {
+                        return <Teams {...props} disableCreateEvent teams={teams} currentCompany={currentCompany} />;
+                      }
+                    }
+                  }}
+                </Query>
+              )}
+            />
           </Switch>
         </div>
 
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

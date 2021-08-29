@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import { propType } from 'graphql-anywhere';
 import userFragment from './graphql/user/fragment/user';
 import userQuery from './graphql/user/query/user';
@@ -51,8 +51,8 @@ const withData = graphql(userQuery, { name: 'userData' });
 
 export default withData(GlobalDataProvider);
 
-export const withUser = Component => props => (
+export const withUser = (Component) => (props) => (
   <Context.Consumer>
-    {userProps => <Component {...props} {...userProps} />}
+    {(userProps) => <Component {...props} {...userProps} />}
   </Context.Consumer>
 );

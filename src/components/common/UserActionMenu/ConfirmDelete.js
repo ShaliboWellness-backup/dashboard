@@ -7,11 +7,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/client';
 import MenuItem from '@material-ui/core/MenuItem';
 import SnackbarContext from '../../../containers/CustomSnackbar/SnackbarContext';
 import deleteUserMutation from '../../../graphql/user/mutation/delete-user';
-
 
 const ConfirmDelete = ({ _id, closeMenu, refetch }) => {
   const [open, setOpen] = React.useState(false);
@@ -31,7 +30,7 @@ const ConfirmDelete = ({ _id, closeMenu, refetch }) => {
     <div>
       <MenuItem onClick={handleClickOpen}>
         <Typography variant="body1" color="textSecondary">
-                    Delete
+          Delete
         </Typography>
       </MenuItem>
       <Dialog
@@ -43,15 +42,15 @@ const ConfirmDelete = ({ _id, closeMenu, refetch }) => {
         <DialogTitle id="form-dialog-title">Delete User?</DialogTitle>
         <DialogContent>
           <DialogContentText color="inherit">
-                        Are you sure you want to delete this user? Once deleted, all user information will be lost.
+            Are you sure you want to delete this user? Once deleted, all user information will be lost.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="inherit">
-                        Cancel
+            Cancel
           </Button>
           <SnackbarContext.Consumer>
-            {value => (
+            {(value) => (
               <Button
                 onClick={() => {
                   client.mutate({
@@ -72,7 +71,7 @@ const ConfirmDelete = ({ _id, closeMenu, refetch }) => {
                 }}
                 color="inherit"
               >
-                                Delete
+                Delete
               </Button>
             )}
           </SnackbarContext.Consumer>

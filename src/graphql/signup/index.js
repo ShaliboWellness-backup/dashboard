@@ -20,6 +20,6 @@ mutation signup(
   }
 }
 
-`
+`;
 
-export default signupMutation
+export default signupMutation;

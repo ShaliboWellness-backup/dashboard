@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const eventAdded = gql`
   subscription eventAdded{
@@ -7,6 +6,6 @@ const eventAdded = gql`
     title
     }
   }
-`
+`;
 
-export default eventAdded
+export default eventAdded;

@@ -14,14 +14,13 @@ import Container from '@material-ui/core/Container';
 import {
   Dialog, DialogContent, Fab, Paper, useMediaQuery,
 } from '@material-ui/core';
-import { withApollo } from 'react-apollo';
-import { useApolloClient } from '@apollo/react-hooks';
+import { withApollo } from '@apollo/client/react/hoc';
+import { useApolloClient } from '@apollo/client';
 import Add from '@material-ui/icons/Add';
 import SnackbarContext from '../../../containers/CustomSnackbar/SnackbarContext';
 import signupMutation from '../../../graphql/signup';
 
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   '@global': {
     body: {
       // backgroundColor: theme.palette.common.white,
@@ -34,7 +33,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     padding: 32,
-
 
   },
   avatar: {
@@ -49,7 +47,6 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2, 0, 0),
   },
 }));
-
 
 const CreateUserDialog = (props) => {
   const classes = useStyles();
@@ -81,7 +78,7 @@ const CreateUserDialog = (props) => {
     setOpen(false);
   }
 
-  const handleChange = name => (event) => {
+  const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
     console.log(values);
   };
@@ -95,7 +92,6 @@ const CreateUserDialog = (props) => {
         ? snackbar.openSnackbar('error', 'Please make sure your passwords match.')
         : snackbar.openSnackbar('error', 'Please make sure no details are missing.');
   };
-
 
   return (
     <div>
@@ -112,7 +108,7 @@ const CreateUserDialog = (props) => {
         <CssBaseline />
         <DialogContent className={classes.paper}>
           <Typography component="h1" variant="h5">
-                        Create New User
+            Create New User
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={1}>
@@ -226,7 +222,7 @@ const CreateUserDialog = (props) => {
               props.refetch();
             }}
           >
-                        Create
+            Create
           </Button>
           <Button
             type="submit"
@@ -236,7 +232,7 @@ const CreateUserDialog = (props) => {
             className={classes.submit}
             onClick={handleClose}
           >
-                        Cancel
+            Cancel
           </Button>
         </DialogContent>
 

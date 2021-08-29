@@ -16,6 +16,6 @@ const getPromotionsQuery = gql`{
                 }
                 }
                 }
-            `
+            `;
 
-export default getPromotionsQuery
+export default getPromotionsQuery;

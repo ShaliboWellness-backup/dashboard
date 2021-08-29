@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const verifyEventUsersMutation = gql`
 mutation verifyEventUsers(
@@ -18,6 +17,6 @@ mutation verifyEventUsers(
 }
 
 
-`
+`;
 
-export default verifyEventUsersMutation
+export default verifyEventUsersMutation;

@@ -32,6 +32,6 @@ const getEventsQuery = gql`
     }
   }
 }
-`
+`;
 
-export default getEventsQuery
+export default getEventsQuery;

@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 const removeUsersFromTeamMutation = gql`
 mutation removeUsersFromTeam($tid: String!, $uids: [String]){
@@ -7,6 +6,6 @@ mutation removeUsersFromTeam($tid: String!, $uids: [String]){
     _id
   }
 }
-`
+`;
 
-export default removeUsersFromTeamMutation
+export default removeUsersFromTeamMutation;
