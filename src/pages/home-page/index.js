@@ -63,11 +63,12 @@ const HomePage = (props) => {
               exact
               path="/"
               render={(props) => (
-                <WelcomePage
-                  {...props}
-                  user={user}
-                  company={currentCompany}
-                />
+                currentCompany ?
+                  <WelcomePage
+                    {...props}
+                    user={user}
+                    company={currentCompany}
+                  /> : <CircularProgress />
               )}
             />
             <Route
