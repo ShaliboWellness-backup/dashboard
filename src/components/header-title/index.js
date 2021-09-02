@@ -44,10 +44,13 @@ const HeaderTitle = ({ classes, currentPath }) => {
 
   const client = useApolloClient();
 
+  const [companies, setCompanies] = useState([{ name: 'Loading...', logo: '' }]);
+
+
   const getCompanies = () => {
-    client.watchQuery({
+    return client.watchQuery({
       query: getCompaniesQuery,
-      pollInterval: 1000,
+      pollInterval: 5000,
     }).subscribe(({ data }) => {
       setCompanies(data.companies);
       const lastCompanyId = localStorage.getItem('company_id');
@@ -63,21 +66,22 @@ const HeaderTitle = ({ classes, currentPath }) => {
         handleSetCompany(data.companies[0]);
       }
     },
-    (error) => {
-      console.log(error);
-    });
+      (error) => {
+        console.log(error);
+      });
   };
 
-  const [companies, setCompanies] = useState([{ name: 'Loading...', logo: '' }]);
-
   useEffect(() => {
-    getCompanies();
+    let subscription = getCompanies();
+    return () => {
+      subscription.unsubscribe();
+    }
   }, []);
 
   return (
     <div className={classes.root}>
       <Toolbar className={classes.toolbar}>
-        <Sidebar companies={companies} currentPath={currentPath} />
+        <Sidebar currentPath={currentPath} />
         <div className={classes.title}>
           <Button classes={{ root: classes.usersButton }} component={Link} to="/">
             <Typography variant="h6" className={classes.title}>
