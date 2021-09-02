@@ -8,9 +8,6 @@ const getCompaniesQuery = gql`
       codes
       masterCode
       leaderboardAvailable
-      events {
-        title
-      }
       promotions {
         _id
         title
