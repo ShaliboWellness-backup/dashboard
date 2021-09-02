@@ -1,9 +1,8 @@
 import gql from 'graphql-tag';
 
-const getCompanyQuery = gql`
+const getCompaniesDataQuery = gql`
   {
-    query getCompany($_id: String!){
-    company(_id: $_id) {
+    companiesData {
       name
       _id
       codes
@@ -34,7 +33,6 @@ const getCompanyQuery = gql`
       isPublic
     }
   }
-  }
 `;
 
-export default getCompanyQuery;
+export default getCompaniesDataQuery;

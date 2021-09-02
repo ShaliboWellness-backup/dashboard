@@ -8,22 +8,14 @@ const getCompaniesQuery = gql`
       codes
       masterCode
       leaderboardAvailable
+      events {
+        _id
+      }
       promotions {
         _id
-        title
-        subtitle
-        price
-        tag
-        image
-        codes {
-          value
-        }
       }
       users {
         _id
-        firstName
-        lastName
-        email
       }
       logo
       emailSuffix
