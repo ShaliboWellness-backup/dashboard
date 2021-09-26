@@ -162,31 +162,33 @@ const HomePage = (props) => {
             <Route
               path="/events"
               render={(props) => (
-                <Query
-                  query={getCompanyEventsQuery}
-                  variables={currentCompany ? { _id: currentCompany._id } : { _id: 'null' }}
-                  pollInterval={500}
-                >
-                  {({ loading, error, data }) => {
-                    if (loading) {
-                      return (
-                        <div style={{ width: '100%', textAlign: 'center' }}>
-                          <CircularProgress />
-                        </div>
-                      );
-                    }
-                    if (error) {
-                      console.log(error);
-                      return null;
-                    }
-                    if (!loading && data && data.company && data.company.events) {
-                      const events = R.pathOr([], ['events'])(data.company);
-                      if (data) {
-                        return <Events {...props} events={events} />;
+                currentCompany ?
+                  <Query
+                    query={getCompanyEventsQuery}
+                    variables={{ _id: currentCompany._id }}
+                    pollInterval={500}
+                  >
+                    {({ loading, error, data }) => {
+                      if (loading) {
+                        return (
+                          <div style={{ width: '100%', textAlign: 'center' }}>
+                            <CircularProgress />
+                          </div>
+                        );
                       }
-                    }
-                  }}
-                </Query>
+                      if (error) {
+                        console.log(error);
+                        return null;
+                      }
+                      if (!loading && data && data.company && data.company.events) {
+                        const events = R.pathOr([], ['events'])(data.company);
+                        if (data) {
+                          return <Events {...props} events={events} />;
+                        }
+                      }
+                    }}
+                  </Query> :
+                  <CircularProgress />
               )}
             />
             <Route
