@@ -10,7 +10,7 @@ import { CardHeader, Divider } from '@material-ui/core';
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
 import CardMenu from './CardMenu';
 import CurrentUserContext from '../../../containers/CurrentUser/CurrentUserContext';
-
+import cronstrue from 'cronstrue';
 const R = require('ramda');
 
 moment.tz.setDefault('Asia/Jerusalem');
@@ -73,6 +73,8 @@ function EventMakerCard(props) {
 
   const coins = R.pathOr('0', ['coins'])(event);
 
+  const eventLength = moment.duration(moment(date).diff(event.dateEnd ? moment(event.dateEnd) : moment(date).add(1, 'hours'), 'minutes'), 'minutes').humanize();
+
   return (
     <Card className={classes.card}>
       <CardMedia
@@ -88,7 +90,7 @@ function EventMakerCard(props) {
         action={userContext.currentUser.roles.includes('admin') ? <CardMenu card={event} /> : null}
         title={title}
         titleTypographyProps={{ style: { textTransform: 'capitalize' } }}
-        subheader={`${moment(date).format(' MMMM Do, HH:mm')}${event.dateEnd ? ` - ${moment(event.dateEnd).format(' MMMM Do, HH:mm')}` : ''}`}
+        subheader={`${cronstrue.toString(event.cron, { use24HourTimeFormat: true })} for ${eventLength}`}
 
       />
 
@@ -104,9 +106,9 @@ function EventMakerCard(props) {
             {`${takenSpots}/${totalSpots} spots `}
           </Typography>
 
-        </div>
+        </div >
         <Typography>{description}</Typography>
-      </CardContent>
+      </CardContent >
       <Divider variant="fullWidth" />
       <CardActions>
         <div style={{ textAlign: 'center', width: '100%' }}>
@@ -115,7 +117,7 @@ function EventMakerCard(props) {
           </Typography>
         </div>
       </CardActions>
-    </Card>
+    </Card >
   );
 }
 
