@@ -33,7 +33,7 @@ import trainersQuery from '../../../graphql/user/query/trainers';
 import SnackbarContext from '../../../containers/CustomSnackbar/SnackbarContext';
 import createEventMakerMutation from '../../../graphql/event-maker/mutation/create-event-maker';
 import updateEventMakerMutation from '../../../graphql/event-maker/mutation/update-event-maker';
-import getCompaniesQuery from '../../../graphql/companies/query/companies';
+import getCompaniesDataQuery from '../../../graphql/companies/query/companies-data';
 import eventMakersQuery from '../../../graphql/event-maker/query/event-maker';
 
 const R = require('ramda');

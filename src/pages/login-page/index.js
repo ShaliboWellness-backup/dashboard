@@ -24,13 +24,13 @@ const R = require('ramda');
 
 function MadeWithLove() {
   return (<div />
-  //   <Typography variant="body2" color="textSecondary" align="center">
-  //      {'Built with love by the '}
-  //    <Link color="inherit" to="https://material-ui.com/">
-  //      Material-UI
-  // </Link>
-  //  {' team.'}
-  // </Typography>
+    //   <Typography variant="body2" color="textSecondary" align="center">
+    //      {'Built with love by the '}
+    //    <Link color="inherit" to="https://material-ui.com/">
+    //      Material-UI
+    // </Link>
+    //  {' team.'}
+    // </Typography>
   );
 }
 
@@ -147,9 +147,10 @@ const LoginPage = (props) => {
               onClick={(e) => {
                 e.preventDefault();
                 values.email === ''
-                                    || values.password === ''
+                  || values.password === ''
                   ? snackbar.openSnackbar('error', 'Please make sure to enter your email and password.')
                   : client.mutate({
+
                     mutation: loginMutation,
                     variables: { email: values.email.trim().toLowerCase(), password: values.password.trim() },
                   })

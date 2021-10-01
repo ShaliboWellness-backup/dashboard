@@ -23,7 +23,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import FormControl from '@material-ui/core/FormControl';
 import SnackbarContext from '../../../containers/CustomSnackbar/SnackbarContext';
 import updateUserMutation from '../../../graphql/user/mutation/update-user';
-import getCompaniesQuery from '../../../graphql/companies/query/companies';
+import getCompaniesDataQuery from '../../../graphql/companies/query/companies-data';
 
 const R = require('ramda');
 
@@ -91,7 +91,7 @@ function UserDialog(props) {
 
   const getCompanies = () => {
     client.query({
-      query: getCompaniesQuery,
+      query: getCompaniesDataQuery,
     })
       .then(({ data }) => {
         const { companies } = data;
@@ -213,7 +213,7 @@ function UserDialog(props) {
                 ))
                   : <MenuItem key={1} value="">No Available Companies</MenuItem>}
                 {values.companies.length > 0
-                                    && <MenuItem key="none" value="none">No Company</MenuItem>}
+                  && <MenuItem key="none" value="none">No Company</MenuItem>}
 
               </Select>
             </FormControl>
@@ -295,9 +295,9 @@ function UserDialog(props) {
                   console.log(values);
                   console.log(variables);
                   return firstName === ''
-                                    || lastName === ''
-                                    || email === ''
-                                    || roles.length === 0
+                    || lastName === ''
+                    || email === ''
+                    || roles.length === 0
                     ? value.openSnackbar('error', 'Please make sure there are no empty fields')
                     : client.mutate({
                       mutation: updateUserMutation,
@@ -306,7 +306,7 @@ function UserDialog(props) {
                       .then(() => {
                         handleClose();
                         value.openSnackbar('success', 'User information updated successfully');
-                      // window.location.reload()
+                        // window.location.reload()
                       })
                       .catch((error) => {
                         value.openSnackbar('error', `${!!error && error.message && error.message}`);

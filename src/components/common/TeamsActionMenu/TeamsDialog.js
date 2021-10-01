@@ -23,7 +23,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import FormControl from '@material-ui/core/FormControl';
 import SnackbarContext from '../../../containers/CustomSnackbar/SnackbarContext';
 import updateTeamMutation from '../../../graphql/teams/mutation/update-team';
-import getCompaniesQuery from '../../../graphql/companies/query/companies';
+import getCompaniesDataQuery from '../../../graphql/companies/query/companies-data';
 import createTeamMutation from '../../../graphql/teams/mutation/create-team';
 
 const R = require('ramda');
@@ -139,7 +139,7 @@ function TeamsDialog(props) {
                       .then(() => {
                         handleClose();
                         value.openSnackbar('success', 'Team added successfully');
-                      // window.location.reload()
+                        // window.location.reload()
                       })
                       .catch((error) => {
                         value.openSnackbar('error', `${!!error && error.message && error.message}`);
