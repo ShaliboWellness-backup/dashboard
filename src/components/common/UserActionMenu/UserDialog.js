@@ -208,11 +208,11 @@ function UserDialog(props) {
                   />
                 )}
               >
-                {values.companies.length > 0 ? values.companies.map((company) => (
+                {values?.companies?.length > 0 ? values.companies.map((company) => (
                   <MenuItem key={company._id} value={company._id}>{company.name}</MenuItem>
                 ))
                   : <MenuItem key={1} value="">No Available Companies</MenuItem>}
-                {values.companies.length > 0
+                {values?.companies?.length > 0
                   && <MenuItem key="none" value="none">No Company</MenuItem>}
 
               </Select>
