@@ -23,7 +23,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import FormControl from '@material-ui/core/FormControl';
 import SnackbarContext from '../../../containers/CustomSnackbar/SnackbarContext';
 import updateUserMutation from '../../../graphql/user/mutation/update-user';
-import getCompaniesDataQuery from '../../../graphql/companies/query/companies-data';
+import getComapniesQuery from '../../../graphql/companies/query/companies';
 
 const R = require('ramda');
 
@@ -91,7 +91,7 @@ function UserDialog(props) {
 
   const getCompanies = () => {
     client.query({
-      query: getCompaniesDataQuery,
+      query: getComapniesQuery,
     })
       .then(({ data }) => {
         const { companies } = data;
