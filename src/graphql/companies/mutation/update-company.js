@@ -33,6 +33,7 @@ const updateCompanyMutation = gql`
       logo
       isPublic
       leaderboardAvailable
+      competitionMode
       isPhoneOptional
       events {
         _id
