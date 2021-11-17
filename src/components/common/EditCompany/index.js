@@ -102,6 +102,7 @@ function EditCompany({ classes, company }) {
       quantity: company.codes ? company.codes.length : 0,
       leaderboardAvailable: company.leaderboardAvailable,
       isPhoneOptional: company.isPhoneOptional || false,
+      competitionMode: company.competitionMode || false
     });
   }, [company]);
 
@@ -234,13 +235,13 @@ function EditCompany({ classes, company }) {
                 </Grid>
                 <div style={styles().toggler}>
                   {values.leaderboardAvailable
-                    ? 'leaderboard'
-                    : 'leaderboard'}
+                    ? 'Leaderboard'
+                    : 'Leaderboard'}
                   <Tooltip
                     title={
                       values.leaderboardAvailable
-                        ? 'leaderboard'
-                        : 'leaderboard'
+                        ? 'Leaderboard'
+                        : 'Leaderboard'
                     }
                   >
                     <Switch
@@ -255,21 +256,31 @@ function EditCompany({ classes, company }) {
                   </Tooltip>
                 </div>
                 <div style={styles().toggler}>
-                  {values.isPhoneOptional
-                    ? 'phone optional'
-                    : 'phone optional'}
+                  {'Phone Optional'}
                   <Tooltip
-                    title={
-                      values.isPhoneOptional
-                        ? 'phone optional'
-                        : 'phone optional'
-                    }
+                    title={'Phone Optional'}
                   >
                     <Switch
                       checked={values.isPhoneOptional}
                       onChange={() => setValues((prev) => ({
                         ...prev,
                         isPhoneOptional: !prev.isPhoneOptional,
+                      }))}
+                      name="checkedB"
+                      color="primary"
+                    />
+                  </Tooltip>
+                </div>
+                <div style={styles().toggler}>
+                  {'Competition Mode'}
+                  <Tooltip
+                    title={'Competition Mode'}
+                  >
+                    <Switch
+                      checked={values.competitionMode}
+                      onChange={() => setValues((prev) => ({
+                        ...prev,
+                        competitionMode: !prev.competitionMode,
                       }))}
                       name="checkedB"
                       color="primary"
