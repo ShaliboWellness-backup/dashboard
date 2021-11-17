@@ -358,6 +358,7 @@ function EditCompany({ classes, company }) {
                     isPublic,
                     leaderboardAvailable,
                     isPhoneOptional,
+                    competitionMode
                   } = values;
                   return name === '' || emailSuffix === '' || logo === ''
                     ? value.openSnackbar(
@@ -375,6 +376,7 @@ function EditCompany({ classes, company }) {
                           leaderboardAvailable,
                           isPublic,
                           isPhoneOptional,
+                          competitionMode
                         },
                       })
                       .then(() => {
