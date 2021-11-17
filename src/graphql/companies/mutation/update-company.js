@@ -12,6 +12,7 @@ const updateCompanyMutation = gql`
     $promotionsIds: [String!]
     $leaderboardAvailable: Boolean
     $isPhoneOptional: Boolean
+    $competitionMode: Boolean
   ) {
     updateCompany(
       _id: $_id
@@ -24,6 +25,7 @@ const updateCompanyMutation = gql`
       promotionsIds: $promotionsIds
       leaderboardAvailable: $leaderboardAvailable
       isPhoneOptional: $isPhoneOptional
+      competitionMode: $competitionMode
     ) {
       _id
       name
