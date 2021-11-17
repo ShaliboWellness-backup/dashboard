@@ -85,6 +85,7 @@ function EditCompany({ classes, company }) {
     quantity: 0,
     leaderboardAvailable: false,
     isPhoneOptional: false,
+    competitionMode: false
   });
 
   const theme = useTheme();
