@@ -9,7 +9,7 @@ const updateCompanyMutation = gql`
     $emailSuffix: String
     $eventsIds: [String!]
     $usersIds: [String!]
-    $promotionsIds: [String!]
+    $promotionsIds: [String]
     $leaderboardAvailable: Boolean
     $isPhoneOptional: Boolean
     $competitionMode: Boolean
