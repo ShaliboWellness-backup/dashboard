@@ -216,7 +216,6 @@ const CreateUserDialog = (props) => {
                   })
                   .catch((error) => {
                     snackbar.openSnackbar('error', error.message ? error.message : 'Something went wrong. Please try again later.');
-                    setOpen(false);
                   });
               }
               props.refetch();
