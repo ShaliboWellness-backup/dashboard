@@ -124,7 +124,7 @@ const DropdownMenuCompanies = (props) => {
         onClose={handleClose}
       >
         <NewCompany closeMenu={handleClose} />
-        {companies.map((company, index) => (
+        {companies.slice().sort((compA, compB) => compA.name.localeCompare(compB.name)).map((company, index) => (
           <StyledMenuItem key={index} onClick={() => handleChangeCompany(company)}>
             <ListItemAvatar>
               <Avatar alt={company.name} src={company.logo} />
