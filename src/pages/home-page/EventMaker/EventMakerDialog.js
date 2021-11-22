@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { withStyles } from '@material-ui/styles';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { useApolloClient } from '@apollo/client';
 import MomentUtils from '@date-io/moment';
 import Add from '@material-ui/icons/Add';
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
+import { DurationPicker } from 'material-duration-picker';
+import { formatDuration } from 'date-fns';
 import {
   Avatar,
   Button,
@@ -16,6 +18,7 @@ import {
   DialogTitle,
   Fab,
   FormControl,
+  FormLabel,
   Grid,
   InputLabel,
   MenuItem,
@@ -101,7 +104,7 @@ const EventMaker = (props) => {
 
   const [labelWidth, setLabelWidth] = React.useState(0);
 
-  const [days, setDays] = React.useState([]);
+  const [days, setDays] = React.useState([0]);
 
   const [companies, setCompanies] = React.useState([]);
 
@@ -127,8 +130,20 @@ const EventMaker = (props) => {
     setLabelWidth(!!inputLabel.current && inputLabel.current.offsetWidth);
     getTrainers();
     // getCompanies()
-    !!currentCompany && setValues({ ...values, company: currentCompany._id });
-    !!event.cron && setDays(event.cron.split(' ')[4].split(',').map((item) => parseInt(item)));
+    if (currentCompany) {
+      setValues({ ...values, company: currentCompany._id });
+    }
+    if (event.cron) {
+      let cronParts = event.cron.split(' ');
+      // Valid cron has 5 parts
+      if (cronParts.length === 5) {
+        // Get cron days
+        let cronDays = cronParts[4]
+          .split(',')
+          .map((item) => parseInt(item));
+        setDays(cronDays);
+      }
+    }
   }, [event, currentCompany]);
 
   const cloundinaryWidgetRef = React.useRef(undefined);
@@ -190,15 +205,17 @@ const EventMaker = (props) => {
   };
 
   const handleSetDays = (value) => {
-    if (days.includes(value)) {
-      const newDays = days.filter((day) => day !== value);
-      setDays(newDays.sort());
+    let newDays = [...days];
+    if (newDays.includes(value)) {
+      if (newDays.length === 1) return;
+      newDays = newDays.filter((day) => day !== value);
+
     } else {
-      const newDays = days;
       newDays.push(value);
-      setDays(newDays.sort());
     }
+    setDays(newDays.sort());
   };
+
 
   const getTrainers = () => {
     client.query({
@@ -232,7 +249,7 @@ const EventMaker = (props) => {
   const availableStyles = ['pilates', 'strength', 'wellness', 'yoga'];
 
   const {
-    title, style, instructor, location, totalSpotsString, coinsString, description, image, date, dateEnd, company, enablePush, isLive, zoomUrl,
+    title, style, instructor, location, totalSpotsString, coinsString, description, image, date, dateEnd, duration, company, enablePush, isLive, zoomUrl,
   } = values;
 
   const totalSpots = parseInt(totalSpotsString);
@@ -254,16 +271,12 @@ const EventMaker = (props) => {
     enablePush,
     isLive,
     zoomUrl,
+    duration
   };
 
   const variables = props.action === 'create' ? { ...formData } : { ...formData, _id: event._id };
 
   const mutation = props.action === 'create' ? createEventMakerMutation : updateEventMakerMutation;
-
-  let array = [];
-  array = !!event.cron && event.cron.split(' ');
-  const separated = array ? array[array.length - 1].split(',') : [];
-  const test = !!event.cron && event.cron.split(' ')[4].split(',').includes('3');
 
   console.log({ variables, formData, mutation });
 
@@ -289,7 +302,12 @@ const EventMaker = (props) => {
             </Typography>
           </MenuItem>
         )}
-      <Dialog maxWidth="sm" scroll="body" fullScreen={fullScreen} open={open} onClose={handleClose}>
+      <Dialog
+        maxWidth="sm"
+        scroll="body"
+        fullScreen={fullScreen}
+        open={open}
+        onClose={handleClose}>
         <DialogTitle
           id="form-dialog-title"
         > {props.action === 'create' ? 'Create ' : 'Edit '}
@@ -455,6 +473,25 @@ const EventMaker = (props) => {
 
                 />
               </Grid>
+              {/** TODO 
+              <Grid item md={6} xs={6}>
+                Duration
+                <div className={classes.textField}
+                  style={{ marginTop: 16 }}>
+                  <DurationPicker
+                    onValueChange={(v) => {
+                      setValues({
+                        ...values,
+                        duration: v / 60
+                      })
+                    }}
+                    value={values.duration * 60 || 60 * 60}
+                    views={['days', 'hours', 'minutes']}
+                    formatDuration={formatDuration}
+                  />
+                </div>
+              </Grid>
+              */}
               <Grid item md={6} xs={6}>
                 <TextField
                   id="image"
@@ -530,7 +567,7 @@ const EventMaker = (props) => {
                   <div className={classes.repeatContainer}>
                     <Checkbox
                       icon={<Avatar className={classes.dayAvatar}>S</Avatar>}
-                      defaultChecked={!!event.cron && event.cron.split(' ')[4].split(',').includes('0')}
+                      checked={days.includes(0)}
                       checkedIcon={(
                         <Avatar
                           className={classes.dayAvatar}
@@ -546,7 +583,7 @@ const EventMaker = (props) => {
 
                     <Checkbox
                       icon={<Avatar className={classes.dayAvatar}>M</Avatar>}
-                      defaultChecked={!!event.cron && event.cron.split(' ')[4].split(',').includes('1')}
+                      checked={days.includes(1)}
                       checkedIcon={(
                         <Avatar
                           className={classes.dayAvatar}
@@ -561,7 +598,7 @@ const EventMaker = (props) => {
 
                     <Checkbox
                       icon={<Avatar className={classes.dayAvatar}>T</Avatar>}
-                      defaultChecked={!!event.cron && event.cron.split(' ')[4].split(',').includes('2')}
+                      checked={days.includes(2)}
                       checkedIcon={(
                         <Avatar
                           className={classes.dayAvatar}
@@ -575,7 +612,7 @@ const EventMaker = (props) => {
                     />
                     <Checkbox
                       icon={<Avatar className={classes.dayAvatar}>W</Avatar>}
-                      defaultChecked={!!event.cron && event.cron.split(' ')[4].split(',').includes('3')}
+                      checked={days.includes(3)}
                       checkedIcon={(
                         <Avatar
                           className={classes.dayAvatar}
@@ -589,7 +626,7 @@ const EventMaker = (props) => {
                     />
                     <Checkbox
                       icon={<Avatar className={classes.dayAvatar}>T</Avatar>}
-                      defaultChecked={!!event.cron && event.cron.split(' ')[4].split(',').includes('4')}
+                      checked={days.includes(4)}
                       checkedIcon={(
                         <Avatar
                           className={classes.dayAvatar}
@@ -603,7 +640,7 @@ const EventMaker = (props) => {
                     />
                     <Checkbox
                       icon={<Avatar className={classes.dayAvatar}>F</Avatar>}
-                      defaultChecked={!!event.cron && event.cron.split(' ')[4].split(',').includes('5')}
+                      checked={days.includes(5)}
                       checkedIcon={(
                         <Avatar
                           className={classes.dayAvatar}
@@ -617,7 +654,7 @@ const EventMaker = (props) => {
                     />
                     <Checkbox
                       icon={<Avatar className={classes.dayAvatar}>S</Avatar>}
-                      defaultChecked={!!event.cron && event.cron.split(' ')[4].split(',').includes('6')}
+                      checked={days.includes(6)}
                       checkedIcon={(
                         <Avatar
                           className={classes.dayAvatar}
@@ -657,8 +694,6 @@ const EventMaker = (props) => {
                     const minutes = moment(values.date).format('mm');
                     const cron = `${minutes} ${hours} * * ${selectedDays}`;
                     const temp = { ...variables, cron };
-
-                    console.log('query', { variables });
 
                     return variables.title === ''
                       || variables.style === ''
