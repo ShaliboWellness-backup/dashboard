@@ -54,6 +54,8 @@ const EventDialog = (props) => {
 
   const { event } = props;
 
+  const { currentCompany } = React.useContext(CurrentCompanyContext);
+
   const [values, setValues] = React.useState({
     title: event.title ? event.title : '',
     style: event.style ? event.style : '',
@@ -69,6 +71,7 @@ const EventDialog = (props) => {
     isLive: props.action === 'create' ? false : event.isLive,
     zoomUrl: props.action === 'create' ? null : event.zoomUrl,
     trainers: [],
+    company: ''
   });
 
   const [labelWidth, setLabelWidth] = React.useState(0);
@@ -77,6 +80,11 @@ const EventDialog = (props) => {
     setLabelWidth(inputLabel.current.offsetWidth);
     getTrainers();
   }, []);
+
+  React.useEffect(() => {
+    if (!currentCompany || !currentCompany._id) return;
+    setValues({ ...values, company: currentCompany._id });
+  }, [currentCompany]);
 
   const cloundinaryWidgetRef = React.useRef(undefined);
 
@@ -151,7 +159,20 @@ const EventDialog = (props) => {
   const totalSpots = parseInt(totalSpotsString);
   const coins = parseInt(coinsString);
   const formData = {
-    title, style, instructor, location, totalSpots, coins, description, image, date, enablePush, isLive, zoomUrl, dateEnd,
+    title,
+    style,
+    instructor,
+    location,
+    totalSpots,
+    coins,
+    description,
+    image,
+    date,
+    enablePush,
+    isLive,
+    zoomUrl,
+    dateEnd,
+    company: currentCompany?._id || '',
   };
 
   const takenSpots = props.action === 'create' ? 0 : event.takenSpots;
