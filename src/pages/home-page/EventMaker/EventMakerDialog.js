@@ -43,6 +43,8 @@ const R = require('ramda');
 
 moment.tz.setDefault('Asia/Jerusalem');
 
+const SIXTY_MIN = 60;
+
 const DEFAULT = {
   title: '',
   instructor: '',
@@ -118,6 +120,7 @@ const EventMaker = (props) => {
     image: event.image ? event.image : '',
     date: event.date ? event.date : new Date(),
     dateEnd: event.dateEnd ? event.dateEnd : moment(event.date || new Date()).add(1, 'hours').toDate(),
+    duration: event.duration ? event.duration : SIXTY_MIN,
     coinsString: event.coins ? event.coins : '15',
     company: '',
     trainers: [],
@@ -461,20 +464,6 @@ const EventMaker = (props) => {
                 />
               </Grid>
               <Grid item md={6} xs={6}>
-                <DateTimePicker
-                  autoOk
-                  ampm={false}
-                  value={values.dateEnd}
-                  onChange={(date) => handleSetDateEnd(date)}
-                  label="End Date & Time"
-                  className={classes.textField}
-                  style={{ marginTop: 16 }}
-                  inputVariant="outlined"
-
-                />
-              </Grid>
-              {/** TODO 
-              <Grid item md={6} xs={6}>
                 Duration
                 <div className={classes.textField}
                   style={{ marginTop: 16 }}>
@@ -485,13 +474,12 @@ const EventMaker = (props) => {
                         duration: v / 60
                       })
                     }}
-                    value={values.duration * 60 || 60 * 60}
+                    value={values.duration * 60}
                     views={['days', 'hours', 'minutes']}
                     formatDuration={formatDuration}
                   />
                 </div>
               </Grid>
-              */}
               <Grid item md={6} xs={6}>
                 <TextField
                   id="image"

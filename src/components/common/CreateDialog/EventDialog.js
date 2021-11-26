@@ -22,8 +22,12 @@ import updateCompanyMutation from '../../../graphql/companies/mutation/update-co
 import CurrentCompanyContext from '../../../containers/CurrentCompany/CurrentCompanyContext';
 import updateEventMutation from '../../../graphql/event/mutation/update-event';
 import createEventMutation from '../../../graphql/event/mutation/create-event';
+import { DurationPicker } from 'material-duration-picker';
+import { formatDuration } from 'date-fns';
 
 const R = require('ramda');
+
+const SIXTY_MIN = 60;
 
 const styles = () => ({
   container: {
@@ -66,6 +70,7 @@ const EventDialog = (props) => {
     image: event.image ? event.image : '',
     date: event.date ? event.date : new Date(),
     dateEnd: event.dateEnd ? event.dateEnd : new Date(),
+    duration: event.duration ? event.duration : SIXTY_MIN,
     coinsString: event.coins ? event.coins : '15',
     enablePush: props.action === 'create' ? true : event.enablePush,
     isLive: props.action === 'create' ? false : event.isLive,
@@ -153,7 +158,20 @@ const EventDialog = (props) => {
   const availableStyles = ['pilates', 'strength', 'wellness', 'yoga'];
 
   const {
-    title, style, instructor, location, totalSpotsString, coinsString, description, image, date, enablePush, isLive, zoomUrl, dateEnd,
+    title,
+    style,
+    instructor,
+    location,
+    totalSpotsString,
+    coinsString,
+    description,
+    image,
+    date,
+    dateEnd,
+    duration,
+    enablePush,
+    isLive,
+    zoomUrl,
   } = values;
 
   const totalSpots = parseInt(totalSpotsString);
@@ -172,6 +190,7 @@ const EventDialog = (props) => {
     isLive,
     zoomUrl,
     dateEnd,
+    duration,
     company: currentCompany?._id || '',
   };
 
@@ -304,17 +323,23 @@ const EventDialog = (props) => {
                   inputVariant="outlined"
 
                 />
-                <DateTimePicker
-                  autoOk
-                  ampm={false}
-                  value={values.dateEnd}
-                  onChange={(date) => handleSetDateEnd(date)}
-                  label="End Date & Time"
-                  className={classes.textField}
-                  style={{ marginTop: 16 }}
-                  inputVariant="outlined"
-
-                />
+                <FormControl variant="outlined" className={classes.selectInput}>
+                  Duration
+                  <div className={classes.textField}
+                  >
+                    <DurationPicker
+                      onValueChange={(v) => {
+                        setValues({
+                          ...values,
+                          duration: v / 60
+                        })
+                      }}
+                      value={values.duration * 60}
+                      views={['days', 'hours', 'minutes']}
+                      formatDuration={formatDuration}
+                    />
+                  </div>
+                </FormControl>
                 <FormControl style={{ marginTop: 16 }} className={classes.textField}>
                   <button
                     id="upload_widget"
@@ -388,41 +413,43 @@ const EventDialog = (props) => {
                 {(value) => (
                   <Button
                     onClick={() => {
-                      (variables.title === ''
+                      if (variables.title === ''
                         || variables.instructor === ''
                         || variables.style === ''
                         || variables.date === ''
                         || variables.location === ''
                         || variables.totalSpotsString === ''
                         || variables.description === ''
-                        || variables.image === ''
-                        ? value.openSnackbar('error', 'Please make sure there are no empty fields')
-                        : client.mutate({
-                          mutation,
-                          variables,
-                        })
-                          .then(async ({ data, error }) => {
-                            props.action === 'edit'
-                              && props.handleClose();
-                            props.action === 'create'
-                              && client.mutate({
-                                mutation: updateCompanyMutation,
-                                variables: {
-                                  _id: currentCompany._id,
-                                  eventsIds: data.createEvent._id,
-                                },
+                        || variables.image === '') {
+                        value.openSnackbar('error', 'Please make sure there are no empty fields')
+                        return;
+                      }
+                      client.mutate({
+                        mutation,
+                        variables,
+                      })
+                        .then(async ({ data, error }) => {
+                          props.action === 'edit'
+                            && props.handleClose();
+                          props.action === 'create'
+                            && client.mutate({
+                              mutation: updateCompanyMutation,
+                              variables: {
+                                _id: currentCompany._id,
+                                eventsIds: data.createEvent._id,
+                              },
+                            })
+                              .then(({ data, error }) => {
+                                console.log('updated company with event');
+                                props.handleClose();
                               })
-                                .then(({ data, error }) => {
-                                  console.log('updated company with event');
-                                  props.handleClose();
-                                })
-                                .catch((error) => {
-                                  console.log(error);
-                                });
-                          })
-                          .catch((error) => {
-                            console.log(error);
-                          }));
+                              .catch((error) => {
+                                console.log(error);
+                              });
+                        })
+                        .catch((error) => {
+                          console.log(error);
+                        });
                     }}
                     color="primary"
                   >
@@ -435,7 +462,7 @@ const EventDialog = (props) => {
           </div>
         );
       }}
-    </CurrentCompanyContext.Consumer>
+    </CurrentCompanyContext.Consumer >
 
   );
 };

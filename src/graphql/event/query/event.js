@@ -20,6 +20,7 @@ const getEventsQuery = gql`
     location
     date
     dateEnd
+    duration
     totalSpots
     description
     image

@@ -4,6 +4,7 @@ const updateEventMutation = gql`
 mutation updateEvent(
   $_id: String!
   $title: String
+  $company: String!
   $style: Style
   $instructor: String
   $location: String
@@ -13,6 +14,7 @@ mutation updateEvent(
   $image: String
   $date: String
   $dateEnd: String
+  $duration: Int
   $coins: Int
   $enablePush: Boolean
   $isLive: Boolean
@@ -21,6 +23,7 @@ mutation updateEvent(
   updateEvent(
     _id: $_id
     title: $title
+    company: $company
     style: $style
     instructor: $instructor
     location: $location
@@ -30,12 +33,16 @@ mutation updateEvent(
     image: $image
     date: $date
     dateEnd: $dateEnd
+    duration: $duration
     coins: $coins
     enablePush: $enablePush
     isLive: $isLive
     zoomUrl: $zoomUrl
   ) {
     title
+    company {
+      _id
+    }
     style
     instructor {
       _id
@@ -45,6 +52,7 @@ mutation updateEvent(
     location
     date
     dateEnd
+    duration
     image
     users {
       firstName
