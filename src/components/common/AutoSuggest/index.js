@@ -11,7 +11,7 @@ const getSuggestions = (value) => {
   const inputValue = value.trim().toLowerCase();
   const inputLength = inputValue.length;
 
-  return inputLength === 0 ? users : users.filter((lang) => lang.firstName.toLowerCase().slice(0, inputLength) === inputValue);
+  return inputLength === 0 ? users : users.filter((user) => user.firstName.toLowerCase().slice(0, inputLength) === inputValue);
 };
 
 // When suggestion is clicked, Autosuggest needs to populate the input
@@ -61,52 +61,52 @@ class UserPicker extends React.Component {
     users = nextProps.users;
   }
 
-    onChange = (event, { newValue }) => {
-      this.setState({
-        value: newValue,
-      });
+  onChange = (event, { newValue }) => {
+    this.setState({
+      value: newValue,
+    });
+  };
+
+  // Autosuggest will call this function every time you need to update suggestions.
+  // You already implemented this logic above, so just use it.
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      suggestions: getSuggestions(value),
+    });
+  };
+
+  // Autosuggest will call this function every time you need to clear suggestions.
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: [],
+    });
+  };
+
+  render() {
+    const { value, suggestions } = this.state;
+
+    // Autosuggest will pass through all these props to the input.
+    const inputProps = {
+      placeholder: 'Add User',
+      value,
+      onChange: this.onChange,
     };
 
-    // Autosuggest will call this function every time you need to update suggestions.
-    // You already implemented this logic above, so just use it.
-    onSuggestionsFetchRequested = ({ value }) => {
-      this.setState({
-        suggestions: getSuggestions(value),
-      });
-    };
-
-    // Autosuggest will call this function every time you need to clear suggestions.
-    onSuggestionsClearRequested = () => {
-      this.setState({
-        suggestions: [],
-      });
-    };
-
-    render() {
-      const { value, suggestions } = this.state;
-
-      // Autosuggest will pass through all these props to the input.
-      const inputProps = {
-        placeholder: 'Add User',
-        value,
-        onChange: this.onChange,
-      };
-
-      // Finally, render it!
-      return (
-        <Autosuggest
-          theme={styles}
-          alwaysRenderSuggestions
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={getSuggestionValue}
-          renderSuggestion={renderSuggestion}
-          renderSuggestionsContainer={renderSuggestionsContainer}
-          inputProps={inputProps}
-        />
-      );
-    }
+    // Finally, render it!
+    return (
+      <Autosuggest
+        theme={styles}
+        alwaysRenderSuggestions
+        suggestions={suggestions}
+        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+        getSuggestionValue={getSuggestionValue}
+        renderSuggestion={renderSuggestion}
+        renderSuggestionsContainer={renderSuggestionsContainer}
+        inputProps={inputProps}
+      />
+    );
+  }
 }
 
 export default UserPicker;
