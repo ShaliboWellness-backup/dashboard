@@ -106,6 +106,8 @@ const EventDialog = (props) => {
       cloudName: 'djxrfd5tp',
       uploadPreset: 'hsnb1qsi',
       multiple: false,
+      maxImageWidth: 1024,
+      maxImageHeight: 1024
     }, (error, result) => {
       if (error || !result || result.event !== 'success') return;
       console.log('Done! Here is the image info: ', result.info);
