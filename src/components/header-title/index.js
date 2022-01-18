@@ -50,7 +50,7 @@ const HeaderTitle = ({ classes, currentPath }) => {
   const getCompanies = () => {
     return client.watchQuery({
       query: getCompaniesQuery,
-      pollInterval: 5000,
+      pollInterval: 15000,
     }).subscribe(({ data }) => {
       setCompanies(data.companiesData);
       const lastCompanyId = localStorage.getItem('company_id');
