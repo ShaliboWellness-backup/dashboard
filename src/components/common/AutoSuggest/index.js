@@ -91,7 +91,7 @@ class UserPicker extends React.Component {
     // Autosuggest will pass through all these props to the input.
     const inputProps = {
       placeholder: 'Add User',
-      value,
+      value: value,
       onChange: this.onChange,
     };
 
@@ -100,7 +100,7 @@ class UserPicker extends React.Component {
       <Autosuggest
         theme={styles}
         alwaysRenderSuggestions
-        suggestions={suggestions}
+        suggestions={suggestions ? suggestions : []}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
         getSuggestionValue={getSuggestionValue}
