@@ -38,9 +38,7 @@ const styles = (theme) => ({
 });
 
 const HeaderTitle = ({ classes, currentPath }) => {
-  const value = React.useContext(CurrentCompanyContext);
-
-  const { handleSetCompany, currentCompany } = value;
+  const { handleSetCompany, currentCompany } = React.useContext(CurrentCompanyContext);
 
   const client = useApolloClient();
 
@@ -52,18 +50,21 @@ const HeaderTitle = ({ classes, currentPath }) => {
       query: getCompaniesQuery,
       pollInterval: 15000,
     }).subscribe(({ data }) => {
-      setCompanies(data.companiesData);
+
+      const companies = data.companiesData;
+
+      setCompanies(companies);
       const lastCompanyId = localStorage.getItem('company_id');
       if (lastCompanyId) {
-        const lastCompany = data.companies.filter((company) => company._id === lastCompanyId);
+        const lastCompany = companies.filter((company) => company._id === lastCompanyId);
         if (lastCompany.length === 1) {
           handleSetCompany(lastCompany[0]);
         } else {
           localStorage.setItem('company_id', null);
-          handleSetCompany(data.companies[0]);
+          handleSetCompany(companies[0]);
         }
       } else {
-        handleSetCompany(data.companies[0]);
+        handleSetCompany(companies[0]);
       }
     },
       (error) => {
