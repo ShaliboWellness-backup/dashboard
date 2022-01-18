@@ -7,7 +7,10 @@ let selectedUser = null;
 let onSelected = null;
 
 // Teach Autosuggest how to calculate suggestions for any given input value.
-const getSuggestions = (value) => {
+const getSuggestions = (users, value) => {
+
+  if (!value || !value.length) return;
+
   const inputValue = value.trim().toLowerCase();
   const inputLength = inputValue.length;
 
@@ -71,7 +74,7 @@ class UserPicker extends React.Component {
   // You already implemented this logic above, so just use it.
   onSuggestionsFetchRequested = ({ value }) => {
     this.setState({
-      suggestions: getSuggestions(value),
+      suggestions: getSuggestions(users, value),
     });
   };
 
