@@ -52,7 +52,7 @@ const HeaderTitle = ({ classes, currentPath }) => {
       query: getCompaniesQuery,
       pollInterval: 5000,
     }).subscribe(({ data }) => {
-      setCompanies(data.companies);
+      setCompanies(data.companiesData);
       const lastCompanyId = localStorage.getItem('company_id');
       if (lastCompanyId) {
         const lastCompany = data.companies.filter((company) => company._id === lastCompanyId);
