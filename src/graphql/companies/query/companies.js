@@ -17,6 +17,8 @@ const getCompaniesQuery = gql`
       }
       users {
         _id
+        firstName
+        lastName
       }
       logo
       emailSuffix
