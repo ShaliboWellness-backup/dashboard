@@ -8,7 +8,7 @@ import { useApolloClient } from '@apollo/client';
 import CurrentCompanyContext from '../../containers/CurrentCompany/CurrentCompanyContext';
 import Sidebar from './Sidebar';
 import AdminMenu from './AdminMenu';
-import getCompaniesQuery from '../../graphql/companies/query/companies';
+import getCompaniesDataQuery from '../../graphql/companies/query/companies-data';
 
 const styles = (theme) => ({
   root: {
@@ -47,7 +47,7 @@ const HeaderTitle = ({ classes, currentPath }) => {
 
   const getCompanies = () => {
     return client.watchQuery({
-      query: getCompaniesQuery,
+      query: getCompaniesDataQuery,
       pollInterval: 15000,
     }).subscribe(({ data }) => {
 
