@@ -222,8 +222,8 @@ const AllUsers = ({ classes }) => {
                       ? <Avatar alt={user.first_name} src={user.image} />
                       : (
                         <Avatar
-                          style={{ backgroundColor: stringToColor(user.firstName) }}
-                        > {user.firstName[0]}
+                          style={{ backgroundColor: stringToColor(user.firstName ? user.firstName : 'empty') }}
+                        > {user.firstName ? user.firstName[0] : 'No First Name'}
                         </Avatar>
                       )}
                   </TableCell>
