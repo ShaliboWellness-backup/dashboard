@@ -97,7 +97,7 @@ const AllUsers = ({ classes }) => {
         }
         setLoading(false);
       }, (error) => {
-        console.log(error);
+        console.log('Error performing searchUsersQuery', error);
       });
   }, [filterValues.firstName, filterValues.lastName, filterValues.email, filterValues.phone, filterValues.limit]);
 
@@ -211,7 +211,7 @@ const AllUsers = ({ classes }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.length > 0 && users.map((user) => {
+            {users && users.length > 0 && users.map((user) => {
               const company = R.pathOr('', ['name'])(user.company);
               const { _id } = user;
               return (
