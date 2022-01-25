@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 const getCompaniesQuery = gql`
   {
-    copmanies {
+    companies {
       name
       _id
       codes
