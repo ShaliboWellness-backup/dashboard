@@ -51,8 +51,12 @@ const styles = (theme) => ({
 const WelcomePage = ({ classes, company, user }) => {
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
-    return (
+    if (!company || !company._id) {
+        console.log({ company });
+        return <CircularProgress />
+    }
 
+    return (
         <>
             <Paper className={classes.welcome}>
                 <div style={{
