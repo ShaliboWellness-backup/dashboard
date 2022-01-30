@@ -1,8 +1,7 @@
 import gql from 'graphql-tag';
 
 const getCompanyQuery = gql`
-  {
-    query getCompany($_id: String!){
+  query getCompany($_id: String!){
     company(_id: $_id) {
       name
       _id
@@ -34,7 +33,6 @@ const getCompanyQuery = gql`
       emailSuffix
       isPublic
     }
-  }
   }
 `;
 
