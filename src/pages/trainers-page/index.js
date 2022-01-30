@@ -26,19 +26,23 @@ function TrainersPage(props) {
 
     if (!props.user) return;
 
-    client.query({
-      query: getCompanyQuery,
-      variables: {
-        _id: props.user.company._id
-      }
-    })
-      .then(data => {
-        console.log({ data })
-        handleSetCompany(data.company);
+    try {
+      client.query({
+        query: getCompanyQuery,
+        variables: {
+          _id: props.user.company._id
+        }
       })
-      .catch(err => {
-        console.log('GraphQL error', err, { getCompanyQuery, vars: { id: props.user.company._id } })
-      })
+        .then(data => {
+          console.log({ data })
+          handleSetCompany(data.company);
+        })
+        .catch(err => {
+          console.log('GraphQL error', err, { getCompanyQuery, vars: { id: props.user.company._id } })
+        })
+    } catch (err) {
+      console.log('GraphQL error', err, { getCompanyQuery, vars: { id: props.user.company._id } })
+    }
 
   }, [props.user]);
 
