@@ -24,6 +24,8 @@ function TrainersPage(props) {
 
     console.log({ user: props.user })
 
+    if (!props.user) return;
+
     client.query({
       query: getCompanyQuery,
       variables: {
