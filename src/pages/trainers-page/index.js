@@ -33,8 +33,11 @@ function TrainersPage(props) {
       }
     })
       .then(data => {
-        console.log({ Data })
+        console.log({ data })
         handleSetCompany(data.company);
+      })
+      .catch(err => {
+        console.log('GraphQL error', err, { getCompanyQuery, vars: { id: props.user.company._id } })
       })
 
   }, [props.user]);
