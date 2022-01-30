@@ -43,8 +43,6 @@ const styles = (theme) => ({
 
 });
 
-console.log('Rendering members');
-
 const Members = ({ classes, company }) => {
     const [refetch, setRefetch] = React.useState(0);
 
@@ -53,9 +51,6 @@ const Members = ({ classes, company }) => {
     const handleRefetch = async () => {
 
     };
-
-
-    console.log('Rendering members 2');
 
     return (
         <Query
