@@ -15,12 +15,11 @@ function TrainersPage(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const userContext = React.useContext(CurrentUserContext);
+  const { currentCompany, handleSetCompany } = React.useContext(CurrentCompanyContext);
   const client = useApolloClient();
 
   React.useEffect(() => {
     userContext.handleSetUser(props.user);
-
-    const { currentCompany, handleSetCompany } = React.useContext(CurrentCompanyContext);
 
     console.log({ user: props.user })
 
