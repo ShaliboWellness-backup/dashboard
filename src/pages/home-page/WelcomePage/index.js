@@ -52,7 +52,7 @@ const WelcomePage = ({ classes, company, user }) => {
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
     if (!company || !company._id) {
-        console.log({ company });
+        console.log({ company: company });
         return <CircularProgress />
     }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@material-ui/core';
 import { withApollo } from '@apollo/client/react/hoc';
 
@@ -18,7 +18,7 @@ function TrainersPage(props) {
   const { currentCompany, handleSetCompany } = React.useContext(CurrentCompanyContext);
   const client = useApolloClient();
 
-  React.useEffect(() => {
+  useEffect(() => {
     userContext.handleSetUser(props.user);
 
     console.log({ user: props.user })
@@ -32,9 +32,9 @@ function TrainersPage(props) {
           _id: props.user.company._id
         }
       })
-        .then(data => {
-          console.log({ data })
-          handleSetCompany(data.company);
+        .then(resp => {
+          console.log({ resp })
+          handleSetCompany(resp.data.company);
         })
         .catch(err => {
           console.log('GraphQL error', err, { getCompanyQuery, vars: { id: props.user.company._id } })
@@ -47,7 +47,9 @@ function TrainersPage(props) {
 
   return (
     <div style={{ padding: isMobile ? '16px 16px' : '64px 64px' }}>
-      <WelcomePage user={props.user} />
+      <WelcomePage
+        user={props.user}
+        company={currentCompany} />
       <Button
         style={{
           position: 'absolute',
