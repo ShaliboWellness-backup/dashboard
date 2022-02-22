@@ -85,7 +85,8 @@ function EditCompany({ classes, company }) {
     quantity: 0,
     leaderboardAvailable: false,
     isPhoneOptional: false,
-    competitionMode: false
+    competitionMode: false,
+    contentEnabled: false
   });
 
   const theme = useTheme();
@@ -103,7 +104,8 @@ function EditCompany({ classes, company }) {
       quantity: company.codes ? company.codes.length : 0,
       leaderboardAvailable: company.leaderboardAvailable,
       isPhoneOptional: company.isPhoneOptional || false,
-      competitionMode: company.competitionMode || false
+      competitionMode: company.competitionMode || false,
+      contentEnabled: company.contentEnabled || false
     });
   }, [company]);
 
@@ -282,6 +284,22 @@ function EditCompany({ classes, company }) {
                       onChange={() => setValues((prev) => ({
                         ...prev,
                         competitionMode: !prev.competitionMode,
+                      }))}
+                      name="checkedB"
+                      color="primary"
+                    />
+                  </Tooltip>
+                </div>
+                <div style={styles().toggler}>
+                  {'Content Enabled'}
+                  <Tooltip
+                    title={'Content Enabled'}
+                  >
+                    <Switch
+                      checked={values.contentEnabled}
+                      onChange={() => setValues((prev) => ({
+                        ...prev,
+                        contentEnabled: !prev.contentEnabled,
                       }))}
                       name="checkedB"
                       color="primary"

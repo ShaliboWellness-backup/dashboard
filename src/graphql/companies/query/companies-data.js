@@ -9,6 +9,7 @@ const getCompaniesDataQuery = gql`
       masterCode
       leaderboardAvailable
       competitionMode
+      contentEnabled
       events {
         title
       }
