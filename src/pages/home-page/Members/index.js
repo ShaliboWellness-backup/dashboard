@@ -55,7 +55,7 @@ const Members = ({ classes, company }) => {
     return (
         <Query
             query={getCompanyUsersQuery}
-            pollInterval={1000}
+            pollInterval={5000}
             variables={company ? { _id: company._id } : { _id: 'null' }}
         >
             {({ loading, error, data }) => {
@@ -89,8 +89,7 @@ const Members = ({ classes, company }) => {
                                 </TableHead>
                                 <TableBody>
                                     {users.length > 0
-
-                                        && users.map((user) => (
+                                        && users.filter(user => user.firstName.length).map((user) => (
                                             <TableRow key={user._id}>
                                                 <TableCell component="th" scope="row">
                                                     <Avatar style={{ backgroundColor: stringToColor(user.firstName) }}>
