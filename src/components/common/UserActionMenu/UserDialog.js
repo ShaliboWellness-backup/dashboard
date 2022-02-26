@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withStyles } from '@material-ui/styles';
 import {
   Button,
@@ -62,7 +62,7 @@ function UserDialog(props) {
   const { classes, closeMenu, user } = props;
   const client = useApolloClient();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   function handleClickOpen() {
     setOpen(true);
@@ -73,7 +73,7 @@ function UserDialog(props) {
     setOpen(false);
   }
 
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     firstName: '',
     lastName: '',
     email: '',
@@ -85,7 +85,7 @@ function UserDialog(props) {
 
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     getCompanies();
   }, [props.user]);
 
@@ -208,12 +208,20 @@ function UserDialog(props) {
                   />
                 )}
               >
-                {values?.companies?.length > 0 ? values.companies.map((company) => (
-                  <MenuItem key={company._id} value={company._id}>{company.name}</MenuItem>
-                ))
-                  : <MenuItem key={1} value="">No Available Companies</MenuItem>}
-                {values?.companies?.length > 0
-                  && <MenuItem key="none" value="none">No Company</MenuItem>}
+                {
+                  values?.companies?.length > 0 ?
+                    values
+                      .companies
+                      .sort((compA, compB) => compA.name.localeCompare(compB.name))
+                      .map((company) => (
+                        <MenuItem key={company._id} value={company._id}>{company.name}</MenuItem>
+                      ))
+                    : <MenuItem key={1} value="">No Available Companies</MenuItem>
+                }
+                {
+                  values?.companies?.length > 0
+                  && <MenuItem key="none" value="none">No Company</MenuItem>
+                }
 
               </Select>
             </FormControl>
