@@ -211,7 +211,7 @@ const AllUsers = ({ classes }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users && users.length > 0 && users.map((user) => {
+            {users && users.length > 0 && Array.from(users).map((user) => {
               const company = R.pathOr('', ['name'])(user.company);
               const { _id } = user;
               return (
