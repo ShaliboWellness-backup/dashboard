@@ -88,7 +88,7 @@ const Members = ({ classes, company }) => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {users.length > 0
+                                    {users && users.length > 0
                                         && users.filter(user => user.firstName.length).map((user) => (
                                             <TableRow key={user._id}>
                                                 <TableCell component="th" scope="row">
