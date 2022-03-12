@@ -87,6 +87,18 @@ function UserDialog(props) {
 
   useEffect(() => {
     getCompanies();
+
+    if (!props.user) return;
+    const firstName = R.pathOr('', ['firstName'])(props.user);
+    const lastName = R.pathOr('', ['lastName'])(props.user);
+    const email = R.pathOr('', ['email'])(props.user);
+    const company = R.pathOr({ _id: '' }, ['company'])(props.user);
+    const verified = R.pathOr('', ['verified'])(props.user);
+    const roles = R.pathOr(['user'], ['roles'])(props.user);
+    setValues({
+      ...values, firstName, lastName, email, company, verified, roles,
+    });
+
   }, [props.user]);
 
   const getCompanies = () => {
@@ -95,14 +107,24 @@ function UserDialog(props) {
     })
       .then(({ data }) => {
         const { companies } = data;
+        if (!companies) return;
         const firstName = R.pathOr('', ['firstName'])(user);
         const lastName = R.pathOr('', ['lastName'])(user);
         const email = R.pathOr('', ['email'])(user);
         const company = R.pathOr({ _id: '' }, ['company'])(user);
         const verified = R.pathOr('', ['verified'])(user);
         const roles = R.pathOr(['user'], ['roles'])(user);
-        setValues({
-          ...values, firstName, lastName, email, company, verified, roles, companies,
+        setValues(prev => {
+          return {
+            ...prev,
+            firstName,
+            lastName,
+            email,
+            company,
+            verified,
+            roles,
+            companies,
+          }
         });
 
         return null;
@@ -114,7 +136,6 @@ function UserDialog(props) {
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
-    console.log(values);
   };
   const handleCompanyChange = (name) => (event) => {
     const newCompany = { _id: event.target.value };
@@ -198,7 +219,7 @@ function UserDialog(props) {
               </InputLabel>
               <Select
                 MenuProps={{ classes: { list: classes.test } }}
-                value={values.company._id}
+                value={values?.company?._id}
                 onChange={handleCompanyChange('company')}
                 input={(
                   <OutlinedInput
@@ -210,8 +231,7 @@ function UserDialog(props) {
               >
                 {
                   values?.companies?.length > 0 ?
-                    values
-                      .companies
+                    Array.from(values.companies)
                       .sort((compA, compB) => compA.name.localeCompare(compB.name))
                       .map((company) => (
                         <MenuItem key={company._id} value={company._id}>{company.name}</MenuItem>
